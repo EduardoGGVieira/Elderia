@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso ao Portal de Saúde - Melhor Idade</title>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --error-red: #d32f2f;
+            --success-green: #2e7d32;
+            --text-color: #212529;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid #dee2e6;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .alert-error {
+            background-color: #fdecea;
+            color: var(--error-red);
+            border: 2px solid var(--error-red);
+        }
+
+        .alert-success {
+            background-color: #edf7ed;
+            color: var(--success-green);
+            border: 2px solid var(--success-green);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            border: 2px solid #495057;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: 4px solid #ffc107; /* Foco extra forte para acessibilidade */
+            border-color: var(--primary-blue);
+        }
+
+        .btn-entrar {
+            width: 100%;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 20px;
+            font-size: 24px; /* Fonte maior no botão principal */
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-entrar:hover {
+            background-color: #004494;
+        }
+
+        .links-auxiliares {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .links-auxiliares a {
+            display: block;
+            color: var(--primary-blue);
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .ajuda-suporte {
+            margin-top: 20px;
+            background: #e7f1ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            border: 1px solid #b6d4fe;
+        }
+    </style>
+</head>
+<body>
+
+<main class="login-container">
+    <h1>Entrar no Portal</h1>
+
+    <!-- Exibição de Mensagens para o Usuário -->
+    <?php if ($mensagem_erro): ?>
+        <div class="alert alert-error" role="alert">
+            <?php echo $mensagem_erro; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($mensagem_sucesso): ?>
+        <div class="alert alert-success" role="alert">
+            <?php echo $mensagem_sucesso; ?>
+        </div>
+    <?php endif; ?>
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+        <div class="form-group">
+            <label for="usuario">E-mail ou CPF</label>
+            <input type="text" id="usuario" name="usuario" 
+                   value="<?php echo isset($usuario) ? $usuario : ''; ?>" 
+                   placeholder="Ex: 000.000.000-00" required>
+        </div>
+
+        <div class="form-group">
+            <label for="senha">Sua Senha</label>
+            <input type="password" id="senha" name="senha" 
+                   placeholder="Digite sua senha aqui" required>
+        </div>
+
+        <button type="submit" class="btn-entrar">ENTRAR AGORA</button>
+    </form>
+
+    <div class="links-auxiliares">
+        <a href="#">Esqueci minha senha</a>
+        <a href="#">Não tenho conta? Clique aqui para criar</a>
+    </div>
+
+    <div class="ajuda-suporte">
+        <strong>Precisa de ajuda com o site?</strong><br>
+        Ligue grátis para: <strong>0800-000-0000</strong>
+    </div>
+</main>
+
+</body>
+</html>
