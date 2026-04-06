@@ -1,4 +1,8 @@
 -- Criação do Banco de Dados Elderia
+
+
+execute source C:/xampp/htdocs/Elderia/Banco/Suspect.sql
+
 CREATE DATABASE IF NOT EXISTS elderia;
 USE elderia;
 
@@ -10,10 +14,7 @@ CREATE TABLE usuario (
     senha VARCHAR(255) NOT NULL, 
     telefone VARCHAR(20),
 
-
-
     tipo_usuario ENUM('idoso', 'profissional', 'admin') NOT NULL, 
-
 
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
