@@ -17,23 +17,21 @@ CREATE TABLE usuario (
     email VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL, 
     telefone VARCHAR(20),
-
+    cpf VARCHAR(14) UNIQUE NOT NULL,
     tipo_usuario ENUM('idoso', 'profissional', 'admin') NOT NULL, 
-
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
 
 CREATE TABLE idoso (
     id_idoso INT PRIMARY KEY,
-    cpf VARCHAR(14) UNIQUE NOT NULL,
     data_nascimento DATE,
     FOREIGN KEY (id_idoso) REFERENCES usuario(id_usuario) ON DELETE CASCADE
-
-
-
     necessidades_acessibilidade TEXT, 
     informacoes_saude TEXT, 
+
+    --adicionar mais itens só do idoso
+    alergias VARCHAR (300)
 );
 
 
@@ -42,13 +40,9 @@ CREATE TABLE profissional (
     registro_profissional VARCHAR(50) UNIQUE NOT NULL,
     especialidade VARCHAR(100),
     biografia TEXT,
-    documento_validado BOOLEAN DEFAULT FALSE, 
-    FOREIGN KEY (id_profissional) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-    
-
-
-    visibilidade BOOLEAN DEFAULT FALSE --nao pode ser boolean tem que trocar
-
+    documento_validado BOOLEAN DEFAULT FALSE,
+    localização VARCHAR (300),
+    FOREIGN KEY (id_profissional) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 
@@ -58,11 +52,7 @@ CREATE TABLE certificado (
     titulo VARCHAR(100), --faculdade???
     data_emissao DATE,
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE,
-
-
-    url_documento VARCHAR(255) -- Caminho para o arquivo
-    
-    
+    url_documento VARCHAR(255)
 );
 
 
@@ -72,7 +62,7 @@ CREATE TABLE agenda_disponivel (
     data_disponivel DATE NOT NULL,
     horario_inicio TIME NOT NULL,
     horario_fim TIME NOT NULL,
-    status ENUM('livre', 'ocupado') DEFAULT 'livre',
+    status ENUM('livre', 'ocupado','concluido','reagendado') DEFAULT 'livre',
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 );
 
@@ -83,7 +73,7 @@ CREATE TABLE consulta (
     id_profissional INT NOT NULL,
     data_hora DATETIME NOT NULL,
     status ENUM('agendada', 'realizada', 'cancelada') DEFAULT 'agendada', 
-    resumo_atendimento TEXT, 
+    resumo_atendimento TEXT,
     FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso),
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional)
 

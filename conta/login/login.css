@@ -1,0 +1,124 @@
+root {
+            --primary-blue: #0056b3;
+            --error-red: #d32f2f;
+            --success-green: #2e7d32;
+            --text-color: #212529;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid #dee2e6;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .alert-error {
+            background-color: #fdecea;
+            color: var(--error-red);
+            border: 2px solid var(--error-red);
+        }
+
+        .alert-success {
+            background-color: #edf7ed;
+            color: var(--success-green);
+            border: 2px solid var(--success-green);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            border: 2px solid #495057;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: 4px solid #ffc107; /* Foco extra forte para acessibilidade */
+            border-color: var(--primary-blue);
+        }
+
+        .btn-entrar {
+            width: 100%;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 20px;
+            font-size: 24px; /* Fonte maior no botão principal */
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-entrar:hover {
+            background-color: #004494;
+        }
+
+        .links-auxiliares {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .links-auxiliares a {
+            display: block;
+            color: var(--primary-blue);
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .ajuda-suporte {
+            margin-top: 20px;
+            background: #e7f1ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            border: 1px solid #b6d4fe;
+        }

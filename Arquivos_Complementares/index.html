@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Seguro e Acessível</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f8f9fa;
+            --text-size: 16px;
+            --input-padding: 12px;
+        }
+
+        /* Tema de Acessibilidade para Idosos */
+        .acessibilidade-idoso {
+            --primary-color: #004085;
+            --text-size: 20px;
+            --input-padding: 16px;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; 
+            max-width: 850px; 
+            margin: 20px auto; 
+            padding: 20px; 
+            background-color: var(--bg-color); 
+            font-size: var(--text-size);
+            color: #212529;
+        }
+
+        form { background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        fieldset { border: 2px solid #dee2e6; border-radius: 12px; margin-bottom: 30px; padding: 25px; }
+        legend { font-weight: bold; color: var(--primary-color); padding: 0 15px; background: #fff; }
+        
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; font-weight: 600; }
+        
+        input, textarea, select { 
+            width: 100%; 
+            padding: var(--input-padding); 
+            border: 2px solid #ced4da; 
+            border-radius: 10px; 
+            box-sizing: border-box; 
+            font-size: inherit;
+        }
+
+        input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 0 3px rgba(0,86,179,0.15); }
+
+        .checkbox-group { display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .checkbox-group input { width: auto; height: 25px; width: 25px; }
+
+        .ajuda-texto { font-size: 0.9em; color: #6c757d; margin-top: 8px; display: block; }
+
+        button { 
+            width: 100%; 
+            background: var(--primary-color); 
+            color: white; 
+            border: none; 
+            padding: 20px; 
+            border-radius: 10px; 
+            font-size: 1.25em; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+
+        button:hover { background: #003366; transform: translateY(-2px); }
+
+        /* Esconde seções inicialmente */
+        #fluxo-cadastro, #area-profissional, #area-idoso, #campo-acessibilidade-detalhe { display: none; }
+
+        .secao-inicial { background-color: #f1f8ff; border: 2px solid #0056b3; }
+    </style>
+</head>
+<body id="main-body">
+
+    <header style="text-align: center; margin-bottom: 30px;">
+        <h2 id="instrucao-topo">Olá! Para começar, escolha uma opção abaixo:</h2>
+    </header>
+
+    <form action="/cadastrar" method="POST">
+        
+        <!-- PASSO 1: SELEÇÃO DE PERFIL -->
+        <fieldset class="secao-inicial">
+            <legend>Identificação</legend>
+            <div class="form-group">
+                <label for="tipo_usuario">Quem é você?</label>
+                <select id="tipo_usuario" name="tipo_usuario" required onchange="iniciarFluxo()">
+                    <option value="">Selecione uma opção...</option>
+                    <option value="idoso">Sou Idoso (Quero me cadastrar)</option>
+                    <option value="profissional">Sou Profissional (Quero trabalhar)</option>
+                </select>
+            </div>
+        </fieldset>
+
+        <!-- FLUXO DE DADOS (Exibido após escolha) -->
+        <div id="fluxo-cadastro">
+            
+            <fieldset>
+                <legend>Dados de Cadastro</legend>
+                
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+                </div>
+
+                <!-- CAMPO CPF (Novidade) -->
+                <div id="campo-cpf" class="form-group">
+                    <label for="cpf">Seu CPF:</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00">
+                    <small class="ajuda-texto">Este dado é importante para sua segurança.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" placeholder="exemplo@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Crie uma Senha:</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+
+                <!-- CONFIRMAÇÃO DE SENHA -->
+                <div class="form-group">
+                    <label for="confirme_senha">Digite a Senha Novamente:</label>
+                    <input type="password" id="confirme_senha" name="confirme_senha" required>
+                    <small class="ajuda-texto">As duas senhas precisam ser iguais.</small>
+                </div>
+            </fieldset>
+
+            <!-- SEÇÃO ESPECÍFICA: IDOSO -->
+            <div id="area-idoso">
+                <fieldset style="border-color: #004085;">
+                    <legend>Saúde e Cuidados Especiais</legend>
+                    
+                    <!-- ALERGIAS (Novidade) -->
+                    <div class="form-group">
+                        <label for="alergias">Você possui alguma alergia?</label>
+                        <textarea id="alergias" name="alergias" rows="2" placeholder="Ex: Remédios, alimentos ou poeira. Se não tiver, escreva 'Não'"></textarea>
+                    </div>
+
+                    <!-- ACESSIBILIDADE (Novidade) -->
+                    <div class="form-group">
+                        <label>Necessita de alguma acessibilidade especial?</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="possui_acessibilidade" name="possui_acessibilidade" onchange="toggleAcessibilidade()">
+                            <span>Sim, eu preciso de suporte específico.</span>
+                        </div>
+                    </div>
+
+                    <div id="campo-acessibilidade-detalhe" class="form-group">
+                        <label for="qual_acessibilidade">Conte-nos do que você precisa:</label>
+                        <textarea id="qual_acessibilidade" name="qual_acessibilidade" rows="2" placeholder="Ex: Cadeira de rodas, leitura em voz alta, etc."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contato_emergencia">Contato de Emergência (Nome):</label>
+                        <input type="text" id="contato_emergencia" name="contato_emergencia">
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- SEÇÃO ESPECÍFICA: PROFISSIONAL -->
+            <div id="area-profissional">
+                <fieldset>
+                    <legend>Dados Profissionais</legend>
+                    <div class="form-group">
+                        <label for="registro">Número do Registro Profissional:</label>
+                        <input type="text" id="registro" name="registro">
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" id="btn-submit">Finalizar Cadastro</button>
+        </div>
+    </form>
+
+    <script>
+        function iniciarFluxo() {
+            const perfil = document.getElementById('tipo_usuario').value;
+            const fluxo = document.getElementById('fluxo-cadastro');
+            const areaIdoso = document.getElementById('area-idoso');
+            const areaProfissional = document.getElementById('area-profissional');
+            const body = document.getElementById('main-body');
+
+            // Reset
+            fluxo.style.display = 'none';
+            areaIdoso.style.display = 'none';
+            areaProfissional.style.display = 'none';
+            body.classList.remove('acessibilidade-idoso');
+
+            if (perfil === "") return;
+
+            fluxo.style.display = 'block';
+
+            if (perfil === 'idoso') {
+                areaIdoso.style.display = 'block';
+                body.classList.add('acessibilidade-idoso');
+                document.getElementById('instrucao-topo').innerText = "Estamos quase lá! Preencha seus dados com calma.";
+            } else {
+                areaProfissional.style.display = 'block';
+                document.getElementById('instrucao-topo').innerText = "Complete seu perfil profissional abaixo.";
+            }
+        }
+
+        function toggleAcessibilidade() {
+            const checkbox = document.getElementById('possui_acessibilidade');
+            const detalhe = document.getElementById('campo-acessibilidade-detalhe');
+            detalhe.style.display = checkbox.checked ? 'block' : 'none';
+            
+            if(checkbox.checked) {
+                document.getElementById('qual_acessibilidade').focus();
+            }
+        }
+    </script>
+</body>
+</html>

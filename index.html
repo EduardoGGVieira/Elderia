@@ -1,3 +1,209 @@
-<html>
-    
-</html>
+    <!DOCTYPE html>
+    <html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cadastro Completo de Usuário</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                max-width: 700px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #f4f4f9;
+            }
+
+            form {
+                background: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            fieldset {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-bottom: 25px;
+                padding: 15px;
+            }
+
+            legend {
+                font-weight: bold;
+                color: #333;
+                padding: 0 10px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 500;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            input[type="tel"],
+            input[type="date"],
+            textarea,
+            select {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            .checkbox-group {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            button {
+                width: 100%;
+                background: #007bff;
+                color: white;
+                border: none;
+                padding: 12px;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            button:hover {
+                background: #0056b3;
+            }
+
+            .info-sql {
+                font-size: 0.85em;
+                color: #666;
+                margin-top: 2px;
+            }
+
+            /* Esconde as seções profissionais por padrão */
+            #area-profissional {
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h2>Criação de Conta</h2>
+
+        <form action="/cadastrar" method="POST" enctype="multipart/form-data">
+
+            <fieldset>
+                
+                <div class="form-group">
+                    <label for="tipo_usuario">Tipo de Perfil</label>
+                    <select id="tipo_usuario" name="tipo_usuario" required onchange="toggleProfissional()">
+                        <option value="">Selecione...</option>
+                        <option value="idoso">Idoso</option>
+                        <option value="profissional">Profissional</option>
+                    </select>
+                </div>
+
+
+                <legend>Dados de Acesso (Usuario)</legend>
+
+                <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirme_senha">Confirme sua Senha</label>
+                    <input type="password" id="confirme_senha" name="confirme_senha" required>
+                </div>
+
+
+            </fieldset>
+
+            <div id="area-profissional">
+                <fieldset>
+                    <legend>Detalhes Profissionais</legend>
+
+                    <div class="form-group">
+                        <label for="registro_profissional">Registro Profissional (Ex: CRM, COREN)</label>
+                        <input type="text" id="registro_profissional" name="registro_profissional">
+                        <p class="info-sql">* Obrigatório para profissionais</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="especialidade">Especialidade</label>
+                        <input type="text" id="especialidade" name="especialidade">
+                    </div>
+
+                    <div class="form-group">
+                        <label placeholder="Endereço onde você atende" for="localizacao">Localização</label>
+                        <input type="text" id="localizacao" name="localizacao">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="biografia">Biografia</label>
+                        <textarea id="biografia" name="biografia" rows="3"></textarea>
+                    </div>
+
+                <div class="form-group">
+                        <label for="url_documento">Arquivo do Certificado (PDF)</label>
+                        <input type="file" id="url_documento" name="url_documento" accept=".pdf, image/*">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="data_emissao_certificado">Data de Emissão do Certificado</label>
+                        <input type="date" id="data_emissao_certificado" name="data_emissao_certificado">
+                    </div>
+                    <div class="form-group">
+                        <label for="url_documento">Documento com Foto, Ex: RG ou CNH (PDF)</label>
+                        <input type="file" id="url_documento" name="url_documento" accept=".pdf, image/*">
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit">Finalizar Cadastro</button>
+        </form>
+
+        <script>
+
+
+            function toggleProfissional() {
+                const selectTipo = document.getElementById('tipo_usuario');
+                const areaProfissional = document.getElementById('area-profissional');
+
+                if (selectTipo.value === 'profissional') {
+                    areaProfissional.style.display = 'block';
+                    // Opcional: tornar campos profissionais obrigatórios se for profissional
+                    document.getElementById('registro_profissional').required = true;
+                } else {
+                    areaProfissional.style.display = 'none';
+                    document.getElementById('registro_profissional').required = false;
+                }
+            }
+        </script>
+
+    </body>
+
+    </html>
