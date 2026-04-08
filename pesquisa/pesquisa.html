@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderia - Busca de Profissionais</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <h1>ELDERIA</h1>
+            <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="haroldao" class="haroldo">
+        </div>
+        <nav class="navegacao-botoes">
+            <a href="naotemaindaporra" class="btn-nav">Ver Meu Perfil</a>
+            <a href="naotemcaralho..." class="btn-nav">Ver Minhas Consultas</a>
+        </nav>
+        <div class="usuario-info">
+            <span>Bem-vindo, Fazuélinton da Silva</span>
+            <a href="naotem" class="btn-sair">Sair</a>
+        </div>
+    </header>
+
+    <main class="conteiner-busca">
+        <h2>Busque por profissionais</h2>
+        
+        <form action="resultados.html" method="GET" class="formulario-busca">
+            <div class="grupo-input">
+                <label for="especialidade">O que você procura?</label>
+                <input list="lista-especialidades" id="especialidade" name="especialidade" placeholder="Ex: Quiropraxista, Fisioterapeuta..." required>
+                <datalist id="lista-especialidades">
+                    <option value="Quiropraxista"></option>
+                    <option value="Fisioterapeuta"></option>
+                    <option value="Geriatra"></option>
+                    <option value="Nutricionista"></option>
+                </datalist>
+            </div>
+
+            <div class="grupo-input">
+                <label for="cidade">Onde?</label>
+                <input type="text" id="cidade" name="cidade" placeholder="Ex: Curitiba, PR" required>
+            </div>
+
+            <button type="submit" class="btn-pesquisar">Pesquisar Profissionais</button>
+        </form>
+    </main>
+</body>
+</html>
