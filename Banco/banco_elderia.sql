@@ -1,11 +1,4 @@
-    -- Criação do Banco de Dados Elderia
-
-
--- execute source C:/xampp/htdocs/Elderia/Elderia/Banco/banco_elderia.sql
-
--- sql execute source C:\xampp\htdocs\Elderia\Banco\banco_elderia.sql
-
--- SOURCE C:/xampp/htdocs/Elderia/Banco/banco_elderia.sql;
+-- source C:/xampp/htdocs/Elderia/Banco/banco_elderia.sql;
 
 
 -- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Jalim Rabei', 'jalim@email.com', 'senha123', '41999999999', '123.456.789-00', 'idoso');

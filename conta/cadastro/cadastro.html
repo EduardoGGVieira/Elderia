@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderia - Cadastro Completo</title>
+    <link rel="stylesheet" href="cadastro.css">
+</head>
+
+<body id="main-body">
+
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">Elderia</a>
+        <div class="nav-buttons">
+            <a href="../../index.html" class="nav-btn btn-home">Home</a>
+            <a href="../login/login.html" class="nav-btn btn-login">Login</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header style="text-align: center; margin-bottom: 30px;">
+            <h2 id="instrucao-topo">Para começar, escolha seu tipo de perfil:</h2>
+        </header>
+
+        <form action="../cadastro/cadastro.php" method="POST" enctype="multipart/form-data">
+            
+            <fieldset class="secao-inicial">
+                <legend>Identificação</legend>
+                <div class="form-group">
+                    <label for="tipo_usuario">Quem é você?</label>
+                    <select id="tipo_usuario" name="tipo_usuario" required onchange="iniciarFluxo()">
+                        <option value="">Selecione uma opção...</option>
+                        <option value="idoso">Sou Idoso (Quero me cadastrar)</option>
+                        <option value="profissional">Sou Profissional (Quero trabalhar)</option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <div id="fluxo-cadastro">
+                <fieldset>
+                    <legend>Dados de Acesso (Usuario)</legend>
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Crie uma Senha</label>
+                        <input type="password" id="senha" name="senha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirme_senha">Confirme sua Senha</label>
+                        <input type="password" id="confirme_senha" name="confirme_senha" required>
+                    </div>
+                </fieldset>
+
+                <div id="area-idoso">
+                    <fieldset style="border-color: #004085;">
+                        <legend>Saúde e Cuidados Especiais</legend>
+                        <div class="form-group">
+                            <label for="data_nascimento">Data de Nascimento</label>
+                            <input type="date" id="data_nascimento" name="data_nascimento">
+                        </div>
+                        <div class="form-group">
+                            <label for="alergias">Você possui alguma alergia?</label>
+                            <textarea id="alergias" name="alergias" rows="2" placeholder="Ex: Remédios, alimentos..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="informacoes_saude">Informações de Saúde</label>
+                            <textarea id="informacoes_saude" name="informacoes_saude" rows="2" placeholder="Ex: Hipertensão, Diabetes..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                <input type="checkbox" id="possui_acessibilidade" style="width: 25px; height: 25px;" onchange="toggleAcessibilidade()">
+                                <span>Preciso de acessibilidade especial</span>
+                            </label>
+                        </div>
+                        <div id="campo-acessibilidade-detalhe" class="form-group">
+                            <label for="necessidades_acessibilidade">Descreva sua necessidade:</label>
+                            <textarea id="necessidades_acessibilidade" name="necessidades_acessibilidade" rows="2"></textarea>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div id="area-profissional">
+                    <fieldset>
+                        <legend>Detalhes Profissionais</legend>
+                        <div class="form-group">
+                            <label for="registro_profissional">Registro Profissional (CRM/COREN)</label>
+                            <input type="text" id="registro_profissional" name="registro_profissional">
+                        </div>
+                        <div class="form-group">
+                            <label for="especialidade">Especialidade</label>
+                            <input type="text" id="especialidade" name="especialidade">
+                        </div>
+                        <div class="form-group">
+                            <label for="localizacao">Localização (Onde atende)</label>
+                            <input type="text" id="localizacao" name="localizacao">
+                        </div>
+                        <div class="form-group">
+                            <label for="biografia">Biografia</label>
+                            <textarea id="biografia" name="biografia" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="url_documento">Certificado (PDF)</label>
+                            <input type="file" id="url_documento" name="url_documento" accept=".pdf">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_emissao">Data de Emissão do Certificado</label>
+                            <input type="date" id="data_emissao" name="data_emissao">
+                        </div>
+                        <div class="form-group">
+                            <label for="documento_foto">Documento com Foto (RG/CNH)</label>
+                            <input type="file" id="documento_foto" name="documento_foto" accept=".pdf, image/*">
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="btn-submit">Finalizar Cadastro</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function iniciarFluxo() {
+            const perfil = document.getElementById('tipo_usuario').value;
+            const fluxo = document.getElementById('fluxo-cadastro');
+            const areaIdoso = document.getElementById('area-idoso');
+            const areaProfissional = document.getElementById('area-profissional');
+            const body = document.getElementById('main-body');
+            const instrucao = document.getElementById('instrucao-topo');
+
+            fluxo.style.display = perfil ? 'block' : 'none';
+            areaIdoso.style.display = perfil === 'idoso' ? 'block' : 'none';
+            areaProfissional.style.display = perfil === 'profissional' ? 'block' : 'none';
+
+            if (perfil === 'idoso') {
+                body.classList.add('acessibilidade-idoso');
+                instrucao.innerText = "Quase lá! Preencha seus dados de saúde.";
+            } else {
+                body.classList.remove('acessibilidade-idoso');
+                instrucao.innerText = "Complete seu perfil profissional abaixo.";
+            }
+        }
+
+        function toggleAcessibilidade() {
+            const checkbox = document.getElementById('possui_acessibilidade');
+            const detalhe = document.getElementById('campo-acessibilidade-detalhe');
+            detalhe.style.display = checkbox.checked ? 'block' : 'none';
+        }
+    </script>
+
+</body>
+
+</html>
