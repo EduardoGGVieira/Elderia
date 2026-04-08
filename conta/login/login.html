@@ -8,49 +8,5 @@
 </head>
 <body>
 
-<main class="login-container">
-    <h1>Entrar no Portal</h1>
-
-    <!-- Exibição de Mensagens para o Usuário -->
-    <?php if ($mensagem_erro): ?>
-        <div class="alert alert-error" role="alert">
-            <?php echo $mensagem_erro; ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($mensagem_sucesso): ?>
-        <div class="alert alert-success" role="alert">
-            <?php echo $mensagem_sucesso; ?>
-        </div>
-    <?php endif; ?>
-
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-        <div class="form-group">
-            <label for="usuario">E-mail ou CPF</label>
-            <input type="text" id="usuario" name="usuario" 
-                   value="<?php echo isset($usuario) ? $usuario : ''; ?>" 
-                   placeholder="Ex: 000.000.000-00" required>
-        </div>
-
-        <div class="form-group">
-            <label for="senha">Sua Senha</label>
-            <input type="password" id="senha" name="senha" 
-                   placeholder="Digite sua senha aqui" required>
-        </div>
-
-        <button type="submit" class="btn-entrar">ENTRAR AGORA</button>
-    </form>
-
-    <div class="links-auxiliares">
-        <a href="#">Esqueci minha senha</a>
-        <a href="#">Não tenho conta? Clique aqui para criar</a>
-    </div>
-
-    <div class="ajuda-suporte">
-        <strong>Precisa de ajuda com o site?</strong><br>
-        Ligue grátis para: <strong>0800-000-0000</strong>
-    </div>
-</main>
-
 </body>
 </html>
