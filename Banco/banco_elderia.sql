@@ -3,9 +3,12 @@
 
 -- execute source C:/xampp/htdocs/Elderia/Elderia/Banco/banco_elderia.sql
 
-sql execute source C:\xampp\htdocs\Elderia\Elderia\Banco\banco_elderia.sql;
+-- sql execute source C:\xampp\htdocs\Elderia\Banco\banco_elderia.sql
+
+-- SOURCE C:/xampp/htdocs/Elderia/Banco/banco_elderia.sql;
 
 
+-- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Jalim Rabei', 'jalim@email.com', 'senha123', '41999999999', '123.456.789-00', 'idoso');
 
 CREATE DATABASE IF NOT EXISTS elderia;
 USE elderia;
@@ -26,30 +29,28 @@ CREATE TABLE usuario (
 CREATE TABLE idoso (
     id_idoso INT PRIMARY KEY,
     data_nascimento DATE,
-    FOREIGN KEY (id_idoso) REFERENCES usuario(id_usuario) ON DELETE CASCADE
     necessidades_acessibilidade TEXT, 
     informacoes_saude TEXT, 
-
-    --adicionar mais itens só do idoso
-    alergias VARCHAR (300)
+    alergias VARCHAR(300),
+    FOREIGN KEY (id_idoso) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 
-CREATE TABLE profissional (
+CREATE TABLE IF NOT EXISTS profissional (
     id_profissional INT PRIMARY KEY,
     registro_profissional VARCHAR(50) UNIQUE NOT NULL,
     especialidade VARCHAR(100),
     biografia TEXT,
     documento_validado BOOLEAN DEFAULT FALSE,
-    localização VARCHAR (300),
+    localizacao VARCHAR(300), 
     FOREIGN KEY (id_profissional) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 
 CREATE TABLE certificado (
-    id_certificado INT AUTO_INCREMENT PRIMARY KEY, --certificado tem id?????
+    id_certificado INT AUTO_INCREMENT PRIMARY KEY, 
     id_profissional INT NOT NULL,
-    titulo VARCHAR(100), --faculdade???
+    titulo VARCHAR(100), 
     data_emissao DATE,
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE,
     url_documento VARCHAR(255)
@@ -88,3 +89,7 @@ CREATE TABLE avaliacao (
     status_moderacao ENUM('pendente', 'aprovada', 'rejeitada') DEFAULT 'pendente', 
     FOREIGN KEY (id_consulta) REFERENCES consulta(id_consulta) ON DELETE CASCADE
 );
+
+
+
+
