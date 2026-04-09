@@ -6,7 +6,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 try {
     // Tente conectar na porta 3306 (padrão XAMPP). Se for 3307, altere abaixo.
-    $conn = mysqli_connect('localhost:3306', 'root', '', 'elderia');
+    $conn = mysqli_connect('localhost:3307', 'root', '', 'elderia');
     mysqli_set_charset($conn, 'utf8');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -72,7 +72,7 @@ try {
         $possui_acess   = isset($_POST['possui_acessibilidade']) ? 1 : 0;
         $necessidades   = limpar($_POST['necessidades_acessibilidade'] ?? '');
 
-        $sql_idoso = "INSERT INTO idoso (id_usuario, data_nascimento, alergias, informacoes_saude, possui_acessibilidade, necessidades_acessibilidade) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql_idoso = "INSERT INTO idoso (id_idoso, data_nascimento, alergias, informacoes_saude, possui_acessibilidade, necessidades_acessibilidade) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $sql_idoso);
         mysqli_stmt_bind_param($stmt, 'isssis', $usuario_id, $data_nasc, $alergias, $info_saude, $possui_acess, $necessidades);
         mysqli_stmt_execute($stmt);
@@ -102,7 +102,7 @@ try {
             if (move_uploaded_file($_FILES['documento_foto']['tmp_name'], $destino)) $doc_foto = $destino;
         }
 
-        $sql_prof = "INSERT INTO Profissional (id_usuario, registro_profissional, especialidade, localizacao, biografia, url_documento, data_emissao, documento_foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql_prof = "INSERT INTO profissional (id_usuario, registro_profissional, especialidade, localizacao, biografia, url_documento, data_emissao, documento_foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $sql_prof);
         mysqli_stmt_bind_param($stmt, 'isssssss', $usuario_id, $reg_prof, $especialidade, $localizacao, $biografia, $url_doc, $data_emissao, $doc_foto);
         mysqli_stmt_execute($stmt);
