@@ -1,124 +1,101 @@
 root {
-            --primary-blue: #0056b3;
-            --error-red: #d32f2f;
-            --success-green: #2e7d32;
-            --text-color: #212529;
-            --bg-color: #f8f9fa;
-        }
+    --primary-color: #0056b3;
+    --bg-color: #f8f9fa;
+    --text-size: 16px;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 450px;
-            border: 2px solid #dee2e6;
-        }
+.login-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
 
-        h1 {
-            font-size: 28px;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
-            text-align: center;
-        }
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-        }
+.login-header h2 {
+    color: var(--primary-color);
+    margin: 0;
+}
 
-        .alert-error {
-            background-color: #fdecea;
-            color: var(--error-red);
-            border: 2px solid var(--error-red);
-        }
+.form-group {
+    margin-bottom: 20px;
+}
 
-        .alert-success {
-            background-color: #edf7ed;
-            color: var(--success-green);
-            border: 2px solid var(--success-green);
-        }
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
 
-        .form-group {
-            margin-bottom: 25px;
-        }
+input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ced4da;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
 
-        label {
-            display: block;
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
 
-        input {
-            width: 100%;
-            padding: 15px;
-            font-size: 20px;
-            border: 2px solid #495057;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
+.btn-login {
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
 
-        input:focus {
-            outline: 4px solid #ffc107; /* Foco extra forte para acessibilidade */
-            border-color: var(--primary-blue);
-        }
+.btn-login:hover {
+    background: #004085;
+}
 
-        .btn-entrar {
-            width: 100%;
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 20px;
-            font-size: 24px; /* Fonte maior no botão principal */
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.2s;
-        }
+.footer-links {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
 
-        .btn-entrar:hover {
-            background-color: #004494;
-        }
+.footer-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
 
-        .links-auxiliares {
-            margin-top: 30px;
-            text-align: center;
-        }
+#message {
+    display: none;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
 
-        .links-auxiliares a {
-            display: block;
-            color: var(--primary-blue);
-            font-size: 18px;
-            margin-bottom: 15px;
-            text-decoration: underline;
-            font-weight: bold;
-        }
-
-        .ajuda-suporte {
-            margin-top: 20px;
-            background: #e7f1ff;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 18px;
-            text-align: center;
-            border: 1px solid #b6d4fe;
-        }
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
