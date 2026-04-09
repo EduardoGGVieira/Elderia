@@ -18,6 +18,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 40px;
 }
 
 .login-container {
@@ -65,7 +66,7 @@ input:focus {
 
 .btn-login {
     width: 100%;
-    background: var(--primary-color);
+    background: #1A5F7A;
     color: white;
     border: none;
     padding: 15px;
