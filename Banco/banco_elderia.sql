@@ -47,7 +47,15 @@ CREATE TABLE certificado (
     url_documento VARCHAR(255)
 );
 
+CREATE TABLE agenda_disponivel (
+    id_agenda INT AUTO_INCREMENT PRIMARY KEY,
+    id_profissional INT NOT NULL,
+    dia_semana ENUM('Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'),
+    horario TIME NOT NULL,
+    FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
+)
 
+/* to deixando isso aqui comentado pq eu nao entendi a lógica de horario_inicio e horario_fim, entao fiz do meu jeitao
 CREATE TABLE agenda_disponivel ( 
     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
     id_profissional INT NOT NULL,
@@ -57,6 +65,7 @@ CREATE TABLE agenda_disponivel (
     status ENUM('livre', 'ocupado','concluido','reagendado') DEFAULT 'livre',
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 );
+*/
 
 
 CREATE TABLE consulta (

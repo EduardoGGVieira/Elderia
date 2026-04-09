@@ -28,13 +28,18 @@
         <div id="lista-profissionais"></div>
     </main>
 
-    <script>
+<script>
         const parametrosUrl = new URLSearchParams(window.location.search);
         const especialidadeBusca = parametrosUrl.get('especialidade') || '';
+        const localizacaoBusca = parametrosUrl.get('localizacao') || '';
 
-        document.getElementById('titulo-busca').innerText = `Resultados para: "${especialidadeBusca}"`;
+        let textoTitulo = `Resultados para: "${especialidadeBusca}"`;
+        if (localizacaoBusca !== '') {
+            textoTitulo += ` em ${localizacaoBusca}`;
+        }
+        document.getElementById('titulo-busca').innerText = textoTitulo;
 
-        fetch(`pesquisa.php?especialidade=${especialidadeBusca}`)
+        fetch(`pesquisa.php?especialidade=${especialidadeBusca}&localizacao=${localizacaoBusca}`)
             .then(resposta => resposta.json())
             .then(profissionais => {
                 const container = document.getElementById('lista-profissionais');
@@ -43,16 +48,51 @@
                     container.innerHTML = `
                         <div style="text-align: center; padding: 50px; background: white; border-radius: 12px;">
                             <h3 style="color: #E36414;">Nenhum profissional encontrado.</h3>
-                            <p>Tente buscar por outra especialidade.</p>
+                            <p>Tente buscar por outra especialidade ou localização.</p>
                         </div>
                     `;
                     return;
                 }
 
                 let htmlCards = '';
+
                 profissionais.forEach(prof => {
+                    
+                    let estruturaHorarios = '<p style="font-size: 0.9rem; color: #777;">Nenhum horário cadastrado</p>';
+                    
+                    if (prof.agenda) {
+                        const agendaAgrupada = {}; 
+                        const horariosArray = prof.agenda.split(',');
+
+                        horariosArray.forEach(item => {
+                            const partes = item.split(':');
+                            const dia = partes[0]; 
+                            const horaFormatada = `${partes[1]}:${partes[2]}`; 
+
+                            if (!agendaAgrupada[dia]) {
+                                agendaAgrupada[dia] = [];
+                            }
+                            agendaAgrupada[dia].push(horaFormatada);
+                        });
+
+                        estruturaHorarios = '';
+                        for (const dia in agendaAgrupada) {
+                            const botoesDoDia = agendaAgrupada[dia].map(hora => 
+                                `<button class="btn-horario">${hora}</button>`
+                            ).join('');
+
+                            estruturaHorarios += `
+                                <div class="dia-coluna" style="margin-right: 15px; text-align: center;">
+                                    <strong style="display: block; margin-bottom: 8px; color: #333;">${dia}</strong>
+                                    ${botoesDoDia}
+                                </div>
+                            `;
+                        }
+                    }
+
                     htmlCards += `
                         <div class="card-profissional">
+                            
                             <div class="info-profissional">
                                 <div style="width: 120px; height: 120px; background-color: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center;">Foto</div>
                                 
@@ -60,23 +100,20 @@
                                     <h3>${prof.nome}</h3>
                                     <p class="especialidade">${prof.especialidade}</p>
                                     <p class="avaliacao">⭐⭐⭐⭐⭐ 5.0</p>
-                                    <p class="endereco">Endereço não cadastrado</p>
+                                    <p class="endereco">${prof.cidade || 'Cidade não informada'}</p>
                                     ${prof.biografia ? `<p style="margin-top: 10px; font-size: 0.9rem; color: #555;">"${prof.biografia}"</p>` : ''}
                                 </div>
                             </div>
 
                             <div class="agenda-profissional">
                                 <h4>Horários Disponíveis</h4>
-                                <div class="tabela-horarios">
-                                    <div class="dia-coluna">
-                                        <strong>Hoje</strong>
-                                        <button class="btn-horario">13:00</button>
-                                        <button class="btn-horario">14:00</button>
-                                    </div>
+                                <div class="tabela-horarios" style="display: flex; overflow-x: auto; padding-bottom: 10px;">
+                                    ${estruturaHorarios}
                                 </div>
-                                <button class="btn-ver-mais">Ver Mais Horários</button>
-                               <a href="../index.html"> <button class="btn-ver-mais">Voltar</button> </a>
+                                <button class="btn-ver-mais">Ver Todos os Dias</button>
+                                <a href="../index.html"><button class="btn-ver-mais" style="margin-top: 5px;">Voltar</button></a>
                             </div>
+                            
                         </div>
                     `;
                 });

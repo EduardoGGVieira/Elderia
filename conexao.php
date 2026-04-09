@@ -3,7 +3,7 @@
 
 // Configuração da conexão com o banco de dados
 // Corrigido por André Felipe: Alterado para porta 3306 (padrão do MariaDB no XAMPP)
-$servidor = 'localhost:3306'; 
+$servidor = 'localhost:3307'; 
 $usuario = 'root'; 
 $senha = ''; 
 $nome_banco = 'elderia';
