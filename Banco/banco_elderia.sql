@@ -1,7 +1,14 @@
 -- source C:/xampp/htdocs/Elderia/Banco/banco_elderia.sql;
 
 
--- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Jalim Rabei', 'jalim@email.com', 'senha123', '41999999999', '123.456.789-00', 'idoso');
+-- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario)
+-- VALUES ('Jalim Rabei', 'jalim@email.com', 'senha123', '41999999999', '123.456.789-00', 'idoso');
+
+-- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario)
+-- VALUES ('Ghost the down cool', 'ghost@email.com', 'GhostABanda', '41966666666', '666.666.666-66', 'idoso');
+
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Ghost the down cool', 'ghost@email.com', 'GhostABanda', '41966666666', '666.666.666-66', 'idoso');
+
 
 CREATE DATABASE IF NOT EXISTS elderia;
 USE elderia;
