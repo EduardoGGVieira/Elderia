@@ -4,59 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Busca de Profissionais</title>
-    <link rel="stylesheet" href="../Elderia/pesquisa/styles.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
             <h1>ELDERIA</h1>
-          <a href="../Elderia/index.html"><img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="haroldao" class="haroldo"> </a>
+            <a href="index.html">
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo"> 
+            </a>
         </div>
         <nav class="navegacao-botoes">
-            <a href="naotemaindaporra" class="btn-nav">Ver Meu Perfil</a> 
-            <a href="naotemcaralho..." class="btn-nav">Ver Minhas Consultas</a>
+            <a href="perfil/" class="btn-nav">Meu Perfil</a> <!-- Corrigido por André Felipe -->
+            <a href="#" class="btn-nav">Consultas</a>
         </nav>
         <div class="usuario-info">
-            <a href="../Elderia/conta/cadastro/cadastro.html" class="btn-sair">Entre na sua Conta</a>
-            <a href="../Elderia/index.html" class="btn-sair">Sair</a>
+            <a href="conta/cadastro/cadastro.html" class="btn-conta">Criar Conta</a> <!-- Corrigido por André Felipe -->
+            <a href="conta/login/login.html" class="btn-login">Login</a> <!-- Corrigido por André Felipe -->
         </div>
     </header>
 
+    <section class="boas-vindas">
+        <div class="banner-informativo">
+            <h1>Cuidado e Saúde</h1>
+            <p>Encontre especialistas qualificados com segurança e rapidez.</p>
+            <a href="pesquisa/pesquisa.html" class="btn-hero-busca">Buscar Profissionais</a> <!-- Corrigido por André Felipe -->
+        </div>
+    </section>
 
-
-    <h1>Coloque aqui</h1>
-
-
-
-
-
-
-
-
-
-
-    <main class="conteiner-busca">
-        <h2>Busque por profissionais</h2>
+    <main class="aba-profissionais">
+        <div class="secao-titulo">
+            <h2>Especialistas Disponíveis</h2>
+            <div class="linha-decorativa"></div>
+        </div>
         
-        <form action="resultados.html" method="GET" class="formulario-busca">
-            <div class="grupo-input">
-                <label for="especialidade">O que você procura?</label>
-                <input list="lista-especialidades" id="especialidade" name="especialidade" placeholder="Ex: Quiropraxista, Fisioterapeuta..." required>
-                <datalist id="lista-especialidades">
-                    <option value="Quiropraxista"></option>
-                    <option value="Fisioterapeuta"></option>
-                    <option value="Geriatra"></option>
-                    <option value="Nutricionista"></option>
-                </datalist>
+        <div id="container-cards-profissionais" class="grid-profissionais">
             </div>
-
-            <div class="grupo-input">
-                <label for="cidade">Onde?</label>
-                <input type="text" id="cidade" name="cidade" placeholder="Ex: Curitiba, PR" required>
-            </div>
-
-            <button type="submit" class="btn-pesquisar">Pesquisar Profissionais</button>
-        </form>
     </main>
+
+    <script src="index.js"></script> <!-- Corrigido por André Felipe -->
 </body>
 </html>

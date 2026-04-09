@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Cadastro Completo</title>
     <link rel="stylesheet" href="cadastro.css">
+    <link rel="stylesheet" href="../../pesquisa/styles.css">
+   
 </head>
-
 <body id="main-body">
 
-    <nav class="navbar">
-        <a href="#" class="navbar-brand">Elderia</a>
-        <div class="nav-buttons">
-            <a href="../../index.html" class="nav-btn btn-home">Home</a>
-            <a href="../login/login.html" class="nav-btn btn-login">Login</a>
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <h1>ELDERIA</h1>
+          <a href="../../index.html"><img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="haroldao" class="haroldo"> </a>
         </div>
-    </nav>
+        <nav class="navegacao-botoes">
+            <a href="naotemaindaporra" class="btn-nav">Ver Meu Perfil</a> 
+            <a href="naotemcaralho..." class="btn-nav">Ver Minhas Consultas</a>
+        </nav>
+        <div class="usuario-info">
+            <a href="../../conta/login/login.html" class="btn-sair">Login</a>
+            
+        </div>
+    </header>
 
     <div class="container">
         <header style="text-align: center; margin-bottom: 30px;">
             <h2 id="instrucao-topo">Para começar, escolha seu tipo de perfil:</h2>
         </header>
 
-        <form action="../cadastro/cadastro.php" method="POST" enctype="multipart/form-data">
+        <form action="cadastro.php" method="POST" enctype="multipart/form-data">
             
             <fieldset class="secao-inicial">
                 <legend>Identificação</legend>
@@ -37,7 +44,7 @@
                 </div>
             </fieldset>
 
-            <div id="fluxo-cadastro">
+            <div id="fluxo-cadastro" style="display: none;">
                 <fieldset>
                     <legend>Dados de Acesso (Usuario)</legend>
                     <div class="form-group">
@@ -66,7 +73,7 @@
                     </div>
                 </fieldset>
 
-                <div id="area-idoso">
+                <div id="area-idoso" style="display: none;">
                     <fieldset style="border-color: #004085;">
                         <legend>Saúde e Cuidados Especiais</legend>
                         <div class="form-group">
@@ -83,18 +90,18 @@
                         </div>
                         <div class="form-group">
                             <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                <input type="checkbox" id="possui_acessibilidade" style="width: 25px; height: 25px;" onchange="toggleAcessibilidade()">
+                                <input type="checkbox" id="possui_acessibilidade" name="possui_acessibilidade" style="width: 25px; height: 25px;" onchange="toggleAcessibilidade()">
                                 <span>Preciso de acessibilidade especial</span>
                             </label>
                         </div>
-                        <div id="campo-acessibilidade-detalhe" class="form-group">
+                        <div id="campo-acessibilidade-detalhe" class="form-group" style="display: none;">
                             <label for="necessidades_acessibilidade">Descreva sua necessidade:</label>
                             <textarea id="necessidades_acessibilidade" name="necessidades_acessibilidade" rows="2"></textarea>
                         </div>
                     </fieldset>
                 </div>
 
-                <div id="area-profissional">
+                <div id="area-profissional" style="display: none;">
                     <fieldset>
                         <legend>Detalhes Profissionais</legend>
                         <div class="form-group">
@@ -134,6 +141,17 @@
     </div>
 
     <script>
+        // Validação básica de formulário
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const senha = document.getElementById('senha').value;
+            const confirma = document.getElementById('confirme_senha').value;
+
+            if (senha !== confirma) {
+                e.preventDefault();
+                alert('As senhas não coincidem. Por favor, verifique.');
+            }
+        });
+
         function iniciarFluxo() {
             const perfil = document.getElementById('tipo_usuario').value;
             const fluxo = document.getElementById('fluxo-cadastro');
@@ -149,7 +167,7 @@
             if (perfil === 'idoso') {
                 body.classList.add('acessibilidade-idoso');
                 instrucao.innerText = "Quase lá! Preencha seus dados de saúde.";
-            } else {
+            } else if (perfil === 'profissional') {
                 body.classList.remove('acessibilidade-idoso');
                 instrucao.innerText = "Complete seu perfil profissional abaixo.";
             }
@@ -161,7 +179,5 @@
             detalhe.style.display = checkbox.checked ? 'block' : 'none';
         }
     </script>
-
 </body>
-
 </html>
