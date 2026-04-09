@@ -29,21 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario = mysqli_fetch_assoc($resultado);
  
         if ($usuario && password_verify($senha, $usuario['senha'])) {
-            // Login bem-sucedido
-            $_SESSION['usuario_id']   = $usuario['id'];
-            $_SESSION['usuario_nome'] = $usuario['nome'];
-            $_SESSION['usuario_tipo'] = $usuario['tipo_usuario'];
- 
-            // Redireciona conforme o tipo
-            if ($usuario['tipo_usuario'] === 'profissional') {
-                header('Location: ../dashboard/profissional.php');
-            } else {
-                header('Location: ../dashboard/idoso.php');
-            }
-            exit;
-        } else {
-            $erro = 'E-mail ou senha incorretos. Verifique seus dados e tente novamente.';
-        }
+    $_SESSION['usuario_id']   = $usuario['id'];
+    $_SESSION['usuario_nome'] = $usuario['nome'];
+    $_SESSION['usuario_tipo'] = $usuario['tipo_usuario'];
+
+    $redirect = ($usuario['tipo_usuario'] === 'profissional')
+        ? '../dashboard/profissional.php'
+        : '../dashboard/idoso.php';
+
+        echo json_encode(['success' => true, 'redirect' => $redirect]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'E-mail ou senha incorretos.']);
+    }
+    exit;
     }
 }
 ?>
