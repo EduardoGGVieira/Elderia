@@ -10,6 +10,9 @@
 INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Ghost the down cool', 'ghost@email.com', 'GhostABanda', '41966666666', '666.666.666-66', 'idoso');
 
 
+-- INSERT INTO usuario (nome, email, senha, telefone, tipo_usuario) VALUES ('Eduardo Guilhermino', 'edu@ggv', '1234', '41999999999', 'admin');
+
+
 CREATE DATABASE IF NOT EXISTS elderia;
 USE elderia;
 
