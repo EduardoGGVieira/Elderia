@@ -1,3 +1,4 @@
+-- Rodar SQL no prompt de comando/ powershell: mysql -u root;
 -- source C:/xampp/htdocs/Elderia/Banco/banco_elderia.sql;
 
 CREATE DATABASE IF NOT EXISTS elderia;
@@ -47,7 +48,15 @@ CREATE TABLE certificado (
     url_documento VARCHAR(255)
 );
 
+CREATE TABLE agenda_disponivel (
+    id_agenda INT AUTO_INCREMENT PRIMARY KEY,
+    id_profissional INT NOT NULL,
+    dia_semana ENUM('Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'),
+    horario TIME NOT NULL,
+    FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
+)
 
+/* to deixando isso aqui comentado pq eu nao entendi a lógica de horario_inicio e horario_fim, entao fiz do meu jeitao
 CREATE TABLE agenda_disponivel ( 
     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
     id_profissional INT NOT NULL,
@@ -57,6 +66,7 @@ CREATE TABLE agenda_disponivel (
     status ENUM('livre', 'ocupado','concluido','reagendado') DEFAULT 'livre',
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 );
+*/
 
 
 CREATE TABLE consulta (
@@ -77,8 +87,7 @@ CREATE TABLE avaliacao (
     id_consulta INT UNIQUE NOT NULL,
     nota INT CHECK (nota BETWEEN 1 AND 5),
     comentario TEXT, 
-    status_moderacao ENUM('pendente', 'aprovada', 'rejeitada') DEFAULT 'pendente', 
-    FOREIGN KEY (id_consulta) REFERENCES consulta(id_consulta) ON DELETE CASCADE
+    status_moderacao ENUM('pendente', 'aprovada', 'rejeitada') DEFAULT 'pendente'
 );
 
 -- USUÁRIOS
