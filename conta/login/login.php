@@ -2,7 +2,7 @@
 session_start();
  
 // --- Conexão com o banco de dados ---
-$conn = mysqli_connect('localhost', 'root', '', 'elderia');
+$conn = mysqli_connect('localhost:3307', 'root', '', 'elderia');
  
 if (!$conn) {
     die("Erro na conexão: " . mysqli_connect_error());
@@ -21,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($senha)) {
         $erro = 'Por favor, preencha todos os campos.';
     } else {
+
         // Busca o usuário pelo e-mail na tabela Usuario
-        $stmt = mysqli_prepare($conn, "SELECT * FROM Usuario WHERE email = ? LIMIT 1");
+        $stmt = mysqli_prepare($conn, "SELECT * FROM usuario WHERE email = ? LIMIT 1");
         mysqli_stmt_bind_param($stmt, 's', $email);
         mysqli_stmt_execute($stmt);
         $resultado = mysqli_stmt_get_result($stmt);
