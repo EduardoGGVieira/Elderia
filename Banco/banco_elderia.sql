@@ -98,7 +98,7 @@ INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('G
 
 
 -- ADIMIN
- INSERT INTO usuario (nome, email, senha, telefone, tipo_usuario) VALUES ('Eduardo Guilhermino', 'edu@ggv', '1234', '41999999999', 'admin');
+ INSERT INTO usuario (nome, email, senha, telefone, tipo_usuario) VALUES ('Eduardo Guilhermino', 'edu@ggv', '$2y$10$CcuZrJSTfT3ZoSos4a6GMekKtyugCEp.9ih6ss40QTnKgJxIt42r2', '41999999999', 'admin');
 
 -- PROFISSIONAIS
 
@@ -114,5 +114,5 @@ INSERT INTO profissional (id_profissional, registro_profissional, especialidade,
 
 
 
--- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Pedro Alvares', 'pedro.nutri@elderia.com', 'senha_hash_5', '41977772222', '222.333.444-55', 'profissional');
--- INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'CRN-8-9900', 'Nutricionista', 'Foco em dietas adaptadas para idosos e controle nutricional de diabetes e hipertensão.', TRUE, TRUE, 'São José dos Pinhais, PR');
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Pedro Alvares', 'pedro.nutri@elderia.com', 'senha_hash_5', '41977772222', '222.333.444-55', 'profissional');
+INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'CRN-8-9900', 'Nutricionista', 'Foco em dietas adaptadas para idosos e controle nutricional de diabetes e hipertensão.', TRUE, TRUE, 'São José dos Pinhais, PR');

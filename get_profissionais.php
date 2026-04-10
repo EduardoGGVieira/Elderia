@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-$conn = mysqli_connect('localhost:3306', 'root', '', 'elderia'); // Use a sua porta (3306 ou 3307)
+$conn = mysqli_connect('localhost:3307', 'root', '', 'elderia'); // Use a sua porta (3306 ou 3307)
 
 if (!$conn) {
     echo json_encode([]);

@@ -4,7 +4,7 @@ error_reporting(0);
 session_start();
 header('Content-Type: application/json');
 
-$conn = mysqli_connect('localhost:3306', 'root', '', 'elderia');
+$conn = mysqli_connect('localhost:3307', 'root', '', 'elderia');
 
 if (!$conn) {
     echo json_encode(['success' => false, 'message' => 'Erro na conexão com o banco.']);
@@ -21,14 +21,14 @@ if (empty($identificador) || empty($senha)) {
     exit;
 }
 
-$stmt = mysqli_prepare($conn, "SELECT * FROM Usuario WHERE email = ? OR cpf = ? LIMIT 1");
+$stmt = mysqli_prepare($conn, "SELECT * FROM usuario WHERE email = ? OR cpf = ? LIMIT 1");
 mysqli_stmt_bind_param($stmt, 'ss', $identificador, $identificador);
 mysqli_stmt_execute($stmt);
 $resultado = mysqli_stmt_get_result($stmt);
 $usuario = mysqli_fetch_assoc($resultado);
 
 if ($usuario && password_verify($senha, $usuario['senha'])) {
-    $_SESSION['usuario_id']   = $usuario['id'];
+   $_SESSION['usuario_id'] = $usuario['id_usuario']; // tentativa de arrumar o login
     $_SESSION['usuario_nome'] = $usuario['nome'];
     $_SESSION['usuario_tipo'] = $usuario['tipo_usuario'];
 
@@ -38,7 +38,7 @@ if ($usuario && password_verify($senha, $usuario['senha'])) {
 
     echo json_encode(['success' => true, 'redirect' => $redirect]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'E-mail/CPF ou senha incorretos.']);
+    echo json_encode(['success' => false, 'message' => 'E-mail/CPF ou senha incorretos. CARALHOOOO']);
 }
 exit;
 ?>
