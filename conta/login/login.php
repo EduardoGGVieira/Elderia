@@ -4,7 +4,7 @@ error_reporting(0);
 session_start();
 header('Content-Type: application/json');
 
-$conn = mysqli_connect('localhost', 'root', '', 'elderia');
+$conn = mysqli_connect('localhost:3306', 'root', '', 'elderia');
 
 if (!$conn) {
     echo json_encode(['success' => false, 'message' => 'Erro na conexão com o banco.']);

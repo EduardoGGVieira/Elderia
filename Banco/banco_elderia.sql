@@ -20,6 +20,7 @@ CREATE TABLE usuario (
 CREATE TABLE idoso (
     id_idoso INT PRIMARY KEY,
     data_nascimento DATE,
+    possui_acessibilidade BOOLEAN DEFAULT FALSE,
     necessidades_acessibilidade TEXT, 
     informacoes_saude TEXT, 
     alergias VARCHAR(300),
@@ -54,7 +55,7 @@ CREATE TABLE agenda_disponivel (
     dia_semana ENUM('Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'),
     horario TIME NOT NULL,
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
-)
+);
 
 /* to deixando isso aqui comentado pq eu nao entendi a lógica de horario_inicio e horario_fim, entao fiz do meu jeitao
 CREATE TABLE agenda_disponivel ( 
@@ -115,9 +116,3 @@ INSERT INTO profissional (id_profissional, registro_profissional, especialidade,
 
 -- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Pedro Alvares', 'pedro.nutri@elderia.com', 'senha_hash_5', '41977772222', '222.333.444-55', 'profissional');
 -- INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'CRN-8-9900', 'Nutricionista', 'Foco em dietas adaptadas para idosos e controle nutricional de diabetes e hipertensão.', TRUE, TRUE, 'São José dos Pinhais, PR');
-
-
-
-
-
-

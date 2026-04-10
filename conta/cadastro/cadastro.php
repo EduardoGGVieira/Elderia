@@ -6,7 +6,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 try {
     // Tente conectar na porta 3306 (padrão XAMPP). Se for 3307, altere abaixo.
-    $conn = mysqli_connect('localhost:3307', 'root', '', 'elderia');
+    $conn = mysqli_connect('localhost:3306', 'root', '', 'elderia');
     mysqli_set_charset($conn, 'utf8');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
