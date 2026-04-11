@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$host = 'localhost:3306';
+$host = 'localhost:3307';
 $dbname = 'elderia';
 $user = 'root';
 $pass = '';

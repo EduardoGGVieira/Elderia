@@ -1,18 +1,16 @@
 <?php
-ini_set('display_errors', 0);
-error_reporting(0);
+// Configurações de erro para ajudar no desenvolvimento
+// Atualizado por André Felipe
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
 session_start();
 header('Content-Type: application/json');
 
-$conn = mysqli_connect('localhost:3307', 'root', '', 'elderia');
+// Incluindo a conexão centralizada para evitar repetição de código
+// Corrigido por André Felipe
+require_once '../../conexao.php';
 
-if (!$conn) {
-    echo json_encode(['success' => false, 'message' => 'Erro na conexão com o banco.']);
-    exit;
-}
-
-mysqli_set_charset($conn, 'utf8');
-
+// O identificador pode ser E-mail ou CPF
 $identificador = trim($_POST['identificador'] ?? '');
 $senha = $_POST['senha'] ?? '';
 
@@ -21,24 +19,27 @@ if (empty($identificador) || empty($senha)) {
     exit;
 }
 
-$stmt = mysqli_prepare($conn, "SELECT * FROM usuario WHERE email = ? OR cpf = ? LIMIT 1");
+// Corrigido por André Felipe: Nome da tabela 'usuario' em minúsculo e busca por id_usuario
+$stmt = mysqli_prepare($conexao, "SELECT * FROM usuario WHERE email = ? OR cpf = ? LIMIT 1");
 mysqli_stmt_bind_param($stmt, 'ss', $identificador, $identificador);
 mysqli_stmt_execute($stmt);
 $resultado = mysqli_stmt_get_result($stmt);
 $usuario = mysqli_fetch_assoc($resultado);
 
+// Verifica a senha usando hash (segurança)
 if ($usuario && password_verify($senha, $usuario['senha'])) {
-   $_SESSION['usuario_id'] = $usuario['id_usuario']; // tentativa de arrumar o login
+    // Corrigido por André Felipe: Usando 'id_usuario' conforme o banco
+    $_SESSION['usuario_id']   = $usuario['id_usuario'];
     $_SESSION['usuario_nome'] = $usuario['nome'];
     $_SESSION['usuario_tipo'] = $usuario['tipo_usuario'];
 
-    $redirect = ($usuario['tipo_usuario'] === 'profissional')
-        ? '../dashboard/profissional.php'
-        : '../dashboard/idoso.php';
+    // Redirecionamento corrigido para a pasta de perfil (já que dashboard não existe)
+    // Atualizado por André Felipe
+    $redirect = '../../perfil/index.html'; 
 
     echo json_encode(['success' => true, 'redirect' => $redirect]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'E-mail/CPF ou senha incorretos. CARALHOOOO']);
+    echo json_encode(['success' => false, 'message' => 'E-mail/CPF ou senha incorretos.']);
 }
 exit;
 ?>
