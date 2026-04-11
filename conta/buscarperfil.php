@@ -1,16 +1,16 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['tipo'])) {
+if (!isset($_SESSION['tipo_usuario'])) {
     // Se tentar acessar direto, redireciona para login
     echo json_encode([
-        'tipo' => false
+        'tipo_usuario' => false
     ]);
     exit;
 } else {
     echo json_encode([
         'id' => $_SESSION['id'],
-        'tipo' => $_SESSION['tipo'],
+        'tipo' => $_SESSION['tipo_usuario'],
         'nome' => $_SESSION['nome'],
         'email' => $_SESSION['email']
     ]);
