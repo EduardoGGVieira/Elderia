@@ -102,11 +102,22 @@ try {
             if (move_uploaded_file($_FILES['documento_foto']['tmp_name'], $destino)) $doc_foto = $destino;
         }
 
-        $sql_prof = "INSERT INTO profissional (id_profissional, registro_profissional, especialidade, localizacao, biografia, url_documento, data_emissao, documento_foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $sql_prof);
-        mysqli_stmt_bind_param($stmt, 'isssssss', $usuario_id, $reg_prof, $especialidade, $localizacao, $biografia, $url_doc, $data_emissao, $doc_foto);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+       $sql_prof = "INSERT INTO profissional (id_profissional, registro_profissional, especialidade, localizacao, biografia) 
+             VALUES (?, ?, ?, ?, ?)";
+$stmt = mysqli_prepare($conn, $sql_prof);
+mysqli_stmt_bind_param($stmt, 'issss', $usuario_id, $reg_prof, $especialidade, $localizacao, $biografia);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_close($stmt);
+
+// 2. Se houver um arquivo, insere na tabela de certificados
+if (!empty($url_doc)) {
+    $sql_cert = "INSERT INTO certificado (id_profissional, titulo, url_documento, data_emissao) 
+                 VALUES (?, 'Certificado Principal', ?, ?)";
+    $stmt_cert = mysqli_prepare($conn, $sql_cert);
+    mysqli_stmt_bind_param($stmt_cert, 'iss', $usuario_id, $url_doc, $data_emissao);
+    mysqli_stmt_execute($stmt_cert);
+    mysqli_stmt_close($stmt_cert);
+}
     }
 
     // Sucesso

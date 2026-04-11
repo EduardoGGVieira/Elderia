@@ -1,5 +1,5 @@
 -- Rodar SQL no prompt de comando/ powershell: mysql -u root;
--- source C:/xampp/htdocs/Elderia/Banco/banco_elderia.sql;
+--  
 
 CREATE DATABASE IF NOT EXISTS elderia;
 USE elderia;
