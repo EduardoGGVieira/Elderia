@@ -86,11 +86,28 @@ try {
         $especialidade = limpar($_POST['especialidade'] ?? '');
         $localizacao   = limpar($_POST['localizacao'] ?? '');
         $biografia     = limpar($_POST['biografia'] ?? '');
+        $data_emissao  = !empty($_POST['data_emissao']) ? $_POST['data_emissao'] : null;
 
-        // Corrigido por André Felipe: Sincronizado com colunas da tabela 'profissional'
-        $sql_prof = "INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, localizacao) VALUES (?, ?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conexao, $sql_prof);
-        mysqli_stmt_bind_param($stmt, 'issss', $usuario_id, $reg_prof, $especialidade, $biografia, $localizacao);
+        // Lógica de upload (mantenha as pastas criadas no servidor!)
+        $url_doc = "";
+        $doc_foto = "";
+
+        // Processamento de Uploads... (Mantendo sua lógica de caminhos)
+        if (!empty($_FILES['url_documento']['name'])) {
+            $nome_arq = 'cert_' . $usuario_id . '_' . time() . '.pdf';
+            $destino = '../../uploads/certificados/' . $nome_arq;
+            if (move_uploaded_file($_FILES['url_documento']['tmp_name'], $destino)) $url_doc = $destino;
+        }
+        if (!empty($_FILES['documento_foto']['name'])) {
+            $ext = pathinfo($_FILES['documento_foto']['name'], PATHINFO_EXTENSION);
+            $nome_arq = 'doc_' . $usuario_id . '_' . time() . '.' . $ext;
+            $destino = '../../uploads/documentos/' . $nome_arq;
+            if (move_uploaded_file($_FILES['documento_foto']['tmp_name'], $destino)) $doc_foto = $destino;
+        }
+
+        $sql_prof = "INSERT INTO profissional (id_profissional, registro_profissional, especialidade, localizacao, biografia, url_documento, data_emissao, documento_foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql_prof);
+        mysqli_stmt_bind_param($stmt, 'isssssss', $usuario_id, $reg_prof, $especialidade, $localizacao, $biografia, $url_doc, $data_emissao, $doc_foto);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
