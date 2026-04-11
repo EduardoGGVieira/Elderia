@@ -75,6 +75,16 @@ body {
     margin-left: 8px;
 }
 
+.user-name {
+    font-size: 0.9rem;
+    color: var(--text-main);
+    margin-right: 15px;
+}
+
+.user-name strong {
+    color: var(--primary-color);
+}
+
 /* --- Banner Menor e mais Elegante --- */
 .boas-vindas {
     background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
@@ -139,6 +149,25 @@ body {
 
 .card-profissional:hover {
     transform: translateY(-5px);
+}
+
+/* Estilo do botão de ver perfil que fica nos cards */
+.btn-perfil {
+    display: inline-block;
+    margin-top: 15px;
+    background: #00a6ce;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-perfil:hover {
+    background: #0085a5;
+    transform: scale(1.05);
 }
 
 /* --- Responsividade --- */

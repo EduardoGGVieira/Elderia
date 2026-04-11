@@ -141,6 +141,16 @@
     </div>
 
     <script>
+        // 1. Verificação de Sessão: Redireciona se já estiver logado
+        fetch('../login/get_session.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.logged_in) {
+                    window.location.href = '../../perfil/index.html';
+                }
+            })
+            .catch(error => console.error('Erro ao verificar sessão:', error));
+
         // Validação básica de formulário
         document.querySelector('form').addEventListener('submit', function(e) {
             const senha = document.getElementById('senha').value;

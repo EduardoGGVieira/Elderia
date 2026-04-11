@@ -4,31 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Busca de Profissionais</title>
+    <!-- CSS da página de pesquisa -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
             <h1>ELDERIA</h1>
-              <a href="../index.html"><img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="haroldao" class="haroldo"> </a>
+            <!-- Link para voltar para a Home -->
+            <a href="../index.html">
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo"> 
+            </a>
         </div>
         <nav class="navegacao-botoes">
-            <a href="naotemaindaporra" class="btn-nav">Ver Meu Perfil</a>
-            <a href="naotemcaralho..." class="btn-nav">Ver Minhas Consultas</a>
+            <!-- Links de navegação (corrigidos) -->
+            <a href="../perfil/index.html" class="btn-nav">Ver Meu Perfil</a>
+            <a href="#" class="btn-nav">Minhas Consultas</a>
         </nav>
-        <div class="usuario-info">
-            <span>Bem-vindo, Fazuélinton da Silva</span>
-            <a href="naotem" class="btn-sair">Sair</a>
+        <!-- Área que mostra se o usuário está logado (será preenchida pelo JavaScript) -->
+        <div class="usuario-info" id="area-usuario">
+            <a href="../conta/cadastro/cadastro.html" class="btn-nav" style="background: #00a6ce; color: white; padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar Conta</a>
+            <a href="../conta/login/login.html" class="btn-sair">Login</a>
         </div>
     </header>
 
     <main class="conteiner-busca">
-        <h2>Busque por profissionais</h2>
+        <h2>Busque por especialistas</h2>
         
+        <!-- Formulário de busca: envia os dados via GET para a página de resultados -->
         <form action="resultados.html" method="GET" class="formulario-busca">
             <div class="grupo-input">
                 <label for="especialidade">O que você procura?</label>
-                <input list="lista-especialidades" id="especialidade" name="especialidade" placeholder="Ex: Quiropraxista, Fisioterapeuta..." required>
+                <input list="lista-especialidades" id="especialidade" name="especialidade" placeholder="Ex: Quiropraxista, Geriatra..." required>
                 <datalist id="lista-especialidades">
                     <option value="Quiropraxista"></option>
                     <option value="Fisioterapeuta"></option>
@@ -45,5 +52,23 @@
             <button type="submit" class="btn-pesquisar">Pesquisar Profissionais</button>
         </form>
     </main>
+
+    <!-- Script para verificar a sessão e mostrar o nome do usuário no topo -->
+    <script>
+        // Busca os dados da sessão no servidor
+        fetch('../conta/login/get_session.php')
+            .then(resposta => resposta.json())
+            .then(dados => {
+                const areaUsuario = document.getElementById('area-usuario');
+                if (dados.logged_in) {
+                    // Se estiver logado, mostra o nome e o botão de sair
+                    areaUsuario.innerHTML = `
+                        <span style="margin-right: 15px;">Olá, <strong>${dados.nome}</strong></span>
+                        <a href="../conta/login/logout.php" class="btn-sair">Sair</a>
+                    `;
+                }
+            })
+            .catch(erro => console.error("Erro ao verificar sessão:", erro));
+    </script>
 </body>
 </html>

@@ -113,8 +113,10 @@ try {
     }
 
     // Sucesso no Cadastro
-    $_SESSION['usuario_id'] = $usuario_id;
-    $_SESSION['usuario_nome'] = $nome;
+    $_SESSION['id'] = $usuario_id;
+    $_SESSION['nome'] = $nome;
+    $_SESSION['tipo']    = $tipo_usuario;
+    $_SESSION['email']   = $email;
     $_SESSION['sucesso_cadastro'] = 'Cadastro realizado com sucesso!';
     
     // Redirecionamento corrigido para o perfil

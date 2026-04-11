@@ -2,7 +2,7 @@
 
 //PUC TEM QUE USAR ESSE
 // $servidor = 'localhost:3307'; 
-$servidor = 'localhost:3307'; 
+$servidor = 'localhost:3306'; 
 $usuario = 'root'; 
 $senha = ''; 
 $nome_banco = 'elderia';
@@ -22,3 +22,4 @@ exit;
 }
 
 $conexao->set_charset('utf8mb4');
+?>

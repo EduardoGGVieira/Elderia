@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elderia - Busca de Profissionais</title>
+    <title>Elderia - Meu Perfil</title>
     <link rel="stylesheet" href="../index.css">
 </head>
 <body>
@@ -15,25 +15,48 @@
             </a>
         </div>
         <nav class="navegacao-botoes">
-            
             <a href="../index.html" class="btn-nav">Voltar</a>
         </nav>
         <div class="usuario-info">
-            
-            <a href="../conta/login/login.html" class="btn-login">Sair</a>
+            <a href="../conta/login/logout.php" class="btn-login">Sair</a>
         </div>
     </header>
 
     <section class="meuperfil">
-        <div class="perfil-container">
+        <div class="perfil-container" style="max-width: 800px; margin: 50px auto; padding: 20px;">
             <h2>Meu Perfil</h2>
-            <div class="perfil-info">
-                <h1> QUANDO ESTIVER LOGADO OS DADOS APARECERÃO AQUI</h1>
-       
+            <div id="perfil-info" class="perfil-info">
+                <p>Carregando seus dados...</p>
+            </div>
+        </div>
     </section>
 
-   
-
-   
+    <script>
+        // 1. Verificação de Sessão e Proteção de Rota
+        fetch('../conta/login/get_session.php')
+            .then(response => response.json())
+            .then(data => {
+                const infoDiv = document.getElementById('perfil-info');
+                
+                if (!data.logged_in) {
+                    // Se NÃO estiver logado, manda para o login
+                    window.location.href = '../conta/login/login.html';
+                } else {
+                    // Se estiver logado, preenche os dados
+                    infoDiv.innerHTML = `
+                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
+                            <p style="margin-bottom: 10px;"><strong>Nome:</strong> ${data.nome}</p>
+                            <p style="margin-bottom: 10px;"><strong>ID de Usuário:</strong> ${data.id}</p>
+                            <p style="margin-bottom: 10px;"><strong>E-mail:</strong> ${data.email}</p>
+                            <p><strong>Tipo de Perfil:</strong> ${data.tipo.charAt(0).toUpperCase() + data.tipo.slice(1)}</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao verificar sessão:', error);
+                window.location.href = '../conta/login/login.html';
+            });
+    </script>
 </body>
 </html>

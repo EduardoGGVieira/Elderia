@@ -1,8 +1,8 @@
 <?php
 header('Content-Type: application/json');
-$conn = mysqli_connect('localhost:3307', 'root', '', 'elderia'); // Use a sua porta (3306 ou 3307)
+require_once 'conexao.php';
 
-if (!$conn) {
+if (!$conexao) {
     echo json_encode([]);
     exit;
 }
@@ -13,7 +13,7 @@ $sql = "SELECT u.nome, p.especialidade, p.biografia, p.id_profissional
         INNER JOIN profissional p ON u.id_usuario = p.id_profissional 
         WHERE u.tipo_usuario = 'profissional' AND p.visibilidade = 1";
 
-$result = mysqli_query($conn, $sql);
+$result = mysqli_query($conexao, $sql);
 $profissionais = [];
 
 while ($row = mysqli_fetch_assoc($result)) {

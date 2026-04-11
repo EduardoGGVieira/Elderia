@@ -1,3 +1,14 @@
+// 1. Verificação de Sessão: Redireciona se já estiver logado
+fetch('get_session.php')
+    .then(response => response.json())
+    .then(data => {
+        if (data.logged_in) {
+            // Se já estiver logado, vai direto para o perfil
+            window.location.href = '../../perfil/index.html';
+        }
+    })
+    .catch(error => console.error('Erro ao verificar sessão:', error));
+
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
 

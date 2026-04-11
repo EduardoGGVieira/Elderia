@@ -1,22 +1,36 @@
-const feed = document.querySelector(".grid-profissionais"); // Use a classe do seu container de cards
+const feed = document.querySelector(".grid-profissionais"); 
+const headerUser = document.querySelector(".usuario-info");
 
-fetch("get_profissionais.php")
+// 1. Verificar Sessão para Atualizar Cabeçalho
+fetch("conta/login/get_session.php")
   .then((response) => response.json())
   .then((data) => {
-    feed.innerHTML = ""; // Limpa o feed antes de carregar
-    data.forEach((prof) => {
-      const card = criarCardProfissional(prof);
-      feed.appendChild(card);
-    });
+    if (data.logged_in && headerUser) {
+      headerUser.innerHTML = `
+        <span class="user-name">Olá, <strong>${data.nome}</strong> (ID: ${data.id})</span>
+        <a href="conta/login/logout.php" class="btn-login">Sair</a>
+      `;
+    }
   })
-  .catch((error) => {
-    console.error("Erro ao buscar profissionais:", error);
-  });
+  .catch((error) => console.error("Erro ao verificar sessão:", error));
+
+// 2. Buscar Profissionais
+if (feed) {
+  fetch("get_profissionais.php")
+    .then((response) => response.json())
+    .then((data) => {
+      feed.innerHTML = ""; 
+      data.forEach((prof) => {
+        const card = criarCardProfissional(prof);
+        feed.appendChild(card);
+      });
+    })
+    .catch((error) => console.error("Erro ao buscar profissionais:", error));
+}
 
 function criarCardProfissional(prof) {
   const card = document.createElement("div");
   card.classList.add("card-profissional"); 
-
   
   card.innerHTML = `
     <h3>${prof.nome || "Especialista"}</h3>
