@@ -1,0 +1,43 @@
+.grid-consultas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card-mini-consulta {
+    background: #fff;
+    border-left: 5px solid #00a6ce;
+    /* Cor principal do Elderia */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.status-agendada {
+    border-left-color: #f1c40f;
+}
+
+/* Amarelo */
+.status-realizada {
+    border-left-color: #2ecc71;
+}
+
+.h4 {
+
+
+
+    /* scorro DEUS do css vulgo tutu */
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+
+
+    margin: 0 0 10px;
+    color: #333;
+}
+
+/* Verde */

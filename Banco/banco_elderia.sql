@@ -99,7 +99,8 @@ INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('G
 
 
 -- ADIMIN
-INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Eduardo Guilhermino', 'edu@ggv', 'senha_hash', '41999999999', '999.999.999-99', 'admin');
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Eduardo Guilhermino', 'edu@ggv', '$2y$10$CaMhbwmQxvfYesMhwT7.DuByPCew4X8FGOYJpk52Z2B1u8akmLYFS', '41999999999', '999.999.999-99', 'admin');
+
 -- PROFISSIONAIS
 
 -- inserir as duas linhas.
