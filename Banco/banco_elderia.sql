@@ -88,7 +88,8 @@ CREATE TABLE avaliacao (
     id_consulta INT UNIQUE NOT NULL,
     nota INT CHECK (nota BETWEEN 1 AND 5),
     comentario TEXT, 
-    status_moderacao ENUM('pendente', 'aprovada', 'rejeitada') DEFAULT 'pendente'
+    status_moderacao ENUM('pendente', 'aprovada', 'rejeitada') DEFAULT 'pendente',
+    FOREIGN KEY (id_consulta) REFERENCES consulta(id_consulta)
 );
 
 -- USUÁRIOS
