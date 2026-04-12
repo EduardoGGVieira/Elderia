@@ -1,20 +1,18 @@
 const feed = document.querySelector(".grid-profissionais"); 
 const headerUser = document.querySelector(".usuario-info");
 
-// 1. Verificar Sessão para Atualizar Cabeçalho
 fetch("conta/login/get_session.php")
   .then((response) => response.json())
   .then((data) => {
     if (data.logged_in && headerUser) {
       headerUser.innerHTML = `
-        <span class="user-name">Olá, <strong>${data.nome}</strong> (ID: ${data.id})</span>
-        <a href="conta/login/logout.php" class="btn-login">Sair</a>
+        <span class="user-name" style="margin-right: 15px;">Olá, <strong>${data.nome}</strong></span>
+        <a href="conta/login/logout.php" class="btn-sair">Sair</a>
       `;
     }
   })
   .catch((error) => console.error("Erro ao verificar sessão:", error));
 
-// 2. Buscar Profissionais
 if (feed) {
   fetch("get_profissionais.php")
     .then((response) => response.json())
@@ -31,12 +29,23 @@ if (feed) {
 function criarCardProfissional(prof) {
   const card = document.createElement("div");
   card.classList.add("card-profissional"); 
-  
+
+  const fotoPlaceholder = "https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png";
+
   card.innerHTML = `
-    <h3>${prof.nome || "Especialista"}</h3>
-    <span class="especialidade-tag">${prof.especialidade || "Saúde"}</span>
-    <p class="biografia-curta">${prof.biografia || "Sem descrição disponível."}</p>
-    <a href="perfil.php?id=${prof.id_profissional}" class="btn-perfil">Ver Perfil Completo</a>
+    <div class="info-profissional">
+        <img src="${prof.foto || fotoPlaceholder}" alt="Foto de ${prof.nome}" class="foto-perfil">
+        
+        <div class="dados-texto">
+            <h3>${prof.nome || "Especialista"}</h3>
+            <p class="especialidade">${prof.especialidade || "Saúde"}</p>
+            <p class="avaliacao" style="margin-top: 10px; color: #555;">${prof.biografia || "Sem descrição disponível."}</p>
+        </div>
+    </div>
+
+    <div class="agenda-profissional" style="justify-content: center;">
+        <a href="perfil.php?id=${prof.id_profissional}" class="btn-ver-mais" style="text-decoration: none; text-align: center;">Ver Perfil Completo</a>
+    </div>
   `;
 
   return card;

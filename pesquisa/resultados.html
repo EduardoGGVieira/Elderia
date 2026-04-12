@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Resultados da Busca</title>
-    <!-- CSS da página de pesquisa -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
             <h1>ELDERIA</h1>
-            <!-- Atalho para voltar para a página inicial -->
             <a href="../index.html">
                 <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
             </a>
@@ -20,7 +18,6 @@
             <a href="../perfil/index.html" class="btn-nav">Ver Meu Perfil</a>
             <a href="#" class="btn-nav">Minhas Consultas</a>
         </nav>
-        <!-- Área de identificação do usuário -->
         <div class="usuario-info" id="area-usuario">
             <a href="../conta/login/login.html" class="btn-sair">Login</a>
         </div>
@@ -28,13 +25,10 @@
 
     <main class="conteiner-resultados">
         <h2 id="titulo-busca">Carregando resultados...</h2>
-
-        <!-- Container onde os cards dos profissionais serão inseridos via JS -->
         <div id="lista-profissionais"></div>
     </main>
 
     <script>
-        // --- 1. Verificação de Sessão (Cabeçalho) ---
         fetch('../conta/login/get_session.php')
             .then(res => res.json())
             .then(dados => {
@@ -46,24 +40,19 @@
                     `;
                 }
             })
-            .catch(e => console.error("Erro na sessão:", e));
+            .catch(e => console.error(e));
 
-        // --- 2. Busca de Profissionais (Resultados) ---
-        
-        // Pega os parâmetros da URL (ex: ?especialidade=Geriatra)
         const parametrosUrl = new URLSearchParams(window.location.search);
         const especialidadeBusca = parametrosUrl.get('especialidade') || '';
+        const localizacaoBusca = parametrosUrl.get('localizacao') || '';
 
-        // Atualiza o título da página com o termo buscado
         document.getElementById('titulo-busca').innerText = `Resultados para: "${especialidadeBusca}"`;
 
-        // Chama o PHP que busca no banco de dados
-        fetch(`pesquisa.php?especialidade=${especialidadeBusca}`)
+        fetch(`pesquisa.php?especialidade=${especialidadeBusca}&localizacao=${localizacaoBusca}`)
             .then(resposta => resposta.json())
             .then(profissionais => {
                 const container = document.getElementById('lista-profissionais');
                 
-                // Se não encontrar ninguém
                 if (profissionais.length === 0) {
                     container.innerHTML = `
                         <div style="text-align: center; padding: 50px; background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
@@ -76,44 +65,70 @@
                     return;
                 }
 
-                // Cria o HTML de cada card
+                const fotoPlaceholder = "https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png";
+
                 let htmlCards = '';
                 profissionais.forEach(prof => {
+                    
+                    let estruturaHorarios = '<p style="font-size: 0.9rem; color: #777;">Nenhum horário cadastrado</p>';
+                    
+                    if (prof.agenda) {
+                        const agendaAgrupada = {}; 
+                        const horariosArray = prof.agenda.split(',');
+
+                        horariosArray.forEach(item => {
+                            const partes = item.split(':');
+                            const dia = partes[0]; 
+                            const horaFormatada = `${partes[1]}:${partes[2]}`; 
+
+                            if (!agendaAgrupada[dia]) {
+                                agendaAgrupada[dia] = [];
+                            }
+                            agendaAgrupada[dia].push(horaFormatada);
+                        });
+
+                        estruturaHorarios = '';
+                        for (const dia in agendaAgrupada) {
+                            const botoesDoDia = agendaAgrupada[dia].map(hora => 
+                                `<button class="btn-horario">${hora}</button>`
+                            ).join('');
+
+                            estruturaHorarios += `
+                                <div class="dia-coluna" style="margin-right: 15px; text-align: center;">
+                                    <strong style="display: block; margin-bottom: 8px; color: #333;">${dia}</strong>
+                                    ${botoesDoDia}
+                                </div>
+                            `;
+                        }
+                    }
+
                     htmlCards += `
                         <div class="card-profissional">
                             <div class="info-profissional">
-                                <!-- Placeholder da foto (pode ser trocado por imagem real depois) -->
-                                <div style="width: 100px; height: 100px; background-color: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #00a6ce; color: #00a6ce; font-weight: bold;">Foto</div>
-                                
+                                <img src="${prof.foto || fotoPlaceholder}" alt="Foto de ${prof.nome}" class="foto-perfil">
                                 <div class="dados-texto">
                                     <h3>${prof.nome}</h3>
                                     <p class="especialidade">${prof.especialidade}</p>
-                                    <p class="avaliacao">⭐⭐⭐⭐⭐ 5.0 (Novo)</p>
-                                    <!-- Biografia se existir -->
-                                    ${prof.biografia ? `<p style="margin-top: 10px; font-size: 0.9rem; color: #666; font-style: italic;">"${prof.biografia}"</p>` : ''}
+                                    <p class="avaliacao">⭐⭐⭐⭐⭐ 5.0</p>
+                                    <p class="endereco">${prof.localizacao || 'Localização não informada'}</p>                                      
+                                    ${prof.biografia ? `<p style="margin-top: 10px; font-size: 0.9rem; color: #555;">"${prof.biografia}"</p>` : ''}
                                 </div>
                             </div>
-
                             <div class="agenda-profissional">
-                                <h4>Próximos Horários</h4>
-                                <div class="tabela-horarios">
-                                    <div class="dia-coluna">
-                                        <strong>Hoje</strong>
-                                        <button class="btn-horario">14:00</button>
-                                        <button class="btn-horario">15:30</button>
-                                    </div>
+                                <h4>Horários Disponíveis</h4>
+                                <div class="tabela-horarios" style="display: flex; overflow-x: auto; padding-bottom: 10px;">
+                                    ${estruturaHorarios}
                                 </div>
-                                <a href="../perfil.php?id=${prof.id_usuario}" class="btn-ver-mais" style="text-decoration: none; display: inline-block; text-align: center;">Ver Perfil</a>
+                                <button class="btn-ver-mais">Ver Todos os Dias</button>
+                                <a href="../perfil.php?id=${prof.id_profissional}" class="btn-ver-mais" style="text-decoration: none; display: inline-block; text-align: center; margin-top: 5px;">Ver Perfil</a>
                             </div>
                         </div>
                     `;
                 });
 
-                // Insere os cards na tela
                 container.innerHTML = htmlCards;
             })
             .catch(erro => {
-                console.error("Erro ao buscar dados:", erro);
                 document.getElementById('lista-profissionais').innerHTML = "<p>Ocorreu um erro ao carregar os resultados.</p>";
             });
     </script>

@@ -31,6 +31,12 @@ if (!$id_prof || !$data_hora) {
 $sql = "INSERT INTO consulta (id_idoso, id_profissional, data_hora, status) VALUES (?, ?, ?, 'agendada')";
 
 $stmt = mysqli_prepare($conexao, $sql);
+
+// to jogando isso aqui só pra ver um problema que deu no banco, pra ajudar nas proximas vezes
+if (!$stmt) {
+    die("Erro no banco: " . mysqli_error($conexao));
+}
+
 mysqli_stmt_bind_param($stmt, "iis", $id_idoso, $id_prof, $data_hora);
 
 if (mysqli_stmt_execute($stmt)) {
