@@ -74,7 +74,7 @@ if (!$prof) {
                     <input type="datetime-local" name="data_hora" required style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;">
                     
                     <button type="submit" class="btn-agendar">Confirmar Agendamento</button>
-                    <p style="font-size: 0.8rem; color: #777; margin-top: 10px;">* Seus dados de Idoso serão enviados para o profissional.</p>
+                    <p style="font-size: 0.8rem; color: #777; margin-top: 10px;">* Seus dados serão compartilhados com o profissional da saúde.</p>
                 </form>
             <?php else: ?>
                 <!-- Se não tiver logado, manda pro login -->
