@@ -33,7 +33,12 @@ CREATE TABLE profissional (
     registro_profissional VARCHAR(50) UNIQUE NOT NULL,
     especialidade VARCHAR(100),
     biografia TEXT,
-    visibilidade BOOLEAN DEFAULT TRUE,
+    visibilidade BOOLEAN DEFAULT TRUE, -- precisa ser visível para aparecer na lista de profissionais, o profissional pode escolher se quer ou não aparecer publicamente, tem q add isso no cadastro do profissional
+
+    data_emissao DATE,
+    url_documento VARCHAR(255), 
+    documento_foto VARCHAR(255),
+
     documento_validado BOOLEAN DEFAULT FALSE,
     localizacao VARCHAR(300), 
     FOREIGN KEY (id_profissional) REFERENCES usuario(id_usuario) ON DELETE CASCADE
