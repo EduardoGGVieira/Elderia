@@ -20,6 +20,8 @@ $sql = "SELECT c.id_consulta, c.data_hora, c.status, u.nome AS profissional_nome
         WHERE c.id_idoso = ? 
         ORDER BY c.data_hora ASC";
 
+
+
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, 'i', $id_idoso);
 mysqli_stmt_execute($stmt);

@@ -13,7 +13,7 @@ CREATE TABLE usuario (
     telefone VARCHAR(20),
     cpf VARCHAR(14) UNIQUE NOT NULL,
     tipo_usuario ENUM('idoso', 'profissional', 'admin') NOT NULL, 
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- pega o horario atual do sistema e salva automaticamente quando o usuário é criado
 );
 
 
@@ -110,7 +110,7 @@ INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('E
 
 -- inserir as duas linhas.
 INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('RICARDÃO DA DOR', 'ricardo.quiro@email.com', '789', '412323232323', '000.111.222-33', 'profissional');
-INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado) VALUES (LAST_INSERT_ID(), 'ABC-12345', 'Quiropraxista', 'Especialista em alinhamento vertebral e alívio de dores crônicas em idosos.', TRUE, TRUE);
+INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'ABC-12345', 'Quiropraxista', 'Especialista em alinhamento vertebral e alívio de dores crônicas em idosos.', TRUE, TRUE ,'Curitiba, PR');
 
 
 

@@ -161,6 +161,7 @@
             .catch(error => console.error('Erro ao verificar sessão:', error));
 
         // Validação básica de formulário
+        // function(e) é um CALL BACK, serve para interceptar o evento de submit do formulário e executar a função antes de enviar os dados para o servidor
         document.querySelector('form').addEventListener('submit', function(e) {
             const senha = document.getElementById('senha').value;
             const confirma = document.getElementById('confirme_senha').value;
