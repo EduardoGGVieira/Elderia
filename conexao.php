@@ -14,6 +14,8 @@ if ($conexao->connect_error) {
 header('Content-type: application/json; charset=utf-8');
 echo json_encode([
 
+
+// nok = nao ok
 'status' => 'nok',
 'mensagem' => 'Falha na conexão: ' . $conexao->connect_error,
 'data' => []

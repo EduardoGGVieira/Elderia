@@ -19,6 +19,7 @@ $sql = "SELECT u.nome, p.especialidade, p.biografia, p.localizacao, p.id_profiss
          WHERE id_profissional = p.id_profissional) as agenda
         FROM profissional p
         INNER JOIN usuario u ON p.id_profissional = u.id_usuario
+        -- like é a recomendação do google, mais facil pro andre debugaar
         WHERE p.especialidade LIKE ? AND p.localizacao LIKE ?";
 
 $stmt = mysqli_prepare($conexao, $sql);

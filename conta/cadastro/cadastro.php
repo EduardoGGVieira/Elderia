@@ -106,7 +106,7 @@ try {
         }
 
         $sql_prof = "INSERT INTO profissional (id_profissional, registro_profissional, especialidade, localizacao, biografia, url_documento, data_emissao, documento_foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = mysqli_prepare($conn, $sql_prof);
+        $stmt = mysqli_prepare($conexao, $sql_prof);
         mysqli_stmt_bind_param($stmt, 'isssssss', $usuario_id, $reg_prof, $especialidade, $localizacao, $biografia, $url_doc, $data_emissao, $doc_foto);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
