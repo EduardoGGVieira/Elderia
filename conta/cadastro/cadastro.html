@@ -12,14 +12,14 @@
 
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <a href="index.html">
+            <a href="../../index.html">
                 <h1>ELDERIA</h1>
                 <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
             </a>
         </div>
         <nav class="navegacao-botoes">
-            <a href="naotemaindaporra" class="btn-nav">Ver Meu Perfil</a> 
-            <a href="naotemcaralho..." class="btn-nav">Ver Minhas Consultas</a>
+            <a href="/perfil/index.html" class="btn-nav">Ver Meu Perfil</a> 
+            <a href="../../consulta/index.html" class="btn-nav">Ver Minhas Consultas</a>
         </nav>
         <div class="usuario-info">
             <a href="../../conta/login/login.html" class="btn-sair">Login</a>
@@ -134,6 +134,13 @@
                             <label for="documento_foto">Documento com Foto (RG/CNH)</label>
                             <input type="file" id="documento_foto" name="documento_foto" accept=".pdf, image/*">
                         </div>
+
+                       
+                        <!-- <div class="form-group">
+                            <label for="visibilidade">Visibilidade em nosso site</label>
+                            <input type="text" id="visibilidade" name="visibilidade" accept="boolean" placeholder="Digite 'sim' para aparecer na lista de profissionais ou 'não' para ocultar seu perfil">
+                        </div> -->
+                         
                     </fieldset>
                 </div>
 
@@ -154,6 +161,7 @@
             .catch(error => console.error('Erro ao verificar sessão:', error));
 
         // Validação básica de formulário
+        // function(e) é um CALL BACK, serve para interceptar o evento de submit do formulário e executar a função antes de enviar os dados para o servidor
         document.querySelector('form').addEventListener('submit', function(e) {
             const senha = document.getElementById('senha').value;
             const confirma = document.getElementById('confirme_senha').value;

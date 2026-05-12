@@ -11,6 +11,8 @@ header('Content-Type: application/json');
 require_once '../../conexao.php';
 
 // O identificador pode ser E-mail ou CPF
+
+// trim para remover espaços extras
 $identificador = trim($_POST['identificador'] ?? '');
 $senha = $_POST['senha'] ?? '';
 

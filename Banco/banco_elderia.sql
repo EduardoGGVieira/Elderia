@@ -13,7 +13,7 @@ CREATE TABLE usuario (
     telefone VARCHAR(20),
     cpf VARCHAR(14) UNIQUE NOT NULL,
     tipo_usuario ENUM('idoso', 'profissional', 'admin') NOT NULL, 
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- pega o horario atual do sistema e salva automaticamente quando o usuário é criado
 );
 
 
@@ -33,7 +33,12 @@ CREATE TABLE profissional (
     registro_profissional VARCHAR(50) UNIQUE NOT NULL,
     especialidade VARCHAR(100),
     biografia TEXT,
-    visibilidade BOOLEAN DEFAULT TRUE,
+    visibilidade BOOLEAN DEFAULT TRUE, -- precisa ser visível para aparecer na lista de profissionais, o profissional pode escolher se quer ou não aparecer publicamente, tem q add isso no cadastro do profissional
+
+    data_emissao DATE,
+    url_documento VARCHAR(255), 
+    documento_foto VARCHAR(255),
+
     documento_validado BOOLEAN DEFAULT FALSE,
     localizacao VARCHAR(300), 
     FOREIGN KEY (id_profissional) REFERENCES usuario(id_usuario) ON DELETE CASCADE
@@ -105,7 +110,7 @@ INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('E
 
 -- inserir as duas linhas.
 INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('RICARDÃO DA DOR', 'ricardo.quiro@email.com', '789', '412323232323', '000.111.222-33', 'profissional');
-INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado) VALUES (LAST_INSERT_ID(), 'ABC-12345', 'Quiropraxista', 'Especialista em alinhamento vertebral e alívio de dores crônicas em idosos.', TRUE, TRUE);
+INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'ABC-12345', 'Quiropraxista', 'Especialista em alinhamento vertebral e alívio de dores crônicas em idosos.', TRUE, TRUE ,'Curitiba, PR');
 
 
 
