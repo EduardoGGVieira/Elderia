@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("container-consultas");
+    const containerAtivas = document.getElementById("container-consultas");
+    const containerHistorico = document.getElementById("container-historico");
 
     fetch("consultas.php")
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                container.innerHTML = `<p>${data.error}</p>`;
+                containerAtivas.innerHTML = `<p>${data.error}</p>`;
                 return;
             }
 
@@ -13,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 container.innerHTML = "<p>Nenhuma consulta encontrada.</p>";
                 return;
             }
+
+            let temAtivas = false;
+            let temHistorico = false;
 
             data.forEach(consulta => {
                 const card = document.createElement("div");
@@ -34,8 +38,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="badge-status">${consulta.status.toUpperCase()}</span>
                     </div>
                 `;
-                container.appendChild(card);
+
+                // Lógica de separação: Agendada/Confirmada vai para o topo, o resto para o histórico
+                const status = consulta.status.toLowerCase();
+                if (status === 'agendada' || status === 'confirmada') {
+                    containerAtivas.appendChild(card);
+                    temAtivas = true;
+                } else {
+                    containerHistorico.appendChild(card);
+                    temHistorico = true;
+                }
             });
+
+            if (!temAtivas) containerAtivas.innerHTML = "<p>Nenhuma consulta futura.</p>";
+            if (!temHistorico) containerHistorico.innerHTML = "<p>Seu histórico está vazio.</p>";
         })
         .catch(err => console.error("Erro ao carregar consultas:", err));
 });
