@@ -67,7 +67,7 @@ CREATE TABLE agenda_disponivel (
     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
     id_profissional INT NOT NULL,
     data_hora DATETIME NOT NULL,
-    status ENUM('livre','agendado') DEFAULT 'livre',
+    status ENUM('agendada', 'confirmada', 'recusada', 'realizada', 'cancelada') DEFAULT 'agendada',
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 );
 
