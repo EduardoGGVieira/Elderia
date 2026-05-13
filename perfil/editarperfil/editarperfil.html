@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Cadastro Completo</title>
     <link rel="stylesheet" href="editarperfil.css">
-    <link rel="stylesheet" href="../pesquisa/styles.css">
+    <link rel="stylesheet" href="../../pesquisa/styles.css">
    
 </head>
 <body id="main-body">
 
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <a href="../index.html">
+            <a href="../../index.html">
                 <h1>ELDERIA</h1>
                 <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
             </a>
         </div>
         <nav class="navegacao-botoes">
-            <a href="index.html" class="btn-nav">Voltar</a> 
+            <a href="../index.html" class="btn-nav">Voltar</a> 
             
         </nav>
         
@@ -85,7 +85,7 @@
         </fieldset>
     </div>
 
-    <!-- CAMPOS PROFISSIONAL -->
+    <!--CAMPOS PROFISSIONAL-->
     <div id="campos-profissional" style="display:none;">
         <fieldset>
             <legend>Informações do Profissional</legend>
@@ -123,59 +123,59 @@
 </form>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", () => {
-
     fetch('get_dados_completo.php')
-
     .then(res => res.json())
-
     .then(res => {
-
-        console.log(res);
-
         if(res.success){
-
             const d = res.dados;
-
-            // DADOS GERAIS
             document.getElementById('nome').value = d.nome || '';
             document.getElementById('email').value = d.email || '';
             document.getElementById('telefone').value = d.telefone || '';
             document.getElementById('cpf').value = d.cpf || '';
 
-            // IDOSO
             if(res.tipo === 'idoso'){
-
                 document.getElementById('campos-idoso').style.display = 'block';
-
                 document.getElementById('data_nascimento').value = d.data_nascimento || '';
                 document.getElementById('alergias').value = d.alergias || '';
                 document.getElementById('informacoes_saude').value = d.informacoes_saude || '';
                 document.getElementById('possui_acessibilidade').value = d.possui_acessibilidade || 0;
                 document.getElementById('necessidades_acessibilidade').value = d.necessidades_acessibilidade || '';
             }
-
-            // PROFISSIONAL
             else if(res.tipo === 'profissional'){
-
                 document.getElementById('campos-profissional').style.display = 'block';
-
                 document.getElementById('registro_profissional').value = d.registro_profissional || '';
                 document.getElementById('especialidade').value = d.especialidade || '';
                 document.getElementById('biografia').value = d.biografia || '';
                 document.getElementById('localizacao').value = d.localizacao || '';
                 document.getElementById('data_emissao').value = d.data_emissao || '';
             }
-
         }
-
-    })
-
-    .catch(err => {
-        console.error(err);
     });
 
+    const form = document.getElementById('form-editar');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const formData = new FormData(this);
+
+        fetch('editarperfil.php', { 
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Alterações salvas com sucesso!');
+                window.location.href = '../index.html'; 
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Ocorreu um erro técnico ao salvar.');
+        });
+    });
 });
 
 </script>

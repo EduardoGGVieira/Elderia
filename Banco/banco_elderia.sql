@@ -62,6 +62,14 @@ CREATE TABLE agenda_disponivel (
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 );
 
+-- CREATE TABLE agenda_disponivel (
+--     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
+--     id_profissional INT NOT NULL,
+--     data_hora DATETIME NOT NULL,
+--     status ENUM('livre','agendado') DEFAULT 'livre',
+--     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
+-- );
+
 /* to deixando isso aqui comentado pq eu nao entendi a lógica de horario_inicio e horario_fim, entao fiz do meu jeitao
 CREATE TABLE agenda_disponivel ( 
     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
