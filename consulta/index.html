@@ -13,7 +13,7 @@
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <a href="index.html">
+            <a href="../index.html">
                 <h1>ELDERIA</h1>
                 <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
             </a>
@@ -23,19 +23,24 @@
             <a href="../index.html" class="btn-nav">voltar</a>
         </nav>
         <div class="usuario-info" id="area-usuario">
-            <a href="conta/cadastro/cadastro.html" class="btn-nav" style="background-color: var(--cor-secundaria); padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar Conta</a>
-            <a href="conta/login/login.html" class="btn-sair">Login</a>
+            <a href="../conta/cadastro/cadastro.html" class="btn-nav" style="background-color: var(--cor-secundaria); padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar Conta</a>
+            <a href="../conta/login/login.html" class="btn-sair">Login</a>
         </div>
     </header>
 
 
    <main class="aba-consultas">
-        <h2 style="text-align:center; margin-top:20px;">Minhas Consultas Agendadas</h2>
-
-        <h4>No futuro terá opção de desmarcar consultas</h4>
-        
+        <h2 class="titulo-secao">Próximas Consultas</h2>
         <div id="container-consultas" class="grid-consultas">
-            </div>
+            <!-- Consultas agendadas/confirmadas aparecem aqui -->
+        </div>
+
+        <hr class="divisor">
+
+        <h2 class="titulo-secao">Histórico de Consultas</h2>
+        <div id="container-historico" class="grid-consultas">
+            <!-- Consultas realizadas/recusadas aparecem aqui -->
+        </div>
     </main>
 
     <script src="consulta.js"></script>

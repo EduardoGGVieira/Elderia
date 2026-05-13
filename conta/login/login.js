@@ -3,7 +3,7 @@ fetch('get_session.php')
     .then(response => response.json())
     .then(data => {
         if (data.logged_in) {
-            // Se já estiver logado, vai direto para o perfil
+            // Se já estiver logado, vai direto para o começo ( dudu q colocou, ou tentou!)
             window.location.href = '../../perfil/index.html';
         }
     })

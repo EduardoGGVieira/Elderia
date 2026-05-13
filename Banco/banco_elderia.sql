@@ -13,7 +13,7 @@ CREATE TABLE usuario (
     telefone VARCHAR(20),
     cpf VARCHAR(14) UNIQUE NOT NULL,
     tipo_usuario ENUM('idoso', 'profissional', 'admin') NOT NULL, 
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- pega o horario atual do sistema e salva automaticamente quando o usuário é criado
 );
 
 
@@ -33,7 +33,12 @@ CREATE TABLE profissional (
     registro_profissional VARCHAR(50) UNIQUE NOT NULL,
     especialidade VARCHAR(100),
     biografia TEXT,
-    visibilidade BOOLEAN DEFAULT TRUE,
+    visibilidade BOOLEAN DEFAULT TRUE, -- precisa ser visível para aparecer na lista de profissionais, o profissional pode escolher se quer ou não aparecer publicamente, tem q add isso no cadastro do profissional
+
+    data_emissao DATE,
+    url_documento VARCHAR(255), 
+    documento_foto VARCHAR(255),
+
     documento_validado BOOLEAN DEFAULT FALSE,
     localizacao VARCHAR(300), 
     FOREIGN KEY (id_profissional) REFERENCES usuario(id_usuario) ON DELETE CASCADE
@@ -49,11 +54,20 @@ CREATE TABLE certificado (
     url_documento VARCHAR(255)
 );
 
+-- Table passada
+-- CREATE TABLE agenda_disponivel (
+--     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
+--     id_profissional INT NOT NULL,
+--     dia_semana ENUM('Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'),
+--     horario TIME NOT NULL,
+--     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
+-- );
+
 CREATE TABLE agenda_disponivel (
     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
     id_profissional INT NOT NULL,
-    dia_semana ENUM('Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'),
-    horario TIME NOT NULL,
+    data_hora DATETIME NOT NULL,
+    status ENUM('livre','agendado') DEFAULT 'livre',
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 );
 
@@ -109,8 +123,8 @@ INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('E
 -- PROFISSIONAIS
 
 -- inserir as duas linhas.
-INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('RICARDÃO DA DOR', 'ricardo.quiro@email.com', '789', '412323232323', '000.111.222-33', 'profissional');
-INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado) VALUES (LAST_INSERT_ID(), 'ABC-12345', 'Quiropraxista', 'Especialista em alinhamento vertebral e alívio de dores crônicas em idosos.', TRUE, TRUE);
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Ricardão da DOR', 'ricardo.quiro@email.com', '789', '412323232323', '000.111.222-33', 'profissional');
+INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'ABC-12345', 'Quiropraxista', 'Acabo com qualquer dor.', TRUE, TRUE ,'Curitiba, PR');
 
 
 
@@ -119,7 +133,56 @@ INSERT INTO profissional (id_profissional, registro_profissional, especialidade,
 
 
 
-
 INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Pedro Alvares', 'pedro.nutri@elderia.com', 'senha_hash_5', '41977772222', '222.333.444-55', 'profissional');
 INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'CRN-8-9900', 'Nutricionista', 'Foco em dietas adaptadas para idosos e controle nutricional de diabetes e hipertensão.', TRUE, TRUE, 'São José dos Pinhais, PR');
 
+
+
+
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Fernanda Alves', 'fernanda.nutri@email.com', '789', '41977665544', '333.444.555-66', 'profissional');
+INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'NUTRI-11223', 'Nutricionista', 'Ajudo idosos a manterem uma alimentação saudável e equilibrada.', TRUE, TRUE, 'Curitiba, PR');
+
+
+
+
+-- Select para ver todos os dados de um idoso no banco
+
+-- SELECT  
+--     u.id_usuario,
+--     u.nome,
+--     u.email,
+--     u.telefone,
+--     u.cpf,
+--     i.data_nascimento,
+--     i.possui_acessibilidade,
+--     i.necessidades_acessibilidade,
+--     i.informacoes_saude,
+--     i.alergias 
+--     FROM usuario u INNER JOIN idoso i ON u.id_usuario = i.id_idoso WHERE u.tipo_usuario = 'idoso';
+
+
+-- select igual o de cima mas do profissional
+
+-- SELECT  
+--     u.id_usuario,
+--     u.nome,
+--     u.email,
+--     u.telefone,
+--     u.cpf,
+    
+--     p.registro_profissional,
+--     p.especialidade,
+--     p.biografia,
+--     p.visibilidade,
+--     p.data_emissao,
+--     p.url_documento,
+--     p.documento_foto,
+--     p.documento_validado,
+--     p.localizacao
+
+-- FROM usuario u
+
+-- INNER JOIN profissional p 
+-- ON u.id_usuario = p.id_profissional
+
+-- WHERE u.tipo_usuario = 'profissional';

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderia - Disponibilizar Horários</title>
+
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="stylesheet" href="disponibilizar_horarios.css">
+</head>
+
+<body>
+
+    <header class="cabecalho-principal">
+
+        <div class="logo-container">
+            <a href="../../index.html">
+                <h1>ELDERIA</h1>
+
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png"
+                    alt="Início"
+                    class="haroldo">
+            </a>
+        </div>
+
+        <nav class="navegacao-botoes">
+            <a href="../index.html" class="btn-nav">Voltar ao Perfil</a>
+        </nav>
+
+        <div class="usuario-info">
+            <a href="../../conta/login/logout.php" class="btn-login">Sair</a>
+        </div>
+
+    </header>
+
+    <section class="meuperfil">
+
+        <div class="container-horarios">
+
+            <h2>Disponibilizar Horários</h2>
+
+            <form id="formHorario" class="card-horarios">
+
+    <label>
+        <strong>Data e Hora:</strong>
+    </label>
+
+    <input
+        type="datetime-local"
+        id="data_hora"
+        name="data_hora"
+        required
+    >
+
+    <button type="submit">
+
+        Salvar Horário
+
+    </button>
+
+</form>
+
+            <div id="mensagem"></div>
+
+        </div>
+
+    </section>
+
+    <script src="disponibilizar_horarios.js"></script>
+
+</body>
+
+</html>

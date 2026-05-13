@@ -2,7 +2,7 @@
 
 session_start();
 header('Content-Type: application/json');
-$conn = mysqli_connect('localhost:3307', 'root', '', 'elderia'); // Ajuste a porta se necessário
+$conn = mysqli_connect('localhost:3306', 'root', '', 'elderia'); // Ajuste a porta se necessário
 
 
 if (!isset($_SESSION['id'])) {
@@ -19,6 +19,8 @@ $sql = "SELECT c.id_consulta, c.data_hora, c.status, u.nome AS profissional_nome
         JOIN usuario u ON p.id_profissional = u.id_usuario
         WHERE c.id_idoso = ? 
         ORDER BY c.data_hora ASC";
+
+
 
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, 'i', $id_idoso);

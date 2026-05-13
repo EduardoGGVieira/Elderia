@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderia - Cadastro Completo</title>
+    <link rel="stylesheet" href="editarperfil.css">
+    <link rel="stylesheet" href="../../pesquisa/styles.css">
+   
+</head>
+<body id="main-body">
+
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <a href="../../index.html">
+                <h1>ELDERIA</h1>
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
+            </a>
+        </div>
+        <nav class="navegacao-botoes">
+            <a href="../index.html" class="btn-nav">Voltar</a> 
+            
+        </nav>
+        
+    </header>
+    
+   <form id="form-editar">
+    
+    <fieldset>
+        <legend>Dados Gerais</legend>
+
+        <div class="form-group">
+            <label>Nome</label>
+            <input type="text" name="nome" id="nome">
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" id="email">
+        </div>
+
+        <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" name="telefone" id="telefone">
+        </div>
+
+        <div class="form-group">
+            <label>CPF</label>
+            <input type="text" name="cpf" id="cpf" readonly>
+        </div>
+    </fieldset>
+
+    <!-- CAMPOS DO IDOSO -->
+    <div id="campos-idoso" style="display:none;">
+        <fieldset>
+            <legend>Informações do Idoso</legend>
+
+            <div class="form-group">
+                <label>Data de nascimento</label>
+                <input type="date" name="data_nascimento" id="data_nascimento">
+            </div>
+
+            <div class="form-group">
+                <label>Alergias</label>
+                <textarea name="alergias" id="alergias"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Informações de saúde</label>
+                <textarea name="informacoes_saude" id="informacoes_saude"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Possui acessibilidade?</label>
+                <select name="possui_acessibilidade" id="possui_acessibilidade">
+                    <option value="0">Não</option>
+                    <option value="1">Sim</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Necessidades de acessibilidade</label>
+                <textarea name="necessidades_acessibilidade" id="necessidades_acessibilidade"></textarea>
+            </div>
+        </fieldset>
+    </div>
+
+    <!--CAMPOS PROFISSIONAL-->
+    <div id="campos-profissional" style="display:none;">
+        <fieldset>
+            <legend>Informações do Profissional</legend>
+
+            <div class="form-group">
+                <label>Registro profissional</label>
+                <input type="text" name="registro_profissional" id="registro_profissional">
+            </div>
+
+            <div class="form-group">
+                <label>Especialidade</label>
+                <input type="text" name="especialidade" id="especialidade">
+            </div>
+
+            <div class="form-group">
+                <label>Biografia</label>
+                <textarea name="biografia" id="biografia"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Localização</label>
+                <input type="text" name="localizacao" id="localizacao">
+            </div>
+
+            <div class="form-group">
+                <label>Data de emissão</label>
+                <input type="date" name="data_emissao" id="data_emissao">
+            </div>
+        </fieldset>
+    </div>
+
+    <button type="submit" class="btn-submit">
+        Salvar Alterações
+    </button>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    fetch('get_dados_completo.php')
+    .then(res => res.json())
+    .then(res => {
+        if(res.success){
+            const d = res.dados;
+            document.getElementById('nome').value = d.nome || '';
+            document.getElementById('email').value = d.email || '';
+            document.getElementById('telefone').value = d.telefone || '';
+            document.getElementById('cpf').value = d.cpf || '';
+
+            if(res.tipo === 'idoso'){
+                document.getElementById('campos-idoso').style.display = 'block';
+                document.getElementById('data_nascimento').value = d.data_nascimento || '';
+                document.getElementById('alergias').value = d.alergias || '';
+                document.getElementById('informacoes_saude').value = d.informacoes_saude || '';
+                document.getElementById('possui_acessibilidade').value = d.possui_acessibilidade || 0;
+                document.getElementById('necessidades_acessibilidade').value = d.necessidades_acessibilidade || '';
+            }
+            else if(res.tipo === 'profissional'){
+                document.getElementById('campos-profissional').style.display = 'block';
+                document.getElementById('registro_profissional').value = d.registro_profissional || '';
+                document.getElementById('especialidade').value = d.especialidade || '';
+                document.getElementById('biografia').value = d.biografia || '';
+                document.getElementById('localizacao').value = d.localizacao || '';
+                document.getElementById('data_emissao').value = d.data_emissao || '';
+            }
+        }
+    });
+
+    const form = document.getElementById('form-editar');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const formData = new FormData(this);
+
+        fetch('editarperfil.php', { 
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Alterações salvas com sucesso!');
+                window.location.href = '../index.html'; 
+            } else {
+                alert('Erro: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Ocorreu um erro técnico ao salvar.');
+        });
+    });
+});
+
+</script>
+</body>
+</html>
