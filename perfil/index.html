@@ -52,18 +52,34 @@
         <p style="margin-bottom: 10px;"><strong>E-mail:</strong> ${data.email}</p>
         <p style="margin-bottom: 20px;"><strong>Tipo de Perfil:</strong> ${data.tipo.charAt(0).toUpperCase() + data.tipo.slice(1)}</p>
         
-        <a href="editarperfil.html" style="
-            display: inline-block;
-            background-color: #00a6ce;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            text-align: center;
-            width: 100%;
-            box-sizing: border-box;
-        ">Editar Perfil</a>
+        <a href="editarperfil/editarperfil.html" style="
+    display: inline-block;
+    background-color: #00a6ce;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+">Editar Perfil</a>
+
+${data.tipo === 'profissional' ? `
+<a href="horarios/disponibilizar_horarios.html" style="
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+">Disponibilizar Horários</a>
+` : ''}
     </div>
 `;
                 }

@@ -1,0 +1,60 @@
+.container-horarios {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.card-horarios {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.card-horarios label {
+    margin-bottom: 5px;
+}
+
+.card-horarios select,
+.card-horarios input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.card-horarios button {
+    width: 100%;
+    padding: 12px;
+
+    background-color: #28a745;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.card-horarios button:hover {
+    transform: scale(1.02);
+    opacity: 0.95;
+}
+
+#mensagem {
+    margin-top: 20px;
+}
