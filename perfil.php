@@ -1,22 +1,14 @@
 <?php
 
-// Inicia sessão
 session_start();
 
-// Conexão com banco
 require_once 'conexao.php';
 
-// Pega o ID do profissional pela URL
 $id_prof = $_GET['id'] ?? null;
 
 if (!$id_prof) {
     die("Profissional não encontrado.");
 }
-
-
-// ===============================
-// BUSCA DADOS DO PROFISSIONAL
-// ===============================
 
 $sql = "
 SELECT 
@@ -58,15 +50,18 @@ if (!$prof) {
 }
 
 
-// ===============================
-// BUSCA HORÁRIOS DISPONÍVEIS
-// ===============================
-
 $sql_horarios = "
+
 SELECT *
+
 FROM agenda_disponivel
+
 WHERE id_profissional = ?
-ORDER BY horario ASC
+AND data_hora > NOW()
+AND status = 'livre'
+
+ORDER BY data_hora ASC
+
 ";
 
 $stmt_horarios =
@@ -100,14 +95,13 @@ $resultado_horarios =
     <link rel="stylesheet" href="index.css">
 
     <style>
-
         body {
             background: #f4f7f6;
         }
 
         .perfil-box {
 
-            max-width: 600px;
+            max-width: 650px;
 
             margin: 50px auto;
 
@@ -118,7 +112,7 @@ $resultado_horarios =
             border-radius: 15px;
 
             box-shadow:
-                0 5px 15px rgba(0,0,0,0.1);
+                0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .btn-agendar {
@@ -140,6 +134,15 @@ $resultado_horarios =
             width: 100%;
 
             margin-top: 20px;
+
+            transition: 0.2s;
+        }
+
+        .btn-agendar:hover {
+
+            transform: scale(1.01);
+
+            opacity: 0.95;
         }
 
         .formulario-agendar {
@@ -155,15 +158,25 @@ $resultado_horarios =
 
             width: 100%;
 
-            padding: 10px;
+            padding: 12px;
 
             margin-top: 10px;
 
             border-radius: 8px;
 
             border: 1px solid #ccc;
+
+            font-size: 15px;
         }
 
+        .sem-horarios {
+
+            margin-top: 15px;
+
+            color: #999;
+
+            font-style: italic;
+        }
     </style>
 
 </head>
@@ -172,14 +185,10 @@ $resultado_horarios =
 
     <div class="perfil-box">
 
-        <a
-            href="index.html"
-
-            style="
+        <a href="index.html" style="
                 text-decoration: none;
                 color: #00a6ce;
-            "
-        >
+            ">
 
             ← Voltar para a Home
 
@@ -196,6 +205,7 @@ $resultado_horarios =
         <p style="
             color: #00a6ce;
             font-weight: bold;
+            font-size: 18px;
         ">
 
             <?php echo $prof['especialidade']; ?>
@@ -211,7 +221,7 @@ $resultado_horarios =
 
                 <?php
                 echo $prof['biografia']
-                ?: "Nenhuma biografia cadastrada.";
+                    ?: "Nenhuma biografia cadastrada.";
                 ?>
 
             </p>
@@ -219,7 +229,7 @@ $resultado_horarios =
         </div>
 
 
-        <div style="margin-top: 10px;">
+        <div style="margin-top: 15px;">
 
             <strong>Localização:</strong>
 
@@ -227,7 +237,7 @@ $resultado_horarios =
 
                 <?php
                 echo $prof['localizacao']
-                ?: "Não informado.";
+                    ?: "Não informado.";
                 ?>
 
             </p>
@@ -235,100 +245,95 @@ $resultado_horarios =
         </div>
 
 
-        <!-- ÁREA DE AGENDAMENTO -->
         <div class="formulario-agendar">
 
             <h3>Agendar uma Consulta</h3>
 
             <?php if (isset($_SESSION['id'])): ?>
 
-                <form
-                    action="agendar.php"
-                    method="POST"
-                >
+                <?php if (mysqli_num_rows($resultado_horarios) > 0): ?>
 
-                    <!-- ID DO PROFISSIONAL -->
-                    <input
-                        type="hidden"
-                        name="id_profissional"
-                        value="<?php echo $id_prof; ?>"
-                    >
+                    <form action="agendar.php" method="POST">
 
-                    <label>
-                        Escolha um horário disponível:
-                    </label>
+                        <input type="hidden" name="id_profissional" value="<?php echo $id_prof; ?>">
 
-                    <select
-                        name="id_agenda"
-                        class="select-horario"
-                        required
-                    >
+                        <label>
+                            Escolha um horário disponível:
+                        </label>
 
-                        <option value="">
-                            Selecione um horário
-                        </option>
+                        <select name="id_agenda" class="select-horario" required>
 
-                        <?php
-                        while($horario =
-                            mysqli_fetch_assoc(
-                                $resultado_horarios
-                            )):
-                        ?>
-
-                            <option
-                                value="<?php
-                                echo $horario['id_agenda'];
-                                ?>"
-                            >
-
-                                <?php
-                                echo $horario['dia_semana'];
-                                ?>
-
-                                -
-
-                                <?php
-                                echo substr(
-                                    $horario['horario'],
-                                    0,
-                                    5
-                                );
-                                ?>
-
+                            <option value="">
+                                Selecione um horário
                             </option>
 
-                        <?php endwhile; ?>
+                            <?php
+                            while (
+                                $horario =
+                                mysqli_fetch_assoc(
+                                    $resultado_horarios
+                                )
+                            ):
+                                ?>
 
-                    </select>
+                                <option value="<?php
+                                echo $horario['id_agenda'];
+                                ?>">
+
+                                    <?php
+
+                                    echo date(
+
+                                        'd/m/Y H:i',
+
+                                        strtotime(
+                                            $horario['data_hora']
+                                        )
+                                    );
+
+                                    ?>
+
+                                </option>
+
+                            <?php endwhile; ?>
+
+                        </select>
 
 
-                    <button
-                        type="submit"
-                        class="btn-agendar"
-                    >
+                        <button type="submit" class="btn-agendar">
 
-                        Confirmar Agendamento
+                            Confirmar Agendamento
 
-                    </button>
+                        </button>
 
 
-                    <p style="
-                        font-size: 0.8rem;
-                        color: #777;
-                        margin-top: 10px;
-                    ">
+                        <p style="
+                            font-size: 0.8rem;
+                            color: #777;
+                            margin-top: 10px;
+                        ">
 
-                        * Seus dados serão
-                        compartilhados com o
-                        profissional da saúde.
+                            * Seus dados serão
+                            compartilhados com o
+                            profissional da saúde.
+
+                        </p>
+
+                    </form>
+
+                <?php else: ?>
+
+                    <p class="sem-horarios">
+
+                        Este profissional ainda não
+                        disponibilizou horários.
 
                     </p>
 
-                </form>
+                <?php endif; ?>
 
             <?php else: ?>
 
-                <!-- NÃO LOGADO -->
                 <p style="color: red;">
 
                     <strong>Atenção:</strong>
@@ -338,13 +343,9 @@ $resultado_horarios =
 
                 </p>
 
-                <a
-                    href="conta/login/login.html"
-
-                    style="
+                <a href="conta/login/login.html" style="
                         color: #00a6ce;
-                    "
-                >
+                    ">
 
                     Clique aqui para fazer login
 

@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
             data.forEach(consulta => {
                 const card = document.createElement("div");
                 card.className = `card-mini-consulta status-${consulta.status.toLowerCase()}`;
-                
+
                 // Formatação da data para facilitar a utilização [cite: 7]
                 const dataFormatada = new Date(consulta.data_hora).toLocaleString('pt-BR', {
                     day: '2-digit', month: '2-digit', year: 'numeric',
@@ -29,15 +29,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 card.innerHTML = `
-                    <div class="info-principal">
-                        <strong>${consulta.profissional_nome}</strong>
-                        <span>${consulta.especialidade}</span>
-                    </div>
-                    <div class="info-data">
-                        <p>📅 ${dataFormatada}</p>
-                        <span class="badge-status">${consulta.status.toUpperCase()}</span>
-                    </div>
-                `;
+    <div class="info-principal">
+        <strong>${consulta.profissional_nome}</strong>
+        <span>${consulta.especialidade}</span>
+    </div>
+
+    <div class="info-data">
+        <p>Data/Horário: ${dataFormatada}</p>
+        <span class="badge-status">${consulta.status.toUpperCase()}</span>
+    </div>
+
+    <div class="info-principal">
+        <button 
+            class="btn-reagendar"
+            data-consulta="${consulta.id_consulta}"
+            data-profissional="${consulta.id_profissional}"
+        >
+            REAGENDAR
+        </button>
+    </div>
+`;
 
                 // Lógica de separação: Agendada/Confirmada vai para o topo, o resto para o histórico
                 const status = consulta.status.toLowerCase();
