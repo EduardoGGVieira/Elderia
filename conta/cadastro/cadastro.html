@@ -75,33 +75,33 @@
                     <legend>Dados de Acesso (Usuario)</legend>
 
                     <div class="form-group">
-                        <label for="nome">Nome Completo</label>
+                        <label for="nome" >Nome Completo</label>
 
-                        <input type="text" id="nome" name="nome" required>
+                        <input type="text" id="nome" name="nome" placeholder="ex: João da Silva" required>
                     </div>
 
                     <div class="form-group">
                         <label for="cpf">CPF</label>
 
-                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                        <input type="text" id="cpf" name="cpf" placeholder="ex: 123.456.789-00" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email">E-mail</label>
 
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" placeholder="ex: joao@email.com" required>
                     </div>
 
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
 
-                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+                        <input type="tel" id="telefone" name="telefone" placeholder="ex: (00) 00000-0000">
                     </div>
 
                     <div class="form-group">
                         <label for="senha">Crie uma Senha</label>
 
-                        <input type="password" id="senha" name="senha" required>
+                        <input type="password" id="senha" name="senha" placeholder="evite usar senhas fáceis" required>
                     </div>
 
                     <div class="form-group">
@@ -109,7 +109,7 @@
                             Confirme sua Senha
                         </label>
 
-                        <input type="password" id="confirme_senha" name="confirme_senha" required>
+                        <input type="password" id="confirme_senha" name="confirme_senha" placeholder="Utilize a senha criada anteriormente"  required>
                     </div>
 
                 </fieldset>
@@ -130,11 +130,11 @@
 
                         <div class="form-group">
                             <label for="alergias">
-                                Você possui alguma alergia?
+                                Você possui alguma alergia? se sim, qual?
                             </label>
 
                             <textarea id="alergias" name="alergias" rows="2"
-                                placeholder="Ex: Remédios, alimentos..."></textarea>
+                                placeholder="Nos ajude a entender suas necessidades de saúde. Ex: Remédios, alimentos..."></textarea>
                         </div>
 
                         <div class="form-group">
@@ -192,7 +192,7 @@
                                 Registro Profissional (CRM/COREN)
                             </label>
 
-                            <input type="text" id="registro_profissional" name="registro_profissional">
+                            <input type="text" id="registro_profissional" name="registro_profissional" placeholder="ex: CRM 123456" >
                         </div>
 
                         <div class="form-group">
@@ -200,7 +200,7 @@
                                 Especialidade
                             </label>
 
-                            <input type="text" id="especialidade" name="especialidade">
+                            <input type="text" id="especialidade" name="especialidade" placeholder="ex: Geriatria, Enfermagem...">
                         </div>
 
                         <div class="form-group">
@@ -208,7 +208,7 @@
                                 Localização (Onde atende)
                             </label>
 
-                            <input type="text" id="localizacao" name="localizacao">
+                            <input type="text" id="localizacao" name="localizacao" placeholder="ex: Rua das Flores, 123 - São Paulo">
                         </div>
 
                         <div class="form-group">
@@ -216,7 +216,7 @@
                                 Biografia
                             </label>
 
-                            <textarea id="biografia" name="biografia" rows="3"></textarea>
+                            <textarea id="biografia" name="biografia" rows="3" placeholder="Conte um pouco sobre sua trajetória profissional, para que os usuários possam conhecer melhor seus conhecimentos e experiências."></textarea>
                         </div>
 
                         <div class="form-group">
@@ -297,6 +297,9 @@
                 if (senha !== confirma) {
 
                     e.preventDefault();
+
+
+                    // NAO PODE SER UM ALERT, TEM QUE SER UMA MENSAGEM DENTRO DA PAGINA, MAS VOU DEIXAR ASSIM POR ENQUANTO PARA TESTES
 
                     alert(
                         'As senhas não coincidem.'
