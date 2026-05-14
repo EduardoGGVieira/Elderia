@@ -2,7 +2,7 @@
 
 session_start();
 header('Content-Type: application/json');
-$conn = mysqli_connect('localhost:3306', 'root', '', 'elderia'); // Ajuste a porta se necessário
+$conn = mysqli_connect('localhost:3307', 'root', '', 'elderia'); // Ajuste a porta se necessário
 
 
 if (!isset($_SESSION['id'])) {

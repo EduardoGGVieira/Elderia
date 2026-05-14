@@ -2,12 +2,14 @@
 
 //PUC TEM QUE USAR ESSE
 // $servidor = 'localhost:3307'; 
-$servidor = 'localhost:3306'; 
+$servidor = 'localhost:3307'; 
 $usuario = 'root'; 
 $senha = ''; 
 $nome_banco = 'elderia';
 
+// Criar a conexão
 $conexao = new mysqli($servidor, $usuario, $senha, $nome_banco);
+// Verificar se a conexão falhou
 if ($conexao->connect_error) {
 header('Content-type: application/json; charset=utf-8');
 echo json_encode([

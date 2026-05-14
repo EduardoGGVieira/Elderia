@@ -36,6 +36,10 @@ if ($usuario && password_verify($senha, $usuario['senha'])) {
     $_SESSION['tipo']  = $usuario['tipo_usuario'];
     $_SESSION['email'] = $usuario['email'];
 
+
+    // AUTORIA DA ABOBRINHA
+    // $_SESSION['u'] = $usuario;
+
     // Redirecionamento corrigido para a pasta de perfil (já que dashboard não existe)
     // Atualizado por André Felipe
     $redirect = '../../perfil/index.html'; 

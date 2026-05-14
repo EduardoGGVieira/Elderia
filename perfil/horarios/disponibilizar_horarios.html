@@ -42,24 +42,46 @@
 
             <form id="formHorario" class="card-horarios">
 
-    <label>
-        <strong>Data e Hora:</strong>
-    </label>
+                <label>
+                    <strong>Dia da Semana:</strong>
+                </label>
 
-    <input
-        type="datetime-local"
-        id="data_hora"
-        name="data_hora"
-        required
-    >
+                <select
+                    id="dia_semana"
+                    name="dia_semana"
+                    required
+                >
 
-    <button type="submit">
+                    <option value="">Selecione</option>
 
-        Salvar Horário
+                    <option value="Segunda">Segunda</option>
+                    <option value="Terça">Terça</option>
+                    <option value="Quarta">Quarta</option>
+                    <option value="Quinta">Quinta</option>
+                    <option value="Sexta">Sexta</option>
+                    <option value="Sábado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
 
-    </button>
+                </select>
 
-</form>
+                <label>
+                    <strong>Horário:</strong>
+                </label>
+
+                <input
+                    type="time"
+                    id="horario"
+                    name="horario"
+                    required
+                >
+
+                <button type="submit">
+
+                    Salvar Horário
+
+                </button>
+
+            </form>
 
             <div id="mensagem"></div>
 
