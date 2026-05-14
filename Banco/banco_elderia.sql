@@ -53,6 +53,9 @@ CREATE TABLE certificado (
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE,
     url_documento VARCHAR(255)
 );
+ 
+
+ -- tutu nao sabe qual é qual
 
 CREATE TABLE agenda_disponivel (
     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,6 +65,7 @@ CREATE TABLE agenda_disponivel (
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 );
 
+
 -- CREATE TABLE agenda_disponivel (
 --     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
 --     id_profissional INT NOT NULL,
@@ -70,17 +74,7 @@ CREATE TABLE agenda_disponivel (
 --     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 -- );
 
-/* to deixando isso aqui comentado pq eu nao entendi a lógica de horario_inicio e horario_fim, entao fiz do meu jeitao
-CREATE TABLE agenda_disponivel ( 
-    id_agenda INT AUTO_INCREMENT PRIMARY KEY,
-    id_profissional INT NOT NULL,
-    data_disponivel DATE NOT NULL,
-    horario_inicio TIME NOT NULL,
-    horario_fim TIME NOT NULL,
-    status ENUM('livre', 'ocupado','concluido','reagendado') DEFAULT 'livre',
-    FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
-);
-*/
+
 
 
 CREATE TABLE consulta (
@@ -132,76 +126,8 @@ INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('P
 INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'CRN-8-9900', 'Nutricionista', 'Foco em dietas adaptadas para idosos e controle nutricional de diabetes e hipertensão.', TRUE, TRUE, 'São José dos Pinhais, PR');
 
 
--- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) 
--- VALUES ('Mariana Lopes', 'mariana.fisio@email.com', '123', '41999887766', '111.222.333-44', 'profissional');
-
--- INSERT INTO profissional (
---     id_profissional, 
---     registro_profissional, 
---     especialidade, 
---     biografia, 
---     visibilidade, 
---     documento_validado, 
---     localizacao
--- ) 
--- VALUES (
---     LAST_INSERT_ID(), 
---     'FISIO-98765', 
---     'Fisioterapeuta', 
---     'Especialista em reabilitação e qualidade de vida para idosos.', 
---     TRUE, 
---     TRUE,
---     'Curitiba, PR'
--- );
-
-
--- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) 
--- VALUES ('Carlos Mendes', 'carlos.psico@email.com', '456', '41988776655', '222.333.444-55', 'profissional');
-
--- INSERT INTO profissional (
---     id_profissional, 
---     registro_profissional, 
---     especialidade, 
---     biografia, 
---     visibilidade, 
---     documento_validado, 
---     localizacao
--- ) 
--- VALUES (
---     LAST_INSERT_ID(), 
---     'PSI-45678', 
---     'Psicólogo', 
---     'Atendimento humanizado focado em saúde mental e bem-estar.', 
---     TRUE, 
---     TRUE,
---     'São José dos Pinhais, PR'
--- );
-
-
--- INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) 
--- VALUES ('Fernanda Alves', 'fernanda.nutri@email.com', '789', '41977665544', '333.444.555-66', 'profissional');
-
--- INSERT INTO profissional (
---     id_profissional, 
---     registro_profissional, 
---     especialidade, 
---     biografia, 
---     visibilidade, 
---     documento_validado, 
---     localizacao
--- ) 
--- VALUES (
---     LAST_INSERT_ID(), 
---     'NUTRI-11223', 
---     'Nutricionista', 
---     'Ajudo idosos a manterem uma alimentação saudável e equilibrada.', 
---     TRUE, 
---     TRUE,
---     'Curitiba, PR'
--- );
-
-
-
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Fernanda Alves', 'fernanda.nutri@email.com', '789', '41977665544', '333.444.555-66', 'profissional');
+INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'NUTRI-11223', 'Nutricionista', 'Ajudo idosos a manterem uma alimentação saudável e equilibrada.', TRUE, TRUE, 'Curitiba, PR');
 
 
 
@@ -221,3 +147,22 @@ INSERT INTO profissional (id_profissional, registro_profissional, especialidade,
 --     i.informacoes_saude,
 --     i.alergias 
 --     FROM usuario u INNER JOIN idoso i ON u.id_usuario = i.id_idoso WHERE u.tipo_usuario = 'idoso';
+
+
+
+-- SELECT 
+--     u.id_usuario,
+--     u.nome,
+--     u.email,
+--     u.telefone,
+--     u.cpf,
+--     p.registro_profissional,
+--     p.especialidade,
+--     p.biografia,
+--     p.visibilidade,
+--     p.documento_validado,
+--     p.localizacao
+-- FROM usuario u
+-- INNER JOIN profissional p 
+--     ON u.id_usuario = p.id_profissional
+-- WHERE u.tipo_usuario = 'profissional';

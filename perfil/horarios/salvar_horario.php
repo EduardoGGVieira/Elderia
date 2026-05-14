@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 include('../../conexao.php');
 
 if (!isset($_SESSION['id'])) {
@@ -13,44 +14,43 @@ if ($_SESSION['tipo'] !== 'profissional') {
 
 $id_profissional = $_SESSION['id'];
 
-$dia_semana = $_POST['dia_semana'];
-$horario = $_POST['horario'];
+$dia_semana = $_POST['dia_semana'] ?? '';
+$horario = $_POST['horario'] ?? '';
 
 if (empty($dia_semana) || empty($horario)) {
     die('Preencha todos os campos.');
 }
 
-$sql = "INSERT INTO agenda_disponivel
+$sql = "
+INSERT INTO agenda_disponivel
 (id_profissional, dia_semana, horario)
-VALUES (?, ?, ?)";
+VALUES (?, ?, ?)
+";
 
 $stmt = mysqli_prepare($conexao, $sql);
 
-if ($stmt) {
+if (!$stmt) {
+    die('Erro na preparação da query.');
+}
 
-    mysqli_stmt_bind_param(
-        $stmt,
-        "iss",
-        $id_profissional,
-        $dia_semana,
-        $horario
-    );
+mysqli_stmt_bind_param(
+    $stmt,
+    "iss",
+    $id_profissional,
+    $dia_semana,
+    $horario
+);
 
-    if (mysqli_stmt_execute($stmt)) {
+if (mysqli_stmt_execute($stmt)) {
 
-        echo 'Horário disponibilizado com sucesso!';
-
-    } else {
-
-        echo 'Erro ao salvar horário.';
-    }
-
-    mysqli_stmt_close($stmt);
+    echo 'Horário disponibilizado com sucesso!';
 
 } else {
 
-    echo 'Erro na preparação da query.';
+    echo 'Erro ao salvar horário.';
 }
+
+mysqli_stmt_close($stmt);
 
 mysqli_close($conexao);
 

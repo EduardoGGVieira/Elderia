@@ -2,12 +2,19 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elderia - Disponibilizar Horários</title>
+
+    <title>
+        Elderia - Disponibilizar Horários
+    </title>
 
     <link rel="stylesheet" href="../../index.css">
+
     <link rel="stylesheet" href="disponibilizar_horarios.css">
+
 </head>
 
 <body>
@@ -15,21 +22,32 @@
     <header class="cabecalho-principal">
 
         <div class="logo-container">
+
             <a href="../../index.html">
+
                 <h1>ELDERIA</h1>
 
-                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png"
-                    alt="Início"
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
                     class="haroldo">
+
             </a>
+
         </div>
 
         <nav class="navegacao-botoes">
-            <a href="../index.html" class="btn-nav">Voltar ao Perfil</a>
+
+            <a href="../index.html" class="btn-nav">
+                Voltar ao Perfil
+            </a>
+
         </nav>
 
         <div class="usuario-info">
-            <a href="../../conta/login/logout.php" class="btn-login">Sair</a>
+
+            <a href="../../conta/login/logout.php" class="btn-login">
+                Sair
+            </a>
+
         </div>
 
     </header>
@@ -38,47 +56,60 @@
 
         <div class="container-horarios">
 
-            <h2>Disponibilizar Horários</h2>
+            <h2>
+                Disponibilizar Horários
+            </h2>
 
             <form id="formHorario" class="card-horarios">
 
-                <label>
+                <label for="dia_semana">
                     <strong>Dia da Semana:</strong>
                 </label>
 
-                <select
-                    id="dia_semana"
-                    name="dia_semana"
-                    required
-                >
+                <select id="dia_semana" name="dia_semana" required>
 
-                    <option value="">Selecione</option>
+                    <option value="">
+                        Selecione
+                    </option>
 
-                    <option value="Segunda">Segunda</option>
-                    <option value="Terça">Terça</option>
-                    <option value="Quarta">Quarta</option>
-                    <option value="Quinta">Quinta</option>
-                    <option value="Sexta">Sexta</option>
-                    <option value="Sábado">Sábado</option>
-                    <option value="Domingo">Domingo</option>
+                    <option value="Segunda">
+                        Segunda
+                    </option>
+
+                    <option value="Terça">
+                        Terça
+                    </option>
+
+                    <option value="Quarta">
+                        Quarta
+                    </option>
+
+                    <option value="Quinta">
+                        Quinta
+                    </option>
+
+                    <option value="Sexta">
+                        Sexta
+                    </option>
+
+                    <option value="Sábado">
+                        Sábado
+                    </option>
+
+                    <option value="Domingo">
+                        Domingo
+                    </option>
 
                 </select>
 
-                <label>
+                <label for="horario">
                     <strong>Horário:</strong>
                 </label>
 
-                <input
-                    type="time"
-                    id="horario"
-                    name="horario"
-                    required
-                >
+                <input type="time" id="horario" name="horario" required>
 
                 <button type="submit">
-
                     Salvar Horário
-
                 </button>
 
             </form>

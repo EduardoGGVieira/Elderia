@@ -1,60 +1,140 @@
 <?php
-// Arquivo pra salvar o agendamento no banco
-// Bem simples pra não complicar a vida
+// Arquivo para salvar o agendamento no banco
 
 session_start();
 
-// Puxa a conexão
+// Conexão com banco
 require_once 'conexao.php';
 
-// Verifica se o usuário tá logado
+// Verifica login
 if (!isset($_SESSION['id'])) {
-    die("Você precisa logar primeiro, amigão!");
+    die("Você precisa estar logado.");
 }
 
-// Só quem é IDOSO pode agendar. Profissional não faz sentido agendar com outro profissional aqui.
+// Apenas idosos podem agendar
 if ($_SESSION['tipo'] !== 'idoso') {
-    die("Apenas idosos podem agendar consultas por aqui, desculpe!");
+    die("Apenas idosos podem agendar consultas.");
 }
 
-// Pela as infos que vieram do formulário
-$id_idoso = $_SESSION['id']; // Quem tá logado é o idoso
-$id_prof  = $_POST['id_profissional'] ?? null;
-$data_hora = $_POST['data_hora'] ?? null;
+// Dados da sessão e formulário
+$id_idoso = $_SESSION['id'];
+$id_agenda = $_POST['id_agenda'] ?? null;
 
-// Se faltar informação, mata o script
-if (!$id_prof || !$data_hora) {
-    die("Faltou preencher alguma coisa no agendamento!");
+// Verifica se veio o ID da agenda
+if (!$id_agenda) {
+    die("Horário não informado.");
 }
 
-// SQL maroto pra inserir na tabela de consultas
-$sql = "INSERT INTO consulta (id_idoso, id_profissional, data_hora, status) VALUES (?, ?, ?, 'agendada')";
+// Busca agenda disponível
+$sql_agenda = "
+    SELECT *
+    FROM agenda_disponivel
+    WHERE id_agenda = ?
+    AND status = 'livre'
+";
 
-$stmt = mysqli_prepare($conexao, $sql);
+$stmt_agenda = mysqli_prepare($conexao, $sql_agenda);
 
-// to jogando isso aqui só pra ver um problema que deu no banco, pra ajudar nas proximas vezes
-if (!$stmt) {
+if (!$stmt_agenda) {
     die("Erro no banco: " . mysqli_error($conexao));
 }
 
-mysqli_stmt_bind_param($stmt, "iis", $id_idoso, $id_prof, $data_hora);
+mysqli_stmt_bind_param($stmt_agenda, "i", $id_agenda);
 
-if (mysqli_stmt_execute($stmt)) {
-    // Se deu certo, mostra uma mensagem de sucesso bem simples
-    echo "
-    <div style='text-align: center; margin-top: 50px; font-family: sans-serif;'>
-        <h2 style='color: green;'>✅ Consulta agendada com sucesso!</h2>
-        <p>O profissional já recebeu seu pedido.</p>
-        <br>
-        <a href='index.html' style='color: #00a6ce; text-decoration: none; font-weight: bold;'>Voltar para o Início</a>
-    </div>
-    ";
-} else {
-    // Se deu erro no banco
-    echo "Putz, deu erro ao salvar no banco: " . mysqli_error($conexao);
+mysqli_stmt_execute($stmt_agenda);
+
+$resultado = mysqli_stmt_get_result($stmt_agenda);
+
+$agenda = mysqli_fetch_assoc($resultado);
+
+// Verifica se o horário existe e está livre
+if (!$agenda) {
+    die("Horário indisponível.");
 }
 
-// Fecha tudo
-mysqli_stmt_close($stmt);
+// Dados da agenda
+$id_profissional = $agenda['id_profissional'];
+$data_hora = $agenda['data_hora'];
+
+// Insere consulta
+$sql_insert = "
+    INSERT INTO consulta
+    (id_idoso, id_profissional, data_hora, status)
+    VALUES (?, ?, ?, 'agendada')
+";
+
+$stmt_insert = mysqli_prepare($conexao, $sql_insert);
+
+if (!$stmt_insert) {
+    die("Erro ao preparar consulta: " . mysqli_error($conexao));
+}
+
+mysqli_stmt_bind_param(
+    $stmt_insert,
+    "iis",
+    $id_idoso,
+    $id_profissional,
+    $data_hora
+);
+
+// Executa insert
+if (mysqli_stmt_execute($stmt_insert)) {
+
+    // Atualiza agenda
+    $sql_update = "
+        UPDATE agenda_disponivel
+        SET status = 'agendado'
+        WHERE id_agenda = ?
+    ";
+
+    $stmt_update = mysqli_prepare($conexao, $sql_update);
+
+    mysqli_stmt_bind_param(
+        $stmt_update,
+        "i",
+        $id_agenda
+    );
+
+    mysqli_stmt_execute($stmt_update);
+
+    echo "
+    <div style='text-align:center; margin-top:50px; font-family:sans-serif;'>
+        <h2 style='color:green;'>✅ Consulta agendada com sucesso!</h2>
+        <p>O profissional já recebeu seu pedido.</p>
+
+        <br>
+
+        <a href='index.html'
+           style='color:#00a6ce; text-decoration:none; font-weight:bold;'>
+           Voltar para o Início
+        </a>
+    </div>
+
+    <script>
+        alert('Consulta agendada com sucesso!');
+        window.location.href = 'consulta/index.html';
+    </script>
+    ";
+
+} else {
+
+    echo "
+    <script>
+        alert('Erro ao agendar consulta.');
+        history.back();
+    </script>
+    ";
+
+    echo "Erro no banco: " . mysqli_error($conexao);
+}
+
+// Fecha conexões
+mysqli_stmt_close($stmt_agenda);
+mysqli_stmt_close($stmt_insert);
+
+if (isset($stmt_update)) {
+    mysqli_stmt_close($stmt_update);
+}
+
 mysqli_close($conexao);
 ?>
