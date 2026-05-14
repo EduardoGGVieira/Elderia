@@ -21,7 +21,7 @@ $sql = "SELECT c.id_consulta, c.data_hora, c.status, u.nome AS profissional_nome
 
 
 
-$stmt = mysqli_prepare($conn, $sql);
+$stmt = mysqli_prepare($conexao, $sql);
 mysqli_stmt_bind_param($stmt, 'i', $id_idoso);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);

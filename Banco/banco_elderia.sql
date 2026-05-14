@@ -57,22 +57,22 @@ CREATE TABLE certificado (
 
  -- tutu nao sabe qual é qual
 
-CREATE TABLE agenda_disponivel (
-    id_agenda INT AUTO_INCREMENT PRIMARY KEY,
-    id_profissional INT NOT NULL,
-    dia_semana ENUM('Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'),
-    horario TIME NOT NULL,
-    FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
-);
-
-
 -- CREATE TABLE agenda_disponivel (
 --     id_agenda INT AUTO_INCREMENT PRIMARY KEY,
 --     id_profissional INT NOT NULL,
---     data_hora DATETIME NOT NULL,
---     status ENUM('livre','agendado') DEFAULT 'livre',
+--     dia_semana ENUM('Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'),
+--     horario TIME NOT NULL,
 --     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
 -- );
+
+
+CREATE TABLE agenda_disponivel (
+    id_agenda INT AUTO_INCREMENT PRIMARY KEY,
+    id_profissional INT NOT NULL,
+    data_hora DATETIME NOT NULL,
+    status ENUM('livre','agendado') DEFAULT 'livre',
+    FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE
+);
 
 
 
