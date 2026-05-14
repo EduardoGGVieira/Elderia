@@ -99,16 +99,11 @@ CREATE TABLE consulta (
 
 CREATE TABLE avaliacao (
     id_avaliacao INT AUTO_INCREMENT PRIMARY KEY,
-    id_consulta INT UNIQUE, -- Opcional para suportar avaliações diretas via perfil
-    id_profissional INT NOT NULL,
-    id_usuario INT NOT NULL,
+    id_consulta INT UNIQUE NOT NULL,
     nota INT CHECK (nota BETWEEN 1 AND 5),
     comentario TEXT, 
     status_moderacao ENUM('pendente', 'aprovada', 'rejeitada') DEFAULT 'pendente',
-    data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_consulta) REFERENCES consulta(id_consulta),
-    FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+    FOREIGN KEY (id_consulta) REFERENCES consulta(id_consulta)
 );
 
 -- USUÁRIOS
@@ -135,7 +130,6 @@ INSERT INTO profissional (id_profissional, registro_profissional, especialidade,
 
 INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Pedro Alvares', 'pedro.nutri@elderia.com', 'senha_hash_5', '41977772222', '222.333.444-55', 'profissional');
 INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'CRN-8-9900', 'Nutricionista', 'Foco em dietas adaptadas para idosos e controle nutricional de diabetes e hipertensão.', TRUE, TRUE, 'São José dos Pinhais, PR');
-
 
 
 
