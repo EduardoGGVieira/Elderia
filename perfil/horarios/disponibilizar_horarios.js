@@ -1,22 +1,27 @@
 const form = document.getElementById('formHorario');
-const mensagem = document.getElementById('mensagem');
 
-form.addEventListener('submit', function (e) {
+const mensagem =
+    document.getElementById('mensagem');
+
+
+form.addEventListener('submit', function(e) {
 
     e.preventDefault();
 
-    const dia_semana = document.getElementById('dia_semana').value;
-    const horario = document.getElementById('horario').value;
+    const data_hora =
+        document.getElementById('data_hora').value;
 
     fetch('salvar_horario.php', {
 
         method: 'POST',
 
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type':
+            'application/x-www-form-urlencoded'
         },
 
-        body: `dia_semana=${dia_semana}&horario=${horario}`
+        body:
+            `data_hora=${data_hora}`
 
     })
 
@@ -25,22 +30,22 @@ form.addEventListener('submit', function (e) {
     .then(resultado => {
 
         mensagem.innerHTML = `
+
             <div style="
-                background-color: #d4edda;
+                background: #d4edda;
                 color: #155724;
                 padding: 15px;
                 border-radius: 8px;
                 margin-top: 15px;
             ">
+
                 ${resultado}
+
             </div>
         `;
 
         form.reset();
-    })
 
-    .catch(error => {
-        console.error('Erro:', error);
     });
 
 });

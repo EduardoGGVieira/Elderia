@@ -58,15 +58,10 @@ try {
 
     // 2. Inserir Usuário Principal (Criptografando a senha)
     // Atualizado por André Felipe
-
-
-
-    // ABOBRINHA  PARTE DA AUTORIA 
-
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-    $sql_user = "INSERT INTO usuario (abobrinha,nome, cpf, email, telefone, senha, tipo_usuario) VALUES (?,?, ?, ?, ?, ?, ?)";
+    $sql_user = "INSERT INTO usuario (nome, cpf, email, telefone, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conexao, $sql_user);
-    mysqli_stmt_bind_param($stmt, 'sssssss', $_POST['abobrinha'], $nome, $cpf, $email, $telefone, $senha_hash, $tipo_usuario);
+    mysqli_stmt_bind_param($stmt, 'ssssss', $nome, $cpf, $email, $telefone, $senha_hash, $tipo_usuario);
     mysqli_stmt_execute($stmt);
     
     $usuario_id = mysqli_insert_id($conexao);

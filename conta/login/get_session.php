@@ -8,10 +8,7 @@ if (isset($_SESSION['id'])) {
         'id' => $_SESSION['id'],
         'nome' => $_SESSION['nome'],
         'tipo' => $_SESSION['tipo'],
-        'email' => $_SESSION['email'],
-
-        // ABOBRINHA TESTE DE AUTORIA
-        'u' => $_SESSION['u']
+        'email' => $_SESSION['email']
     ]);
 } else {
     echo json_encode([
