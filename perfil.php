@@ -90,6 +90,22 @@ mysqli_stmt_execute($stmt_horarios);
 $resultado_horarios =
     mysqli_stmt_get_result($stmt_horarios);
 
+// ======================================
+// BUSCA AVALIAÇÕES DO PROFISSIONAL
+// ======================================
+$sql_avaliacoes = "
+SELECT a.nota, a.comentario, u.nome 
+FROM avaliacao a
+INNER JOIN usuario u ON a.id_usuario = u.id_usuario
+WHERE a.id_profissional = ? AND a.status_moderacao != 'rejeitada'
+ORDER BY a.id_avaliacao DESC
+";
+
+$stmt_avaliacoes = mysqli_prepare($conexao, $sql_avaliacoes);
+mysqli_stmt_bind_param($stmt_avaliacoes, "i", $id_prof);
+mysqli_stmt_execute($stmt_avaliacoes);
+$resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
+
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +123,6 @@ $resultado_horarios =
     <link rel="stylesheet" href="index.css">
 
     <style>
-
         body {
             background: #f4f7f6;
         }
@@ -125,7 +140,7 @@ $resultado_horarios =
             border-radius: 15px;
 
             box-shadow:
-                0 5px 15px rgba(0,0,0,0.1);
+                0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .btn-agendar {
@@ -190,7 +205,6 @@ $resultado_horarios =
 
             font-style: italic;
         }
-
     </style>
 
 </head>
@@ -199,14 +213,10 @@ $resultado_horarios =
 
     <div class="perfil-box">
 
-        <a
-            href="index.html"
-
-            style="
+        <a href="index.html" style="
                 text-decoration: none;
                 color: #00a6ce;
-            "
-        >
+            ">
 
             ← Voltar para a Home
 
@@ -239,7 +249,7 @@ $resultado_horarios =
 
                 <?php
                 echo $prof['biografia']
-                ?: "Nenhuma biografia cadastrada.";
+                    ?: "Nenhuma biografia cadastrada.";
                 ?>
 
             </p>
@@ -255,11 +265,42 @@ $resultado_horarios =
 
                 <?php
                 echo $prof['localizacao']
-                ?: "Não informado.";
+                    ?: "Não informado.";
                 ?>
 
             </p>
 
+        </div>
+
+        <div style="margin-top: 15px;">
+
+            <button><a href="avaliar/avaliar.php?id=<?php echo $id_prof; ?>">Avaliar este profissional</a></button>
+        </div>
+
+
+
+
+        <!-- ÁREA DE AVALIAÇÕES -->
+        <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            <h3>Avaliações</h3>
+            
+            <?php if (mysqli_num_rows($resultado_avaliacoes) > 0): ?>
+                <?php while ($av = mysqli_fetch_assoc($resultado_avaliacoes)): ?>
+                    <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ddd;">
+                        <div style="color: #f39c12; font-size: 18px; margin-bottom: 5px;">
+                            <?php 
+                            for ($i = 1; $i <= 5; $i++) {
+                                echo $i <= $av['nota'] ? '★' : '☆';
+                            }
+                            ?>
+                        </div>
+                        <p style="margin: 0 0 10px 0; font-style: italic;">"<?php echo htmlspecialchars($av['comentario']); ?>"</p>
+                        <small style="color: #666;">- Avaliado por <strong><?php echo htmlspecialchars($av['nome']); ?></strong></small>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p style="color: #777; font-style: italic;">Este profissional ainda não possui avaliações.</p>
+            <?php endif; ?>
         </div>
 
 
@@ -272,45 +313,32 @@ $resultado_horarios =
 
                 <?php if (mysqli_num_rows($resultado_horarios) > 0): ?>
 
-                    <form
-                        action="agendar.php"
-                        method="POST"
-                    >
+                    <form action="agendar.php" method="POST">
 
-                        <input
-                            type="hidden"
-                            name="id_profissional"
-                            value="<?php echo $id_prof; ?>"
-                        >
+                        <input type="hidden" name="id_profissional" value="<?php echo $id_prof; ?>">
 
                         <label>
                             Escolha um horário disponível:
                         </label>
 
-                        <select
-                            name="id_agenda"
-                            class="select-horario"
-                            required
-                        >
+                        <select name="id_agenda" class="select-horario" required>
 
                             <option value="">
                                 Selecione um horário
                             </option>
 
                             <?php
-                            while(
+                            while (
                                 $horario =
                                 mysqli_fetch_assoc(
                                     $resultado_horarios
                                 )
                             ):
-                            ?>
+                                ?>
 
-                                <option
-                                    value="<?php
-                                    echo $horario['id_agenda'];
-                                    ?>"
-                                >
+                                <option value="<?php
+                                echo $horario['id_agenda'];
+                                ?>">
 
                                     <?php
 
@@ -332,10 +360,7 @@ $resultado_horarios =
                         </select>
 
 
-                        <button
-                            type="submit"
-                            class="btn-agendar"
-                        >
+                        <button type="submit" class="btn-agendar">
 
                             Confirmar Agendamento
 
@@ -379,13 +404,9 @@ $resultado_horarios =
 
                 </p>
 
-                <a
-                    href="conta/login/login.html"
-
-                    style="
+                <a href="conta/login/login.html" style="
                         color: #00a6ce;
-                    "
-                >
+                    ">
 
                     Clique aqui para fazer login
 

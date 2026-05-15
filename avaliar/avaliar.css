@@ -1,0 +1,31 @@
+/* Criar as variaveis com as cores */
+:root {
+    --amarelo: #ffcc00;
+    --cinza: #cccccc;
+}
+
+/* Não exibir o input radio */
+.estrelas input[type=radio] {
+    display: none;
+}
+
+/* Criar as estrelas preenchidas de amarelo*/
+.estrelas label i.opcao.fa:before {
+    content: '\f005';
+    color: var(--amarelo);
+}
+
+/* Atribuir o cinza nas estrelas, quando selecionar a estrela retirar o cinza*/
+.estrelas input[type=radio]:checked~label i.fa:before {
+    color: var(--cinza);
+}
+
+/* Personalizar a estrela preenchida */
+.estrela-preenchida {
+    color: var(--amarelo);
+}
+
+/* Personalizar a estrela vazia */
+.estrela-vazia{
+    color: var(--cinza);
+}

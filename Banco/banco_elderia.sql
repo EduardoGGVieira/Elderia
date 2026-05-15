@@ -92,11 +92,13 @@ CREATE TABLE consulta (
 
 CREATE TABLE avaliacao (
     id_avaliacao INT AUTO_INCREMENT PRIMARY KEY,
-    id_consulta INT UNIQUE NOT NULL,
+    id_profissional INT NOT NULL,
+    id_usuario INT NOT NULL,
     nota INT CHECK (nota BETWEEN 1 AND 5),
     comentario TEXT, 
     status_moderacao ENUM('pendente', 'aprovada', 'rejeitada') DEFAULT 'pendente',
-    FOREIGN KEY (id_consulta) REFERENCES consulta(id_consulta)
+    FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 );
 
 -- USUÁRIOS
