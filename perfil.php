@@ -1,12 +1,9 @@
 <?php
 
-// Inicia sessão
 session_start();
-
-// Conexão com banco
 require_once 'conexao.php';
 
-// Pega o ID do profissional pela URL
+// pega o id do profsissional da url
 $id_prof = $_GET['id'] ?? null;
 
 if (!$id_prof) {
@@ -52,7 +49,7 @@ $prof =
     mysqli_fetch_assoc($resultado);
 
 
-// Se não encontrar profissional
+// se n achar profissional:
 if (!$prof) {
     die("Profissional não encontrado no banco.");
 }

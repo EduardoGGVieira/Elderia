@@ -14,12 +14,12 @@ $tipo = $_SESSION['tipo'];
 mysqli_begin_transaction($conexao); //
 
 try {
-    // 1. Atualiza dados comuns
+    // atualizar dados comuns
     $stmtUser = mysqli_prepare($conexao, "UPDATE usuario SET nome=?, email=?, telefone=? WHERE id_usuario=?");
     mysqli_stmt_bind_param($stmtUser, "sssi", $_POST['nome'], $_POST['email'], $_POST['telefone'], $id);
     mysqli_stmt_execute($stmtUser);
 
-    // 2. Atualiza dados específicos conforme o tipo
+    // atualizar dados só de idoso ou de profissional
     if($tipo === 'idoso'){
         $sqlIdoso = "UPDATE idoso SET data_nascimento=?, alergias=?, informacoes_saude=?, possui_acessibilidade=?, necessidades_acessibilidade=? WHERE id_idoso=?";
         $stmtIdoso = mysqli_prepare($conexao, $sqlIdoso);
@@ -34,7 +34,7 @@ try {
     }
 
     mysqli_commit($conexao); //
-    $_SESSION['nome'] = $_POST['nome']; // Atualiza nome na sessão imediatamente
+    $_SESSION['nome'] = $_POST['nome']; // atualiza o nome na sessao na hora
 
     echo json_encode(['success' => true]);
 

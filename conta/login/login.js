@@ -1,9 +1,9 @@
-// 1. Verificação de Sessão: Redireciona se já estiver logado
+// redireciona o usuario se ele ja estiver logado
 fetch('get_session.php')
     .then(response => response.json())
     .then(data => {
         if (data.logged_in) {
-            // Se já estiver logado, vai direto para o começo ( dudu q colocou, ou tentou!)
+            // se já estiver logado, vai direto para o começo (dudu q colocou)
             window.location.href = '../../perfil/index.html';
         }
     })

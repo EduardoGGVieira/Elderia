@@ -1,8 +1,8 @@
 <?php
-session_start(); // Iniciar a sessão
+session_start();
 
 require_once 'conexao.php';
-// Definir fuso horário
+// isso aq define o fuso horario
 date_default_timezone_set('America/Sao_Paulo');
 
 

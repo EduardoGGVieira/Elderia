@@ -41,10 +41,10 @@
                 const infoDiv = document.getElementById('perfil-info');
 
                 if (!data.logged_in) {
-                    // Se NÃO estiver logado, manda para o login
+                    // se nao estiver logado manda pra fazer login
                     window.location.href = '../conta/login/login.html';
                 } else {
-                    // Se estiver logado, preenche os dados
+                    // se tiver logado so preenche os dados
                     infoDiv.innerHTML = `
     <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
         <p style="margin-bottom: 10px;"><strong>Nome:</strong> ${data.nome}</p>

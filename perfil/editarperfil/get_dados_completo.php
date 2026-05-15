@@ -11,14 +11,14 @@ if (!isset($_SESSION['id'])) {
 $id = $_SESSION['id'];
 $tipo = $_SESSION['tipo']; 
 
-// 1. Dados comuns da tabela usuario
+// dados comuns usuario
 $sqlUser = "SELECT nome, email, telefone, cpf FROM usuario WHERE id_usuario = ?";
 $stmt = mysqli_prepare($conexao, $sqlUser);
 mysqli_stmt_bind_param($stmt, "i", $id);
 mysqli_stmt_execute($stmt);
 $userData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
-// 2. Dados específicos detalhados
+// dados especificos so de idoso ou profissional
 if ($tipo === 'idoso') {
     $sqlSpec = "SELECT data_nascimento, alergias, informacoes_saude, possui_acessibilidade, necessidades_acessibilidade FROM idoso WHERE id_idoso = ?";
 } else {

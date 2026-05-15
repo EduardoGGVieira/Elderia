@@ -2,11 +2,11 @@
 // Atualizado por André Felipe
 session_start();
 
-// Habilitar erros para facilitar identificação de problemas
+// bgl para facilitar identificação de problemas
 // Corrigido por André Felipe
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// Incluindo a conexão centralizada
+// conexao centralizada
 // Atualizado por André Felipe
 require_once '../../conexao.php';
 
@@ -125,7 +125,7 @@ try {
     exit;
 
 } catch (Exception $e) {
-    // Exibe o erro se algo der errado (útil para o André Felipe debugar)
+    // se der ruim exibe o erro
     die("Erro ao realizar o cadastro: " . $e->getMessage());
 }
 ?>
