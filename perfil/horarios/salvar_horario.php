@@ -28,7 +28,9 @@ if (empty($data_hora)) {
     die('Preencha todos os campos.');
 }
 
+var_dump($_SESSION);
 
+exit;
 // INSERT
 $sql = "
 
