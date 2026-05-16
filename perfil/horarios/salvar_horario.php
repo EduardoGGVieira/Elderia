@@ -28,9 +28,7 @@ if (empty($data_hora)) {
     die('Preencha todos os campos.');
 }
 
-var_dump($_SESSION);
 
-exit;
 // INSERT
 $sql = "
 
@@ -59,15 +57,10 @@ if ($stmt) {
     );
 
     if (mysqli_stmt_execute($stmt)) {
-
-        echo
-        'Horário disponibilizado com sucesso!';
-
-    } else {
-
-        echo
-        'Erro ao salvar horário.';
-    }
+    echo 'Horário disponibilizado com sucesso!';
+} else {
+    echo 'Erro ao salvar horário: ' . mysqli_error($conexao);
+}
 
     mysqli_stmt_close($stmt);
 
