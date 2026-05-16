@@ -94,9 +94,15 @@ try {
 
         // Processamento de Uploads... (Mantendo sua lógica de caminhos)
         if (!empty($_FILES['url_documento']['name'])) {
-            $nome_arq = 'cert_' . $usuario_id . '_' . time() . '.pdf';
+            $nome_arq = 'cert_pendente_' . $usuario_id . '_' . time() . '.pdf';
             $destino = '../../uploads/certificados/' . $nome_arq;
-            if (move_uploaded_file($_FILES['url_documento']['tmp_name'], $destino)) $url_doc = $destino;
+            if (move_uploaded_file($_FILES['url_documento']['tmp_name'], $destino)) {
+                $url_doc = $destino;
+            } else {
+                erro('Falha ao enviar o certificado. Tente novamente.');
+            }
+        } else {
+                erro('O envio do certificado é obrigatório para profissionais.');
         }
         if (!empty($_FILES['documento_foto']['name'])) {
             $ext = pathinfo($_FILES['documento_foto']['name'], PATHINFO_EXTENSION);

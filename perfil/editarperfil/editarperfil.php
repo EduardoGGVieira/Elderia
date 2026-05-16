@@ -27,9 +27,46 @@ try {
         mysqli_stmt_execute($stmtIdoso);
     } 
     else if($tipo === 'profissional'){
-        $sqlProf = "UPDATE profissional SET registro_profissional=?, especialidade=?, biografia=?, localizacao=?, data_emissao=? WHERE id_profissional=?";
+        // BUSCAR DADOS ATUAIS PARA GESTÃO DE ARQUIVO
+        $sqlBusca = "SELECT url_documento FROM profissional WHERE id_profissional = ?";
+        $stmtB = mysqli_prepare($conexao, $sqlBusca);
+        mysqli_stmt_bind_param($stmtB, "i", $id);
+        mysqli_stmt_execute($stmtB);
+        $resB = mysqli_stmt_get_result($stmtB);
+        $profAtual = mysqli_fetch_assoc($resB);
+        
+        $caminhoFinal = $profAtual['url_documento'];
+        $manterCert = $_POST['manter_certificado'] ?? '1';
+
+        // LÓGICA DE REMOÇÃO OU SUBSTITUIÇÃO
+        if ($manterCert === '0' || !empty($_FILES['url_documento']['name'])) {
+            if (!empty($profAtual['url_documento']) && file_exists($profAtual['url_documento'])) {
+                unlink($profAtual['url_documento']); // APAGA DO PC
+            }
+            $caminhoFinal = null;
+        }
+
+        // LÓGICA DE NOVO UPLOAD
+        if (!empty($_FILES['url_documento']['name'])) {
+            $nome_arq = 'cert_edit_' . $id . '_' . time() . '.pdf';
+            $destino = '../../uploads/certificados/' . $nome_arq;
+            if (move_uploaded_file($_FILES['url_documento']['tmp_name'], $destino)) {
+                $caminhoFinal = $destino;
+            }
+        }
+
+        // UPDATE INCLUINDO A URL DO DOCUMENTO E RESETANDO VALIDAÇÃO
+        $sqlProf = "UPDATE profissional SET registro_profissional=?, especialidade=?, biografia=?, localizacao=?, data_emissao=?, url_documento=?, documento_validado=0 WHERE id_profissional=?";
         $stmtProf = mysqli_prepare($conexao, $sqlProf);
-        mysqli_stmt_bind_param($stmtProf, "sssssi", $_POST['registro_profissional'], $_POST['especialidade'], $_POST['biografia'], $_POST['localizacao'], $_POST['data_emissao'], $id);
+        mysqli_stmt_bind_param($stmtProf, "ssssssi", 
+            $_POST['registro_profissional'], 
+            $_POST['especialidade'], 
+            $_POST['biografia'], 
+            $_POST['localizacao'], 
+            $_POST['data_emissao'],
+            $caminhoFinal,
+            $id
+        );
         mysqli_stmt_execute($stmtProf);
     }
 

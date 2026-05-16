@@ -7,13 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
 
+            console.log(data);
+
             if (data.error) {
                 containerAtivas.innerHTML = `<p>${data.error}</p>`;
                 return;
             }
 
             if (data.length === 0) {
-                containerAtivas.innerHTML = "<p>Nenhuma consulta encontrada.</p>";
+                containerAtivas.innerHTML =
+                    "<p>Nenhuma consulta encontrada.</p>";
                 return;
             }
 
@@ -24,57 +27,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const card = document.createElement("div");
 
+                // status-agendada / status-cancelada / status-realizada
                 card.className =
                     `card-mini-consulta status-${consulta.status.toLowerCase()}`;
 
+                // formata a data
                 const dataFormatada =
-                    new Date(consulta.data_hora).toLocaleString('pt-BR', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
+                    new Date(consulta.data_hora).toLocaleString("pt-BR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit"
                     });
 
                 card.innerHTML = `
                     <div class="info-principal">
-                        <strong>${consulta.profissional_nome}</strong>
+                        <strong>${consulta.nome_profissional}</strong>
                         <span>${consulta.especialidade}</span>
                     </div>
 
                     <div class="info-data">
-                        <p> ${dataFormatada}</p>
+                        <p>${dataFormatada}</p>
+
                         <span class="badge-status">
                             ${consulta.status.toUpperCase()}
                         </span>
                     </div>
-
-                    <div class="info-principal">
-                        <button 
-                            class="btn-reagendar"
-                            data-consulta="${consulta.id_consulta}"
-                            data-profissional="${consulta.id_profissional}"
-                        >
-                            REAGENDAR
-                        </button>
-                    </div>
                 `;
+
+                // botão aparece só em consultas agendadas
+                if (consulta.status.toLowerCase() === "agendada") {
+
+                    card.innerHTML += `
+                        <div class="acoes-consulta">
+                            <button 
+                                class="btn-reagendar"
+                                data-consulta="${consulta.id_consulta}"
+                                data-profissional="${consulta.id_profissional}"
+                            >
+                                REAGENDAR
+                            </button>
+                        </div>
+                    `;
+                }
 
                 const status = consulta.status.toLowerCase();
 
-                if (
-                    status === 'agendada' ||
-                    status === 'confirmada'
-                ) {
+                // consultas futuras
+                if (status === "agendada") {
 
                     containerAtivas.appendChild(card);
-
                     temAtivas = true;
 
                 } else {
 
                     containerHistorico.appendChild(card);
-
                     temHistorico = true;
                 }
 
@@ -90,8 +98,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     "<p>Seu histórico está vazio.</p>";
             }
 
+            // EVENTO DOS BOTÕES
+            document.querySelectorAll(".btn-reagendar")
+                .forEach(botao => {
+
+                    botao.addEventListener("click", () => {
+
+                        const idConsulta =
+                            botao.dataset.consulta;
+
+                        const idProfissional =
+                            botao.dataset.profissional;
+
+                        // redireciona para tela de reagendamento
+                        window.location.href =
+                            `reagendar.php?id_consulta=${idConsulta}&id_profissional=${idProfissional}`;
+                    });
+
+                });
+
         })
         .catch(err => {
+
             console.error("Erro ao carregar consultas:", err);
 
             containerAtivas.innerHTML =

@@ -12,7 +12,7 @@ if (!isset($_SESSION['id'])) {
 $id_idoso = $_SESSION['id']; 
 
 // SQL q junta dados da consulta com o nome do profissional
-$sql = "SELECT c.id_consulta, c.data_hora, c.status, u.nome AS profissional_nome, p.especialidade 
+$sql = "SELECT c.id_consulta, c.data_hora, c.status, u.nome AS nome_profissional, p.especialidade 
         FROM consulta c
         JOIN profissional p ON c.id_profissional = p.id_profissional
         JOIN usuario u ON p.id_profissional = u.id_usuario

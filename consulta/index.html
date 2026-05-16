@@ -14,7 +14,8 @@
         <div class="logo-container">
             <a href="../index.html">
                 <h1>ELDERIA</h1>
-                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
+                    class="haroldo">
             </a>
         </div>
         <nav class="navegacao-botoes">
@@ -22,19 +23,45 @@
             <a href="../index.html" class="btn-nav">Voltar</a> <!--o "V" tava minusculo aqui TBM??? | sim mano -->
         </nav>
         <div class="usuario-info" id="area-usuario">
-            <a href="../conta/cadastro/cadastro.html" class="btn-nav" style="background-color: var(--cor-secundaria); padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar Conta</a>
+            <div class="usuario-info" id="area-usuario">
+                <a href="../conta/login/logout.php" class="btn-login">Sair</a>
+            </div>
+            <script>
+                const headerUser = document.querySelector(".usuario-info");
+                fetch('../conta/login/get_session.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        const headerUser = document.getElementById('area-usuario');
+                        if (data.logged_in && headerUser) {
+                            headerUser.innerHTML = `<span class="user-name" style="margin-right: 15px;">Olá, <strong>${data.nome}</strong></span>
+                    <a href="conta/login/logout.php" class="btn-sair">Sair</a>`;
+                        }
+                    })
+            </script>
+            <a href="../conta/cadastro/cadastro.html" class="btn-nav"
+                style="background-color: var(--cor-secundaria); padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar
+                Conta</a>
             <a href="../conta/login/login.html" class="btn-sair">Login</a>
         </div>
     </header>
 
 
-   <main class="aba-consultas">
-        <h2 style="text-align:center; margin-top:20px;">Minhas Consultas Agendadas</h2>
+    <main class="aba-consultas">
+
+        <h2 style="text-align:center; margin-top:20px;">
+            Minhas Consultas Agendadas
+        </h2>
 
         <h4>No futuro terá opção de desmarcar consultas</h4>
-        
-        <div id="container-consultas" class="grid-consultas">
-            </div>
+
+        <div id="container-consultas" class="grid-consultas"></div>
+
+        <h2 style="text-align:center; margin-top:40px;">
+            Histórico
+        </h2>
+
+        <div id="container-historico" class="grid-consultas"></div>
+
     </main>
 
     <script src="consulta.js"></script>

@@ -20,9 +20,23 @@
         <nav class="navegacao-botoes">
             <a href="../index.html" class="btn-nav">Voltar</a>
         </nav>
-        <div class="usuario-info">
+
+    <div class="usuario-info" id="area-usuario">
             <a href="../conta/login/logout.php" class="btn-login">Sair</a>
         </div>
+        <script>
+            const headerUser = document.querySelector(".usuario-info");
+            fetch('../conta/login/get_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    const headerUser = document.getElementById('area-usuario');
+                    if (data.logged_in && headerUser) {
+                    headerUser.innerHTML = `<span class="user-name" style="margin-right: 15px;">Olá, <strong>${data.nome}</strong></span>
+                    <a href="conta/login/logout.php" class="btn-sair">Sair</a>`;
+                }
+            })
+
+        </script>
     </header>
 
     <section class="meuperfil">

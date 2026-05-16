@@ -24,7 +24,7 @@
         
     </header>
     
-   <form id="form-editar">
+   <form id="form-editar" enctype="multipart/form-data">
     
     <fieldset>
         <legend>Dados Gerais</legend>
@@ -114,6 +114,21 @@
                 <label>Data de emissão</label>
                 <input type="date" name="data_emissao" id="data_emissao">
             </div>
+            
+            <div class="form-group" id="container-cert-atual" style="display:none;">
+                <label>Certificado Atual:</label>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span id="nome-arquivo-atual" style="font-size: 0.9em; color: #555;"></span>
+                    <button type="button" id="btn-remover-cert" class="btn-nav" style="background-color: #d9534f; padding: 5px 10px;">Remover</button>
+                </div>
+                <input type="hidden" name="manter_certificado" id="manter_certificado" value="1">
+            </div>
+
+            <div class="form-group">
+                <label for="url_documento">Novo Certificado (PDF)</label>
+                <input type="file" name="url_documento" id="url_documento" accept=".pdf">
+            </div>
+
         </fieldset>
     </div>
 
@@ -150,6 +165,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('localizacao').value = d.localizacao || '';
                 document.getElementById('data_emissao').value = d.data_emissao || '';
             }
+                if (d.url_documento) {
+                    document.getElementById('container-cert-atual').style.display = 'block';
+    // Pega só o nome do arquivo para exibir
+                    const nomeBase = d.url_documento.split('/').pop();
+                    document.getElementById('nome-arquivo-atual').textContent = nomeBase;
+                    
+                }
+                document.getElementById('btn-remover-cert').addEventListener('click', () => {
+                    if(confirm("Deseja marcar o certificado atual para remoção?")) {
+                        document.getElementById('container-cert-atual').style.display = 'none';
+                        document.getElementById('manter_certificado').value = "0";
+                        alert("O certificado será removido ao salvar.");
+    }
+});
         }
     });
 
