@@ -72,4 +72,6 @@ if ($stmt) {
 
 mysqli_close($conexao);
 
+//comentario so pra validar o envio
+
 ?>
