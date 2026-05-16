@@ -111,7 +111,7 @@ if ($stmt) {
 
 mysqli_close($conexao);
 
-// Pierre > Helpers
+// Pierre > Helpers: modificador de data e hora
 function fmt_data(string $dt): string {
     $d = new DateTime($dt);
     return $d->format('d/m/Y');
