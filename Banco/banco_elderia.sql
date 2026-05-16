@@ -82,11 +82,10 @@ CREATE TABLE consulta (
     id_idoso INT NOT NULL,
     id_profissional INT NOT NULL,
     data_hora DATETIME NOT NULL,
-    status ENUM('agendada', 'realizada', 'cancelada') DEFAULT 'agendada', 
+    status ENUM('agendada', 'confirmada', 'recusada', 'realizada', 'cancelada') DEFAULT 'agendada',
     resumo_atendimento TEXT,
     FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso),
     FOREIGN KEY (id_profissional) REFERENCES profissional(id_profissional)
-
 );
 
 

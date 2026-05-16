@@ -5,7 +5,7 @@
 session_start();
 require_once '../conexao.php';
 
-// Pierre > Verificação de autenticação 
+// Pierre > Verificação de autenticação
 if (!isset($_SESSION['id'])) {
     header('Location: ../conta/login/login.html');
     exit;
@@ -18,16 +18,22 @@ if ($_SESSION['tipo'] !== 'profissional') {
 
 $id_profissional = $_SESSION['id'];
 $mensagem        = null;
-$mensagem_tipo   = null; // 'sucesso' | 'erro'
+$mensagem_tipo   = null; // 'sucesso' | 'aviso' | 'erro'
 
 // Pierre > Processa ação POST (confirmar ou recusar)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_consulta = filter_input(INPUT_POST, 'id_consulta', FILTER_VALIDATE_INT);
+    $id_consulta  = filter_input(INPUT_POST, 'id_consulta', FILTER_VALIDATE_INT);
     $novo_status  = filter_input(INPUT_POST, 'novo_status', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    $status_permitidos = ['confirmada', 'recusada'];
+    // Mapeia o valor do formulário para o ENUM válido no banco
+    $mapa_status = [
+        'confirmada' => 'confirmada',
+        'recusada'   => 'cancelada',
+    ];
 
-    if (!$id_consulta || $id_consulta <= 0 || !in_array($novo_status, $status_permitidos, true)) {
+    $novo_status_banco = $mapa_status[$novo_status] ?? null;
+
+    if (!$id_consulta || $id_consulta <= 0 || !$novo_status_banco) {
         $mensagem      = 'Dados inválidos. Tente novamente.';
         $mensagem_tipo = 'erro';
 
@@ -50,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mensagem      = 'Consulta não encontrada ou já processada.';
             $mensagem_tipo = 'erro';
         } else {
-            // Pierre > Atualiza o status
+            // Pierre > Atualiza o status com o valor mapeado
             $sql_update = "
                 UPDATE consulta
                 SET status = ?
@@ -58,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   AND id_profissional = ?
             ";
             $stmt_update = mysqli_prepare($conexao, $sql_update);
-            mysqli_stmt_bind_param($stmt_update, 'sii', $novo_status, $id_consulta, $id_profissional);
+            mysqli_stmt_bind_param($stmt_update, 'sii', $novo_status_banco, $id_consulta, $id_profissional);
 
             if (mysqli_stmt_execute($stmt_update)) {
                 $mensagem      = $novo_status === 'confirmada'
@@ -116,6 +122,7 @@ function fmt_hora(string $dt): string {
     return $d->format('H:i');
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
