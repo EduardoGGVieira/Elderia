@@ -101,13 +101,21 @@ CREATE TABLE avaliacao (
 );
 
 -- USUÁRIOS
-INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Jalim Rabei', 'jalim@email.com', 'senha123', '41999999999', '123.456.789-00', 'idoso');
+-- senha 1234
+INSERT INTO usuario (id_usuario, nome, email, senha, telefone, cpf, tipo_usuario) VALUES (8,'Eduardo Guilhermino IDOSO','eduardoggv@gmail.com', '$2y$10$CaMhbwmQxvfYesMhwT7.DuByPCew4X8FGOYJpk52Z2B1u8akmLYFS','41988889999', '888.777.666-55', 'idoso' );
+INSERT INTO idoso (id_idoso, data_nascimento, possui_acessibilidade, necessidades_acessibilidade, informacoes_saude, alergias) VALUES (8, '1948-06-15',TRUE,'Necessita cuidados gostosos','Hipertensão,faz uso contínuo de REELS do insta.','Alergia a veganos e enzos');
 
-INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Ghost the down cool', 'ghost@email.com', 'GhostABanda', '41966666666', '666.666.666-66', 'idoso');
+-- senha 1234
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Eduardo Guilhermino PROFISSIONAL', 'dudu@gmail.com', '$2y$10$CaMhbwmQxvfYesMhwT7.DuByPCew4X8FGOYJpk52Z2B1u8akmLYFS', '67676767676', '123.269.789-35', 'profissional');
+INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'SEX-6969', 'Quiropraxista', 'Faço você nascer novamente.', TRUE, TRUE ,'Araucária, PR');
+
+
+
 
 
 -- ADIMIN
 INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Eduardo Guilhermino', 'edu@ggv', '$2y$10$CaMhbwmQxvfYesMhwT7.DuByPCew4X8FGOYJpk52Z2B1u8akmLYFS', '41999999999', '999.999.999-99', 'admin');
+
 
 -- PROFISSIONAIS
 
@@ -130,6 +138,31 @@ INSERT INTO profissional (id_profissional, registro_profissional, especialidade,
 INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Fernanda Alves', 'fernanda.nutri@email.com', '789', '41977665544', '333.444.555-66', 'profissional');
 INSERT INTO profissional (id_profissional, registro_profissional, especialidade, biografia, visibilidade, documento_validado, localizacao) VALUES (LAST_INSERT_ID(), 'NUTRI-11223', 'Nutricionista', 'Ajudo idosos a manterem uma alimentação saudável e equilibrada.', TRUE, TRUE, 'Curitiba, PR');
 
+
+
+-- algumas avaliações pra rodar com o banco sempre
+INSERT INTO avaliacao (`id_profissional`, `id_usuario`, `nota`, `comentario`, `status_moderacao`) VALUES 
+(9, 8, 5, 'Excelente atendimento de quiropraxia, muito cuidadoso e profissional!', 'aprovada'),
+(11, 8, 4, 'O atendimento tirou minhas dores nas costas rapidinho. Recomendo.', 'aprovada'),
+(12, 8, 5, 'Excelente médico geriatra. Explicou detalhadamente todas as medicações.', 'aprovada'),
+(13, 8, 5, 'O plano de nutrição adaptado ajudou muito na minha disposição diária.', 'aprovada'),
+(14, 8, 4, 'Muito atenciosa e paciente para montar a dieta do meu mês.', 'aprovada'),
+(11, 8, 3, 'O tratamento foi bom, mas a consulta atrasou alguns minutos.', 'pendente');
+
+
+
+-- horários do Eduardo Guilhermino profissional, pra testar a agenda e consulta mais rapido
+
+SET @id_eduardo_prof = (SELECT id_usuario FROM usuario WHERE email = 'dudu@gmail.com' AND tipo_usuario = 'profissional' LIMIT 1);
+INSERT INTO agenda_disponivel (id_profissional, data_hora, status) VALUES
+(@id_eduardo_prof, '2026-05-20 09:00:00', 'livre'),
+(@id_eduardo_prof, '2026-05-21 10:30:00', 'livre'),
+(@id_eduardo_prof, '2026-05-22 14:00:00', 'livre'),
+(@id_eduardo_prof, '2026-05-23 08:30:00', 'livre'),
+(@id_eduardo_prof, '2026-05-24 11:00:00', 'livre'),
+(@id_eduardo_prof, '2026-05-25 15:30:00', 'livre'),
+(@id_eduardo_prof, '2026-05-26 10:00:00', 'livre'),
+(@id_eduardo_prof, '2026-05-27 16:00:00', 'livre');
 
 
 

@@ -97,33 +97,58 @@ document.addEventListener("DOMContentLoaded", () => {
                 containerHistorico.innerHTML =
                     "<p>Seu histórico está vazio.</p>";
             }
-
-            // EVENTO DOS BOTÕES
+            // EVENTO DOS BOTÕES CORRIGIDO E BLINDADO
             document.querySelectorAll(".btn-reagendar")
                 .forEach(botao => {
 
                     botao.addEventListener("click", () => {
 
-                        const idConsulta =
-                            botao.dataset.consulta;
+                        const idConsulta = botao.dataset.consulta;
 
-                        const idProfissional =
-                            botao.dataset.profissional;
+                        const mensagemConfirmacao = "tem certeza que dejesa remarcar esta consulta? caso de \"ok\" seu horario vai ser disponibilizado novamente e você poderá realizar outro agendamento";
 
-                        // redireciona para tela de reagendamento
-                        window.location.href =
-                            `reagendar.php?id_consulta=${idConsulta}&id_profissional=${idProfissional}`;
+                        if (confirm(mensagemConfirmacao)) {
+
+                            // Usamos FormData que é mais seguro e limpo para o PHP receber via POST
+                            const dadosEnviar = new FormData();
+                            dadosEnviar.append('id_consulta', idConsulta);
+
+                            fetch("deletar_consulta.php", {
+                                method: "POST",
+                                body: dadosEnviar // Envia como FormData padrão
+                            })
+                                .then(response => {
+                                    // Se o PHP der erro 404 ou 500, capturamos aqui antes de quebrar
+                                    if (!response.ok) {
+                                        throw new Error(`Ficheiro não encontrado ou erro no servidor (Status: ${response.status})`);
+                                    }
+                                    return response.text(); // Lemos como texto primeiro para inspecionar erros ocultos
+                                })
+                                .then(texto => {
+                                    try {
+                                        const resultado = JSON.parse(texto);
+                                        if (resultado.success) {
+                                            // Redireciona para a página inicial (raiz do projeto)
+                                            window.location.href = "../index.html";
+                                        } else {
+                                            alert("Erro no banco: " + resultado.error);
+                                        }
+                                    } catch (erroJson) {
+                                        // Se o PHP retornar um erro HTML do XAMPP, vai cair aqui e mostrar o erro real
+                                        console.error("Resposta do servidor não era um JSON válido:", texto);
+                                        alert("Erro interno do PHP. Veja o Console (F12) para detalhes.");
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error("Erro na requisição:", err);
+                                    alert("Erro de comunicação: " + err.message);
+                                });
+                        }
                     });
-
                 });
-
         })
         .catch(err => {
-
-            console.error("Erro ao carregar consultas:", err);
-
-            containerAtivas.innerHTML =
-                "<p>Erro ao carregar consultas.</p>";
+            console.error("Erro ao buscar consultas:", err);
+            containerAtivas.innerHTML = "<p>Erro ao carregar consultas. Tente novamente mais tarde.</p>";
         });
-
 });
