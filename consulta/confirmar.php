@@ -82,11 +82,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Pierre > Busca consultas pendentes do profissional logado
-$consultas = [];
+$pendentes = [];
+$confirmadas = [];
 
-$sql = "
+$sql_p = "
     SELECT
         c.id_consulta,
+        c.id_idoso,
         u.nome    AS nome_idoso,
         c.data_hora
     FROM consulta c
@@ -96,17 +98,36 @@ $sql = "
     ORDER BY c.data_hora ASC
 ";
 
-$stmt = mysqli_prepare($conexao, $sql);
+$sql_c = "
+    SELECT
+        c.id_consulta,
+        c.id_idoso,
+        u.nome    AS nome_idoso,
+        c.data_hora
+    FROM consulta c
+    INNER JOIN usuario u ON c.id_idoso = u.id_usuario
+    WHERE c.id_profissional = ?
+      AND c.status          = 'confirmada'
+    ORDER BY c.data_hora ASC
+";
 
-if ($stmt) {
-    mysqli_stmt_bind_param($stmt, 'i', $id_profissional);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+// Busca Pendentes
+$stmt_p = mysqli_prepare($conexao, $sql_p);
+mysqli_stmt_bind_param($stmt_p, 'i', $id_profissional);
+mysqli_stmt_execute($stmt_p);
+$res_p = mysqli_stmt_get_result($stmt_p);
+while ($row = mysqli_fetch_assoc($res_p)) {
+    $pendentes[] = $row;
+}
+mysqli_stmt_close($stmt_p);
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $consultas[] = $row;
-    }
-    mysqli_stmt_close($stmt);
+// Busca Confirmadas
+$stmt_c = mysqli_prepare($conexao, $sql_c);
+mysqli_stmt_bind_param($stmt_c, 'i', $id_profissional);
+mysqli_stmt_execute($stmt_c);
+$res_c = mysqli_stmt_get_result($stmt_c);
+while ($row = mysqli_fetch_assoc($res_c)) {
+    $confirmadas[] = $row;
 }
 
 mysqli_close($conexao);
@@ -247,10 +268,23 @@ function fmt_hora(string $dt): string {
       color: #fff;
     }
 
+    .btn-ficha {
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .btn-ficha:hover { background-color: #34495e; }
+
     /* Estado vazio */
     .estado-vazio {
       text-align: center;
-      padding: 60px 20px;
+      padding: 30px 20px;
       color: var(--cor-texto, #555);
     }
 
@@ -274,7 +308,7 @@ function fmt_hora(string $dt): string {
     </div>
     <nav class="navegacao-botoes">
       <a href="../perfil/" class="btn-nav">Meu Perfil</a>
-      <a href="index.html" class="btn-nav">Consultas</a>
+      <a href="confirmar.php" class="btn-nav">Confirmar Consultas</a>
     </nav>
     <div class="usuario-info">
       <a href="../conta/login/login.html" class="btn-sair">Sair</a>
@@ -294,14 +328,13 @@ function fmt_hora(string $dt): string {
       </div>
     <?php endif; ?>
 
-    <?php if (empty($consultas)): ?>
+    <?php if (empty($pendentes)): ?>
       <div class="estado-vazio">
         <div class="icone">✅</div>
         <p>Nenhuma consulta pendente no momento.</p>
       </div>
-
     <?php else: ?>
-      <?php foreach ($consultas as $c): ?>
+      <?php foreach ($pendentes as $c): ?>
         <div class="card-consulta">
           <div class="card-info">
             <div class="nome-idoso"><?= htmlspecialchars($c['nome_idoso']) ?></div>
@@ -324,6 +357,36 @@ function fmt_hora(string $dt): string {
               <button type="submit" class="btn-recusar">Recusar</button>
             </form>
 
+          </div>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+
+    <div class="secao-titulo" style="margin-top: 60px;">
+      <h2>Consultas Confirmadas</h2>
+      <div class="linha-decorativa"></div>
+    </div>
+
+    <?php if (empty($confirmadas)): ?>
+      <div class="estado-vazio">
+        <div class="icone">📅</div>
+        <p>Você ainda não possui consultas confirmadas.</p>
+      </div>
+    <?php else: ?>
+      <?php foreach ($confirmadas as $c): ?>
+        <div class="card-consulta" style="border-color: #27ae60;">
+          <div class="card-info">
+            <div class="nome-idoso"><?= htmlspecialchars($c['nome_idoso']) ?></div>
+            <div class="detalhe">Data: <span><?= fmt_data($c['data_hora']) ?></span></div>
+            <div class="detalhe">Horário: <span><?= fmt_hora($c['data_hora']) ?></span></div>
+            <span class="badge-status" style="background-color: #d4edda; color: #155724; border-color: #c3e6cb;">Confirmada</span>
+          </div>
+
+          <div class="card-acoes">
+            <!-- Link para a ficha do idoso utilizando o ID dele -->
+            <a href="../perfil/ver_ficha.php?id=<?= (int)$c['id_idoso'] ?>" class="btn-ficha">
+              Ver Ficha
+            </a>
           </div>
         </div>
       <?php endforeach; ?>

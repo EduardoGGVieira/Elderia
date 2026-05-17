@@ -65,10 +65,11 @@ try {
         $alergias     = limpar($_POST['alergias'] ?? '');
         $info_saude   = limpar($_POST['informacoes_saude'] ?? '');
         $necessidades = limpar($_POST['necessidades_acessibilidade'] ?? '');
+        $possui_acessibilidade = isset($_POST['possui_acessibilidade']) ? 1 : 0;
 
-        $sql_idoso = "INSERT INTO idoso (id_idoso, data_nascimento, necessidades_acessibilidade, informacoes_saude, alergias) VALUES (?, ?, ?, ?, ?)";
+        $sql_idoso = "INSERT INTO idoso (id_idoso, data_nascimento, necessidades_acessibilidade, informacoes_saude, alergias, possui_acessibilidade) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conexao, $sql_idoso);
-        mysqli_stmt_bind_param($stmt, 'issss', $usuario_id, $data_nasc, $necessidades, $info_saude, $alergias);
+        mysqli_stmt_bind_param($stmt, 'issssi', $usuario_id, $data_nasc, $necessidades, $info_saude, $alergias, $possui_acessibilidade);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 

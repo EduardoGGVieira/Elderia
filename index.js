@@ -1,5 +1,6 @@
 const feed = document.querySelector(".grid-profissionais"); 
 const headerUser = document.querySelector(".usuario-info");
+const navBotoes = document.querySelector(".navegacao-botoes");
 
 fetch("conta/login/get_session.php")
   .then((response) => response.json())
@@ -9,6 +10,19 @@ fetch("conta/login/get_session.php")
         <span class="user-name" style="margin-right: 15px;">Olá, <strong>${data.nome}</strong></span>
         <a href="conta/login/logout.php" class="btn-sair">Sair</a>
       `;
+
+      // Pierre > Altera a navegação dinamicamente conforme o tipo de usuário
+      if (navBotoes) {
+        const linkConsultas = data.tipo === 'profissional' 
+          ? 'consulta/confirmar.php' 
+          : 'consulta/index.html';
+        const textoLink = data.tipo === 'profissional' ? 'Confirmar Consultas' : 'Consultas';
+        
+        navBotoes.innerHTML = `
+          <a href="perfil/" class="btn-nav">Meu Perfil</a>
+          <a href="${linkConsultas}" class="btn-nav">${textoLink}</a>
+        `;
+      }
     }
   })
   .catch((error) => console.error("Erro ao verificar sessão:", error));

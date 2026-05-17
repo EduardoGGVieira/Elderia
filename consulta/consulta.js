@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
             data.forEach(consulta => {
 
                 const card = document.createElement("div");
+                const status = consulta.status.toLowerCase();
 
-                // status-agendada / status-cancelada / status-realizada
-                card.className =
-                    `card-mini-consulta status-${consulta.status.toLowerCase()}`;
+                // status-agendada / status-confirmada / status-cancelada / status-realizada
+                card.className = `card-mini-consulta status-${status}`;
 
                 // formata a data
                 const dataFormatada =
@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
 
-                // botão aparece só em consultas agendadas
-                if (consulta.status.toLowerCase() === "agendada") {
+                // botão aparece em consultas agendadas ou confirmadas
+                if (status === "agendada" || status === "confirmada") {
 
                     card.innerHTML += `
                         <div class="acoes-consulta">
@@ -72,10 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     `;
                 }
 
-                const status = consulta.status.toLowerCase();
-
-                // consultas futuras
-                if (status === "agendada") {
+                // consultas futuras ou confirmadas
+                if (status === "agendada" || status === "confirmada") {
 
                     containerAtivas.appendChild(card);
                     temAtivas = true;

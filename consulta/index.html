@@ -18,23 +18,29 @@
                     class="haroldo">
             </a>
         </div>
-        <nav class="navegacao-botoes">
+        <nav class="navegacao-botoes" id="nav-principal">
             <a href="../perfil/index.html" class="btn-nav">Meu Perfil</a>
             <a href="../index.html" class="btn-nav">Voltar</a> <!--o "V" tava minusculo aqui TBM??? | sim mano -->
         </nav>
         <div class="usuario-info" id="area-usuario">
-            <div class="usuario-info" id="area-usuario">
-                <a href="../conta/login/logout.php" class="btn-login">Sair</a>
-            </div>
             <script>
-                const headerUser = document.querySelector(".usuario-info");
                 fetch('../conta/login/get_session.php')
                     .then(response => response.json())
                     .then(data => {
                         const headerUser = document.getElementById('area-usuario');
+                        const navPrincipal = document.getElementById('nav-principal');
                         if (data.logged_in && headerUser) {
                             headerUser.innerHTML = `<span class="user-name" style="margin-right: 15px;">Olá, <strong>${data.nome}</strong></span>
-                    <a href="conta/login/logout.php" class="btn-sair">Sair</a>`;
+                    <a href="../conta/login/logout.php" class="btn-sair">Sair</a>`;
+                            
+                            // Pierre > Se for profissional na tela de idoso, ajusta a navegação
+                            if (data.tipo === 'profissional' && navPrincipal) {
+                                navPrincipal.innerHTML = `
+                                    <a href="../perfil/index.html" class="btn-nav">Meu Perfil</a>
+                                    <a href="confirmar.php" class="btn-nav">Confirmar Consultas</a>
+                                    <a href="../index.html" class="btn-nav">Voltar</a>
+                                `;
+                            }
                         }
                     })
             </script>
@@ -67,8 +73,4 @@
     <script src="consulta.js"></script>
     <script src="../index.js"></script>
 </body>
-
-
-</body>
-
 </html>
