@@ -30,6 +30,27 @@ mysqli_stmt_bind_param($stmtSpec, "i", $id);
 mysqli_stmt_execute($stmtSpec);
 $specData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtSpec));
 
+// --- LÓGICA NOVA: BUSCAR OS CERTIFICADOS SE FOR PROFISSIONAL ---
+if ($tipo === 'profissional') {
+    $sqlCerts = "SELECT id_certificado, titulo, url_documento FROM certificado WHERE id_profissional = ?";
+    $stmtC = mysqli_prepare($conexao, $sqlCerts);
+    mysqli_stmt_bind_param($stmtC, "i", $id);
+    mysqli_stmt_execute($stmtC);
+    $resC = mysqli_stmt_get_result($stmtC);
+    
+    $certificados = [];
+    while ($rowC = mysqli_fetch_assoc($resC)) {
+        // Pega só o nome do arquivo (ex: cert_3_17140000.pdf) para exibir na tela
+        $rowC['nome_arquivo'] = basename($rowC['url_documento']);
+        $certificados[] = $rowC;
+    }
+    mysqli_stmt_close($stmtC);
+    
+    // Anexa a lista de certificados aos dados específicos do profissional
+    $specData['certificados'] = $certificados;
+}
+// ---------------------------------------------------------------
+
 echo json_encode([
     'success' => true,
     'tipo' => $tipo,

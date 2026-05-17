@@ -14,12 +14,11 @@ $busca_esp = "%" . $especialidade_buscada . "%";
 $busca_local = "%" . $localizacao . "%";
 
 $sql = "SELECT u.nome, p.especialidade, p.biografia, p.localizacao, p.id_profissional,
-        (SELECT GROUP_CONCAT(CONCAT(dia_semana, ':', horario) ORDER BY dia_semana, horario ASC) 
+        (SELECT GROUP_CONCAT(DATE_FORMAT(data_hora, '%d/%m/%Y às %H:%i') ORDER BY data_hora ASC SEPARATOR ',') 
          FROM agenda_disponivel 
-         WHERE id_profissional = p.id_profissional) as agenda
+         WHERE id_profissional = p.id_profissional AND status = 'livre') as agenda
         FROM profissional p
         INNER JOIN usuario u ON p.id_profissional = u.id_usuario
-        -- like é a recomendação do google, mais facil pro andre debugaar
         WHERE p.especialidade LIKE ? AND p.localizacao LIKE ?";
 
 $stmt = mysqli_prepare($conexao, $sql);

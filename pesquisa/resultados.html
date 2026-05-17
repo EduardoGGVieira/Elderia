@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Resultados da Busca</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../index.css">
 </head>
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <a href="index.html">
+            <a href="../index.html">
                 <h1>ELDERIA</h1>
                 <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
             </a>
@@ -53,6 +53,18 @@
             .then(profissionais => {
                 const container = document.getElementById('lista-profissionais');
                 
+                // mostrar erros de pesquisa
+                if (profissionais.erro) {
+                    console.error("Erro do Backend:", profissionais.erro);
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 50px;">
+                            <h3 style="color: red;">Erro no Servidor</h3>
+                            <p>${profissionais.erro}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 if (profissionais.length === 0) {
                     container.innerHTML = `
                         <div style="text-align: center; padding: 50px; background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
@@ -77,20 +89,30 @@
                         const horariosArray = prof.agenda.split(',');
 
                         horariosArray.forEach(item => {
-                            const partes = item.split(':');
-                            const dia = partes[0]; 
-                            const horaFormatada = `${partes[1]}:${partes[2]}`; 
-
-                            if (!agendaAgrupada[dia]) {
-                                agendaAgrupada[dia] = [];
+                            // Limpa a string: troca o " às " ou " " por ":" para padronizar o corte
+                            let limpo = item.replace(' às ', ':').trim();
+                            limpo = limpo.replace(' ', ':'); 
+                            
+                            // Agora limpo fica no formato perfeito "23/05/2026:19:00"
+                            const partes = limpo.split(':');
+                            
+                            // Garante que conseguiu dividir dia, hora e minuto
+                            if(partes.length >= 3) {
+                                const dia = partes[0]; 
+                                const horaFormatada = `${partes[1]}:${partes[2]}`; 
+                                
+                                if (!agendaAgrupada[dia]) {
+                                    agendaAgrupada[dia] = [];
+                                }
+                                agendaAgrupada[dia].push(horaFormatada);
                             }
-                            agendaAgrupada[dia].push(horaFormatada);
                         });
 
                         estruturaHorarios = '';
                         for (const dia in agendaAgrupada) {
+                            // Agora o botão inclui um onclick que redireciona o usuário para agendar no perfil!
                             const botoesDoDia = agendaAgrupada[dia].map(hora => 
-                                `<button class="btn-horario">${hora}</button>`
+                                `<button class="btn-horario" onclick="window.location.href='../perfil.php?id=${prof.id_profissional}'" style="cursor: pointer;" title="Agendar este horário">${hora}</button>`
                             ).join('');
 
                             estruturaHorarios += `

@@ -73,51 +73,43 @@ try {
         mysqli_stmt_close($stmt);
 
     } elseif ($tipo_usuario === 'profissional') {
-
         $reg_prof      = limpar($_POST['registro_profissional'] ?? '');
         $especialidade = limpar($_POST['especialidade'] ?? '');
         $localizacao   = limpar($_POST['localizacao'] ?? '');
         $biografia     = limpar($_POST['biografia'] ?? '');
         $data_emissao  = !empty($_POST['data_emissao']) ? $_POST['data_emissao'] : null;
+        $titulo_cert   = limpar($_POST['titulo_certificado'] ?? 'Certificado de Formação'); // NOVO
 
-        $url_doc = null;
-        $doc_foto = null;
+        $url_doc = "";
+        $doc_foto = "";
 
-        if (!empty($_FILES['url_documento']['name']) && $_FILES['url_documento']['error'] === 0) {
+        if (!empty($_FILES['url_documento']['name'])) {
             $nome_arq = 'cert_' . $usuario_id . '_' . time() . '.pdf';
-            $destino = sys_get_temp_dir() . '/' . $nome_arq;
-            if (move_uploaded_file($_FILES['url_documento']['tmp_name'], $destino)) {
-                $url_doc = $destino;
-            }
+            $destino = '../../uploads/certificados/' . $nome_arq;
+            if (move_uploaded_file($_FILES['url_documento']['tmp_name'], $destino)) $url_doc = $destino;
         }
-
-        if (!empty($_FILES['documento_foto']['name']) && $_FILES['documento_foto']['error'] === 0) {
+        if (!empty($_FILES['documento_foto']['name'])) {
             $ext = pathinfo($_FILES['documento_foto']['name'], PATHINFO_EXTENSION);
             $nome_arq = 'doc_' . $usuario_id . '_' . time() . '.' . $ext;
-            $destino = sys_get_temp_dir() . '/' . $nome_arq;
-            if (move_uploaded_file($_FILES['documento_foto']['tmp_name'], $destino)) {
-                $doc_foto = $destino;
-            }
+            $destino = '../../uploads/documentos/' . $nome_arq;
+            if (move_uploaded_file($_FILES['documento_foto']['tmp_name'], $destino)) $doc_foto = $destino;
         }
 
-        if (empty($reg_prof)) {
-            $reg_prof = 'TEMP_' . $usuario_id;
-        }
-
+        // Insere na tabela profissional
         $sql_prof = "INSERT INTO profissional (id_profissional, registro_profissional, especialidade, localizacao, biografia, url_documento, data_emissao, documento_foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conexao, $sql_prof);
-
-        if (!$stmt) {
-            die("Erro ao preparar profissional: " . mysqli_error($conexao));
-        }
-
         mysqli_stmt_bind_param($stmt, 'isssssss', $usuario_id, $reg_prof, $especialidade, $localizacao, $biografia, $url_doc, $data_emissao, $doc_foto);
-
-        if (!mysqli_stmt_execute($stmt)) {
-            die("Erro ao inserir profissional: " . mysqli_error($conexao));
-        }
-
+        mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+
+        // Insere na tabela certificado (NOVO)
+        if (!empty($url_doc)) {
+            $sql_cert = "INSERT INTO certificado (id_profissional, titulo, data_emissao, url_documento) VALUES (?, ?, ?, ?)";
+            $stmt_cert = mysqli_prepare($conexao, $sql_cert);
+            mysqli_stmt_bind_param($stmt_cert, 'isss', $usuario_id, $titulo_cert, $data_emissao, $url_doc);
+            mysqli_stmt_execute($stmt_cert);
+            mysqli_stmt_close($stmt_cert);
+        }
     }
 
     $_SESSION['id'] = $usuario_id;

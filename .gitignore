@@ -1,0 +1,5 @@
+uploads/*
+!uploads/
+!uploads/certificados/
+uploads/certificados/*
+!uploads/certificados/.gitkeep

@@ -76,3 +76,29 @@ input, textarea, select {
 #campo-acessibilidade-detalhe {
     display: none;
 }
+
+.form-section-certificado {
+    margin-top: 30px;
+    padding: 20px;
+    /* Usando a variável nativa do seu projeto para manter a mesma cor azul */
+    border: 2px dashed var(--primary-color); 
+    border-radius: 8px;
+    /* Um fundo levemente diferente para destacar que é uma seção à parte */
+    background-color: #f9fbfd; 
+}
+
+.certificado-title {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.certificado-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
