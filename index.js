@@ -11,17 +11,32 @@ fetch("conta/login/get_session.php")
         <a href="conta/login/logout.php" class="btn-sair">Sair</a>
       `;
 
-      // Pierre > Altera a navegação dinamicamente conforme o tipo de usuário
+      // Pierre > Altera a navegação dinamicamente conforme o tipo de usuário (Incluindo Admin)
       if (navBotoes) {
-        const linkConsultas = data.tipo === 'profissional' 
-          ? 'consulta/confirmar.php' 
-          : 'consulta/index.html';
-        const textoLink = data.tipo === 'profissional' ? 'Confirmar Consultas' : 'Consultas';
+        let linkConsultas = 'consulta/index.html';
+        let textoLink = 'Consultas';
+
+        // Validação dos tipos de perfis do banco
+        if (data.tipo === 'profissional') {
+          linkConsultas = 'consulta/confirmar.php';
+          textoLink = 'Confirmar Consultas';
+        } else if (data.tipo === 'admin') {
+          linkConsultas = 'admin/admin.html'; 
+          textoLink = 'Painel Admin';
         
-        navBotoes.innerHTML = `
-          <a href="perfil/" class="btn-nav">Meu Perfil</a>
-          <a href="${linkConsultas}" class="btn-nav">${textoLink}</a>
-        `;
+        }
+        
+        // Renderiza os botões correspondentes ao nível de acesso
+        if (data.tipo === 'admin') {
+          navBotoes.innerHTML = `
+            <a href="${linkConsultas}" class="btn-nav">${textoLink}</a>
+          `;
+        } else {
+          navBotoes.innerHTML = `
+            <a href="perfil/" class="btn-nav">Meu Perfil</a>
+            <a href="${linkConsultas}" class="btn-nav">${textoLink}</a>
+          `;
+        }
       }
     }
   })

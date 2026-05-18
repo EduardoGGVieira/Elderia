@@ -16,6 +16,13 @@ CREATE TABLE usuario (
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- pega o horario atual do sistema e salva automaticamente quando o usuário é criado
 );
 
+-- tabela de admin criada, mas não precisa existir
+-- CREATE TABLE admin (
+--     id_admin INT PRIMARY KEY,
+--     cargo VARCHAR(50) DEFAULT 'Administrador de Sistema',
+--     FOREIGN KEY (id_admin) REFERENCES usuario(id_usuario) ON DELETE CASCADE
+-- );
+
 
 CREATE TABLE idoso (
     id_idoso INT PRIMARY KEY,
@@ -33,7 +40,7 @@ CREATE TABLE profissional (
     registro_profissional VARCHAR(50) UNIQUE NOT NULL,
     especialidade VARCHAR(100),
     biografia TEXT,
-    visibilidade BOOLEAN DEFAULT TRUE, -- precisa ser visível para aparecer na lista de profissionais, o profissional pode escolher se quer ou não aparecer publicamente, tem q add isso no cadastro do profissional
+    visibilidade BOOLEAN DEFAULT FALSE, -- precisa ser visível para aparecer na lista de profissionais, o profissional pode escolher se quer ou não aparecer publicamente, tem q add isso no cadastro do profissional
 
     data_emissao DATE,
     url_documento VARCHAR(255), 
@@ -114,7 +121,7 @@ INSERT INTO profissional (id_profissional, registro_profissional, especialidade,
 
 
 -- ADIMIN
-INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Eduardo Guilhermino', 'edu@ggv', '$2y$10$CaMhbwmQxvfYesMhwT7.DuByPCew4X8FGOYJpk52Z2B1u8akmLYFS', '41999999999', '999.999.999-99', 'admin');
+INSERT INTO usuario (nome, email, senha, telefone, cpf, tipo_usuario) VALUES ('Eduardo Guilhermino ADMIN', 'edu@ggv', '$2y$10$CaMhbwmQxvfYesMhwT7.DuByPCew4X8FGOYJpk52Z2B1u8akmLYFS', '41999999999', '999.999.999-99', 'admin');
 
 
 -- PROFISSIONAIS

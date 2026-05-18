@@ -9,7 +9,7 @@ $id_prof = $_GET['id'] ?? null;
 if (!$id_prof) {
     die("Profissional não encontrado.");
 }
-
+ 
 // ======================================
 // BUSCA DADOS DO PROFISSIONAL
 // ======================================
