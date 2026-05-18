@@ -111,6 +111,16 @@ h2 {
 <div class="container" id="user-list"></div>
 
 <script>
+// Proteção de rota: verifica se o usuário é admin antes de carregar os dados
+async function verificarAcessoAdmin() {
+    const res = await fetch('../conta/login/get_session.php');
+    const data = await res.json();
+    if (!data.logged_in || data.tipo !== 'admin') {
+        window.location.href = '../index.html';
+    }
+}
+verificarAcessoAdmin();
+
 async function carregarUsuarios() {
     const res = await fetch('admin_api.php?action=list');
     const usuarios = await res.json();
