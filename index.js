@@ -41,28 +41,29 @@ fetch("conta/login/get_session.php")
         }
       }
 
-      // Lógica específica para Admin: Esconde busca/profissionais e mostra área de ticket
-      if (data.tipo === 'admin') {
-        if (secaoBoasVindas) secaoBoasVindas.style.display = 'none';
-        
-        if (secaoProfissionais) {
-          secaoProfissionais.innerHTML = `
-            <div class="secao-titulo" style="text-align: center; margin-top: 50px;">
-                <h2>Área de Suporte Admin</h2>
-                <div class="linha-decorativa"></div>
-                <p style="margin: 20px 0; color: #555; font-size: 1.1rem;">
-                  Olá, <strong>${data.nome}</strong>. Como administrador, você tem acesso direto aos desenvolvedores.
-                </p>
-                <p style="color: #777; margin-bottom: 30px;">Use o botão abaixo para abrir um ticket ou reportar falhas no sistema.</p>
-                <a href="mailto:devs@elderia.com.br?subject=Suporte Administrativo - Elderia (Admin: ${data.nome})&body=Olá Equipe de Desenvolvimento,%0D%0A%0D%0AComo administrador do sistema Elderia, gostaria de reportar o seguinte:%0D%0A%0D%0A[Escreva sua mensagem aqui]" class="btn-pesquisar" style="display: inline-block; text-decoration: none;">Enviar Ticket para Desenvolvedores</a>
-            </div>
-          `;
-        }
-      } else {
-        carregarProfissionais();
+      // Lógica específica para Admin: Adiciona área de suporte entre a busca e os profissionais
+      if (data.tipo === 'admin' && secaoBoasVindas) {
+        secaoBoasVindas.insertAdjacentHTML('afterend', `
+          <div class="suporte-admin-container" style="background-color: #f9f9f9; padding: 40px 20px; border-bottom: 2px solid #eee;">
+              <div class="secao-titulo" style="text-align: center;">
+                  <h2>Área de Suporte Admin</h2>
+                  <div class="linha-decorativa"></div>
+                  <p style="margin: 20px 0; color: #555; font-size: 1.1rem;">
+                    Olá, <strong>${data.nome}</strong>. Como administrador, você tem acesso direto aos desenvolvedores.
+                  </p>
+                  <p style="color: #777; margin-bottom: 30px;">Use o botão abaixo para abrir um ticket ou reportar falhas no sistema.</p>
+                  <a href="mailto:devs@elderia.com.br?subject=Suporte Administrativo - Elderia (Admin: ${data.nome})&body=Olá Equipe de Desenvolvimento,%0D%0A%0D%0AComo administrador do sistema Elderia, gostaria de reportar o seguinte:%0D%0A%0D%0A[Escreva sua mensagem aqui]" class="btn-pesquisar" style="display: inline-block; text-decoration: none;">Enviar Ticket para Desenvolvedores</a>
+              </div>
+          </div>
+        `);
+
+        // Oculta a seção inteira de profissionais (título e cards) para o administrador
+        if (secaoProfissionais) secaoProfissionais.style.display = 'none';
       }
-    } else {
-      // Usuário visitante (não logado) vê a lista normal
+    }
+
+    // Carrega a lista de profissionais apenas se o usuário NÃO for administrador
+    if (data.tipo !== 'admin') {
       carregarProfissionais();
     }
   })
