@@ -1,6 +1,8 @@
 const feed = document.querySelector(".grid-profissionais"); 
 const headerUser = document.querySelector(".usuario-info");
 const navBotoes = document.querySelector(".navegacao-botoes");
+const secaoBoasVindas = document.querySelector(".boas-vindas");
+const secaoProfissionais = document.querySelector(".aba-profissionais");
 
 fetch("conta/login/get_session.php")
   .then((response) => response.json())
@@ -21,7 +23,7 @@ fetch("conta/login/get_session.php")
           linkConsultas = 'consulta/confirmar.php';
           textoLink = 'Confirmar Consultas';
         } else if (data.tipo === 'admin') {
-          linkConsultas = 'admin/admin.html'; 
+          linkConsultas = 'admin/admin.php'; 
           textoLink = 'Painel Admin';
         
         }
@@ -38,21 +40,47 @@ fetch("conta/login/get_session.php")
           `;
         }
       }
+
+      // Lógica específica para Admin: Esconde busca/profissionais e mostra área de ticket
+      if (data.tipo === 'admin') {
+        if (secaoBoasVindas) secaoBoasVindas.style.display = 'none';
+        
+        if (secaoProfissionais) {
+          secaoProfissionais.innerHTML = `
+            <div class="secao-titulo" style="text-align: center; margin-top: 50px;">
+                <h2>Área de Suporte Admin</h2>
+                <div class="linha-decorativa"></div>
+                <p style="margin: 20px 0; color: #555; font-size: 1.1rem;">
+                  Olá, <strong>${data.nome}</strong>. Como administrador, você tem acesso direto aos desenvolvedores.
+                </p>
+                <p style="color: #777; margin-bottom: 30px;">Use o botão abaixo para abrir um ticket ou reportar falhas no sistema.</p>
+                <a href="mailto:devs@elderia.com.br?subject=Suporte Administrativo - Elderia (Admin: ${data.nome})&body=Olá Equipe de Desenvolvimento,%0D%0A%0D%0AComo administrador do sistema Elderia, gostaria de reportar o seguinte:%0D%0A%0D%0A[Escreva sua mensagem aqui]" class="btn-pesquisar" style="display: inline-block; text-decoration: none;">Enviar Ticket para Desenvolvedores</a>
+            </div>
+          `;
+        }
+      } else {
+        carregarProfissionais();
+      }
+    } else {
+      // Usuário visitante (não logado) vê a lista normal
+      carregarProfissionais();
     }
   })
   .catch((error) => console.error("Erro ao verificar sessão:", error));
 
-if (feed) {
-  fetch("get_profissionais.php")
-    .then((response) => response.json())
-    .then((data) => {
-      feed.innerHTML = ""; 
-      data.forEach((prof) => {
-        const card = criarCardProfissional(prof);
-        feed.appendChild(card);
-      });
-    })
-    .catch((error) => console.error("Erro ao buscar profissionais:", error));
+function carregarProfissionais() {
+  if (feed) {
+    fetch("get_profissionais.php")
+      .then((response) => response.json())
+      .then((data) => {
+        feed.innerHTML = ""; 
+        data.forEach((prof) => {
+          const card = criarCardProfissional(prof);
+          feed.appendChild(card);
+        });
+      })
+      .catch((error) => console.error("Erro ao buscar profissionais:", error));
+  }
 }
 
 function criarCardProfissional(prof) {
