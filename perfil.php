@@ -68,7 +68,7 @@ $resultado_horarios = mysqli_stmt_get_result($stmt_horarios);
 // BUSCA AVALIAÇÕES DO PROFISSIONAL
 // ======================================
 $sql_avaliacoes = "
-SELECT a.nota, a.comentario, u.nome 
+SELECT a.id_avaliacao, a.nota, a.comentario, u.nome 
 FROM avaliacao a
 INNER JOIN usuario u ON a.id_usuario = u.id_usuario
 WHERE a.id_profissional = ? AND a.status_moderacao != 'rejeitada'
@@ -134,11 +134,73 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
             color: #999;
             font-style: italic;
         }
+
+        .view {
+    background: #ffb3b3;
+    color: #8b0000;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+
+    display: block;
+    margin-left: auto;
+    margin-top: 12px;
+
+    transition: 0.2s ease;
+}
+
+.view:hover {
+    background: #ff9999;
+    transform: scale(1.03);
+}
+
+.view:active {
+    transform: scale(0.98);
+}
+.mensagem-status {
+    display: none;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    animation: aparecer 0.3s ease;
+}
+
+.mensagem-sucesso {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.mensagem-erro {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
     </style>
 </head>
 <body>
 
     <div class="perfil-box">
+
+        <div id="mensagem-status" class="mensagem-status"></div>
+
         <a href="index.html" style="text-decoration: none; color: #00a6ce;">
             ← Voltar para a Home
         </a>
@@ -210,6 +272,11 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
                         </div>
                         <p style="margin: 0 0 10px 0; font-style: italic;">"<?php echo htmlspecialchars($av['comentario']); ?>"</p>
                         <small style="color: #666;">- Avaliado por <strong><?php echo htmlspecialchars($av['nome']); ?></strong></small>
+
+
+                       <button class="view" onclick="apagarAvaliacao(<?= $av['id_avaliacao'] ?>)">
+    Apagar
+</button>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
@@ -246,6 +313,72 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
             <?php endif; ?>
         </div>
     </div>
+                <script>
 
+function mostrarMensagem(texto, tipo) {
+
+    const box = document.getElementById("mensagem-status");
+
+    box.innerText = texto;
+
+    box.className = "mensagem-status";
+
+    if (tipo === "sucesso") {
+        box.classList.add("mensagem-sucesso");
+    } else {
+        box.classList.add("mensagem-erro");
+    }
+
+    box.style.display = "block";
+
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 4000);
+}
+
+async function apagarAvaliacao(id) {
+
+    const confirmar = confirm("Deseja apagar esta avaliação?");
+
+    if (!confirmar) {
+        return;
+    }
+
+    try {
+
+        const resposta = await fetch('admin/deletar_avaliacao.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id_avaliacao=' + id
+        });
+
+        const dados = await resposta.json();
+
+        if (dados.success) {
+
+            mostrarMensagem("Avaliação apagada com sucesso!", "sucesso");
+
+            setTimeout(() => {
+                location.reload();
+            }, 1200);
+
+        } else {
+
+            mostrarMensagem(dados.error, "erro");
+
+        }
+
+    } catch (erro) {
+
+        console.error(erro);
+        mostrarMensagem("Erro ao apagar avaliação.", "erro");
+
+    }
+
+}
+
+</script>
 </body>
 </html>

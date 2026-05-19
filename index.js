@@ -68,6 +68,42 @@ fetch("conta/login/get_session.php")
   })
   .catch((error) => console.error("Erro ao verificar sessão:", error));
 
+
+  
+// função de apagar comentário como admin
+
+function apagarAvaliacao(idAvaliacao) {
+    const mensagemConfirmacao = "Tem certeza que deseja apagar permanentemente esta avaliação? Esta ação não poderá ser desfeita.";
+
+    if (confirm(mensagemConfirmacao)) {
+        const dadosEnviar = new FormData();
+        dadosEnviar.append('id_avaliacao', idAvaliacao);
+
+        fetch("admin/deletar_avaliacao.php", {
+            method: "POST",
+            body: dadosEnviar
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro no servidor (Status: ${response.status})`);
+            }
+            return response.json();
+        })
+        .then(resultado => {
+            if (resultado.success) {
+                alert("Avaliação apagada com sucesso!");
+                window.location.reload(); // Recarrega a página atual para atualizar a lista
+            } else {
+                alert("Erro ao apagar: " + resultado.error);
+            }
+        })
+        .catch(err => {
+            console.error("Erro na requisição:", err);
+            alert("Erro de comunicação: " + err.message);
+        });
+    }
+}
+
 function carregarProfissionais() {
   if (feed) {
     fetch("get_profissionais.php")
