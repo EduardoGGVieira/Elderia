@@ -315,6 +315,17 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
     </div>
                 <script>
 
+                    if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+    $id_perfil_visualizar = (int)$_GET['id'];
+} else {
+    $id_perfil_visualizar = $_SESSION['id'] ?? null;
+}
+
+if (!$id_perfil_visualizar) {
+    header('Location: conta/login/login.html');
+    exit;
+}
+
 function mostrarMensagem(texto, tipo) {
 
     const box = document.getElementById("mensagem-status");

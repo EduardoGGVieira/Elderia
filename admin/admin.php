@@ -129,7 +129,6 @@
     <div class="container" id="user-list"></div>
 
     <script>
-
         async function verificarAcessoAdmin() {
             const res = await fetch('../conta/login/get_session.php');
             const data = await res.json();
@@ -168,7 +167,7 @@
             <p>Email: ${user.email}</p>
             <br>
             <button class="delete" onclick="deletar(${user.id})">Deletar</button>
-            <button class="view" onclick="verAvaliacoes(${user.id})">Ver Avaliações</button>
+            <button class="view" onclick="abrirPerfil(${user.id})">Ver Perfil</button>
         `;
 
                 if (user.tipo && user.tipo.toLowerCase() === 'idoso') {
@@ -184,6 +183,10 @@
             await fetch(`admin_api.php?action=delete_user&id=${id}`);
             carregarUsuarios();
         }
+// NÃO FUNCIONA O BOTÃO DE PERFIL
+               function abrirPerfil(id) {
+    window.location.href = `perfil_profissional.html?id=${id}`;
+}
 
 
 
@@ -207,10 +210,7 @@
             document.getElementById('user-list').innerHTML = html;
         }
 
-        async function deletarAvaliacao(id) {
-            await fetch(`admin_api.php?action=delete_review&id=${id}`);
-            carregarUsuarios();
-        }
+        
 
         carregarUsuarios();
     </script>

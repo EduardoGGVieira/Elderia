@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Profissional</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #F4F7F6;
+            padding: 30px;
+        }
+
+        .card {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1A5F7A;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card" id="perfil">
+        <h1>Carregando perfil...</h1>
+    </div>
+
+    <script>
+
+        async function carregarPerfil() {
+
+            try {
+
+                const params = new URLSearchParams(window.location.search);
+
+                const id = params.get('id');
+
+                console.log("ID recebido:", id);
+
+                const res = await fetch(`admin_api.php?action=get_user&id=${id}`);
+
+                const user = await res.json();
+
+                console.log(user);
+
+                document.getElementById('perfil').innerHTML = `
+                    <h1>${user.nome}</h1>
+
+                    <p><strong>Email:</strong> ${user.email}</p>
+
+                    <p><strong>Tipo:</strong> ${user.tipo}</p>
+                `;
+
+            } catch (erro) {
+
+                console.error(erro);
+
+                document.getElementById('perfil').innerHTML = `
+                    <h1>Erro ao carregar perfil</h1>
+                `;
+            }
+        }
+
+        carregarPerfil();
+
+    </script>
+
+</body>
+
+</html>

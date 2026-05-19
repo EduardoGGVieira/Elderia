@@ -7,20 +7,20 @@ session_start();
 header('Content-Type: application/json; charset=utf-8');
 require_once '../conexao.php'; 
 
-// Segurança: Verifica se o usuário está logado e se ele é um ADMIN
+// SEGURANÇA: Verifica se o usuário está logado E se possui o tipo 'admin'
 if (!isset($_SESSION['id']) || $_SESSION['tipo'] !== 'admin') {
-    echo json_encode(['success' => false, 'error' => 'Acesso negado. Apenas administradores podem apagar avaliações.']);
+    echo json_encode(['success' => false, 'error' => 'Acesso negado. Apenas administradores podem realizar esta ação.']);
     exit;
 }
 
 $id_avaliacao = filter_input(INPUT_POST, 'id_avaliacao', FILTER_VALIDATE_INT);
 
 if (!$id_avaliacao) {
-    echo json_encode(['success' => false, 'error' => 'ID da avaliação inválido.']);
+    echo json_encode(['success' => false, 'error' => 'ID da avaliação inválido ou não informado.']);
     exit;
 }
 
-// Executa a exclusão no banco de dados
+// Executa a exclusão física na tabela 'avaliacao'
 $sql = "DELETE FROM avaliacao WHERE id_avaliacao = ?";
 $stmt = mysqli_prepare($conexao, $sql);
 
@@ -31,14 +31,14 @@ if ($stmt) {
         if (mysqli_stmt_affected_rows($stmt) > 0) {
             echo json_encode(['success' => true]);
         } else {
-            echo json_encode(['success' => false, 'error' => 'Avaliação não encontrada ou já foi removida.']);
+            echo json_encode(['success' => false, 'error' => 'A avaliação não foi encontrada ou já foi removida.']);
         }
     } else {
-        echo json_encode(['success' => false, 'error' => 'Falha ao executar a exclusão no banco de dados.']);
+        echo json_encode(['success' => false, 'error' => 'Falha na execução do banco de dados: ' . mysqli_stmt_error($stmt)]);
     }
     mysqli_stmt_close($stmt);
 } else {
-    echo json_encode(['success' => false, 'error' => 'Erro na preparação do comando SQL.']);
+    echo json_encode(['success' => false, 'error' => 'Falha na preparação da consulta SQL.']);
 }
 
 mysqli_close($conexao);
