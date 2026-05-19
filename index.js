@@ -21,7 +21,7 @@ fetch("conta/login/get_session.php")
           linkConsultas = 'consulta/confirmar.php';
           textoLink = 'Confirmar Consultas';
         } else if (data.tipo === 'admin') {
-          linkConsultas = 'admin/admin.html'; 
+          linkConsultas = 'admin/admin.php'; 
           textoLink = 'Painel Admin';
         
         }
