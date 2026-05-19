@@ -81,11 +81,6 @@
             color: white;
         }
 
-        .ban {
-            background: #f39c12;
-            color: white;
-        }
-
         .view {
             background: var(--cor-primaria);
             color: white;
@@ -173,7 +168,6 @@
             <p>Email: ${user.email}</p>
             <br>
             <button class="delete" onclick="deletar(${user.id})">Deletar</button>
-            <button class="ban" onclick="banir(${user.id})">Banir</button>
             <button class="view" onclick="verAvaliacoes(${user.id})">Ver Avaliações</button>
         `;
 
@@ -191,10 +185,7 @@
             carregarUsuarios();
         }
 
-        async function banir(id) {
-            await fetch(`admin_api.php?action=ban_user&id=${id}`);
-            carregarUsuarios();
-        }
+
 
         async function verAvaliacoes(id) {
             const res = await fetch(`admin_api.php?action=list_reviews&id=${id}`);
