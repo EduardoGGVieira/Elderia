@@ -258,12 +258,12 @@ Passo 1:
 -Comando desc usuario (*nome da tabela*); --para saber se a tabela foi alterada.
 
 Passo 2:
+--Adicionar no formulário solicitado pelo professor (no exemplo: Cadastro.html):
 <div class="form-group">
                         <label for="nome" >Abobrinha</label>
 
                         <input type="text" id="abobrinha" name="abobrinha">
                     </div>
---Adicionar no formulário solicitado pelo professor.
 
 Passo 3:
 -Abrir o arquivo "cadastro.php".
@@ -280,7 +280,7 @@ mysqli_stmt_bind_param($stmt, 'sssssss', $_POST['abobrinha'], $nome, $cpf, $emai
 Passo 5:
 -Abrir o arquivo conta/login/get_session.php.
 -Adicionar uma "variável" entre as já existentes:
-'u' => $_SESSION['u']
+'u' => $_SESSION['u'],
 
 Passo 6:
 -Abrir o arquivo conta/login/login.php.
@@ -289,11 +289,9 @@ $_SESSION['u'] = $usuario;
 
 Passo 7:
 -Abrir o arquivo perfil/index.html.
-<h1>Abobrinha: ${data.u['abobrinha']}</h1> --*Colocar essa parte ANTES do script final.
+<h1>Abobrinha: ${data.u['abobrinha']}</h1> --*Colocar essa parte no script final após o "infodiv.innerhtml"*.
 
 Passo 8: 
 -Continuar no mesmo arquivo.
 -Adicionar após o segundo ".then" e o primeiro "fetch":
-	
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+console.log(data);
