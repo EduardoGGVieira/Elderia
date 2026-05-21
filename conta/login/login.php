@@ -1,47 +1,65 @@
 <?php
-// Configurações de erro para ajudar no desenvolvimento
-// Atualizado por André Felipe
+// CODIGO CORRIGIDO PELO PIERRE
+// DESENVOLVIMENTO: desative em produção (display_errors = 0)
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
+
 session_start();
 header('Content-Type: application/json');
 
-// Incluindo a conexão centralizada para evitar repetição de código
-// Corrigido por André Felipe
 require_once '../../conexao.php';
 
-// O identificador pode ser e-mail ou cpf
-
-// trim para remover espaços extras
 $identificador = trim($_POST['identificador'] ?? '');
-$senha = $_POST['senha'] ?? '';
+$senha         = $_POST['senha'] ?? '';
 
 if (empty($identificador) || empty($senha)) {
     echo json_encode(['success' => false, 'message' => 'Preencha todos os campos.']);
     exit;
 }
 
-// Corrigido por André Felipe: Nome da tabela 'usuario' em minúsculo e busca por id_usuario
-$stmt = mysqli_prepare($conexao, "SELECT * FROM usuario WHERE email = ? OR cpf = ? LIMIT 1");
+// Seleciona apenas as colunas necessárias — nunca SELECT *
+$stmt = mysqli_prepare(
+    $conexao,
+    "SELECT id_usuario, nome, tipo_usuario, email, senha
+     FROM usuario
+     WHERE email = ? OR cpf = ?
+     LIMIT 1"
+);
+
+// Verifica se o prepare falhou (ex: erro de sintaxe SQL, tabela inexistente)
+if (!$stmt) {
+    error_log('mysqli_prepare falhou: ' . mysqli_error($conexao));
+    echo json_encode(['success' => false, 'message' => 'Erro interno. Tente novamente.']);
+    exit;
+}
+
 mysqli_stmt_bind_param($stmt, 'ss', $identificador, $identificador);
 mysqli_stmt_execute($stmt);
-$resultado = mysqli_stmt_get_result($stmt);
-$usuario = mysqli_fetch_assoc($resultado);
 
-// Verifica a senha usando hash (segurança)
+$resultado = mysqli_stmt_get_result($stmt);
+$usuario   = mysqli_fetch_assoc($resultado);
+
 if ($usuario && password_verify($senha, $usuario['senha'])) {
+
+    // Regenera o ID de sessão após login — previne session fixation
+    session_regenerate_id(true);
+
     $_SESSION['id']    = $usuario['id_usuario'];
     $_SESSION['nome']  = $usuario['nome'];
     $_SESSION['tipo']  = $usuario['tipo_usuario'];
     $_SESSION['email'] = $usuario['email'];
 
-    // Redirecionamento corrigido para a pasta de perfil (já que dashboard não existe)
-    // Atualizado por André Felipe
-    $redirect = '../../perfil/index.html'; 
+    // Caminho absoluto a partir da raiz do site — resolve o loop
+    // Ajuste '/Elderia/' para o subdiretório real do seu projeto
+    $redirect = '/Elderia/perfil/index.html';
 
     echo json_encode(['success' => true, 'redirect' => $redirect]);
+
 } else {
-    echo json_encode(['success' => false, 'message' => 'E-mail/CPF ou senha incorretos.']);
+    // Mensagem genérica — não revela se o e-mail existe ou não
+    echo json_encode(['success' => false, 'message' => 'Credenciais inválidas.']);
 }
+
+mysqli_stmt_close($stmt);
 exit;
 ?>
