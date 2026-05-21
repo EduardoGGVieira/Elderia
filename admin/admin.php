@@ -251,7 +251,7 @@
                 <br>
 
                 <button class="delete" onclick="deletar(${user.id})">Deletar</button>
-                <button class="view" onclick="abrirPerfil(${user.id})">Ver Perfil</button>
+                <button class="view" onclick="abrirPerfil(${user.id}, '${user.tipo}')">Ver Perfil</button>
 
                 ${ehProfissional ? `<button class="view" onclick="toggleDocumentos(${user.id})">Ver documentos</button>` : ''}
 
@@ -273,9 +273,13 @@
         carregarUsuarios();
     }
 
-    function abrirPerfil(id) {
+    function abrirPerfil(id, tipo) {
+    if (tipo && tipo.toLowerCase() === 'idoso') {
+        window.location.href = `../perfil/ver_ficha.php?id=${id}`;
+    } else {
         window.location.href = `../perfil.php?id=${id}`;
     }
+}
 
     async function toggleDocumentos(id) {
         const area = document.getElementById(`docs-${id}`);

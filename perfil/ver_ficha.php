@@ -2,15 +2,9 @@
 session_start();
 require_once '../conexao.php';
 
-//Verificação de segurança: apenas profissionais logados podem ver fichas
-if (!isset($_SESSION['id']) || $_SESSION['tipo'] !== 'professional') {
-    // Se não for profissional, redireciona. 
-    // Nota: Verifique se no seu banco o tipo é 'profissional' ou 'professional'. 
-    // Ajustando para 'profissional' conforme o padrão visto nos outros arquivos.
-    if ($_SESSION['tipo'] !== 'profissional') {
-        header('Location: ../index.html');
-        exit;
-    }
+if (!isset($_SESSION['id']) || !in_array($_SESSION['tipo'], ['profissional', 'admin'])) {
+    header('Location: ../index.html');
+    exit;
 }
 
 $id_idoso = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
