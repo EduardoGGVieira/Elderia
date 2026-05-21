@@ -274,9 +274,13 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
                         <small style="color: #666;">- Avaliado por <strong><?php echo htmlspecialchars($av['nome']); ?></strong></small>
 
 
-                       <button class="view" onclick="apagarAvaliacao(<?= $av['id_avaliacao'] ?>)">
+                       <?php if (isset($_SESSION['tipo']) && $_SESSION['tipo'] === 'admin'): ?>
+
+<button class="view" onclick="apagarAvaliacao(<?= $av['id_avaliacao'] ?>)">
     Apagar
 </button>
+
+<?php endif; ?>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
