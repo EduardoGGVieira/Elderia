@@ -319,17 +319,6 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
     </div>
                 <script>
 
-                    if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $id_perfil_visualizar = (int)$_GET['id'];
-} else {
-    $id_perfil_visualizar = $_SESSION['id'] ?? null;
-}
-
-if (!$id_perfil_visualizar) {
-    header('Location: conta/login/login.html');
-    exit;
-}
-
 function mostrarMensagem(texto, tipo) {
 
     const box = document.getElementById("mensagem-status");
@@ -361,7 +350,7 @@ async function apagarAvaliacao(id) {
 
     try {
 
-        const resposta = await fetch('admin/deletar_avaliacao.php', {
+        const resposta = await fetch('./admin/deletar_avaliacao.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -369,7 +358,7 @@ async function apagarAvaliacao(id) {
             body: 'id_avaliacao=' + id
         });
 
-        const dados = await resposta.json();
+    const dados = await resposta.json();
 
         if (dados.success) {
 
@@ -388,6 +377,7 @@ async function apagarAvaliacao(id) {
     } catch (erro) {
 
         console.error(erro);
+
         mostrarMensagem("Erro ao apagar avaliação.", "erro");
 
     }
