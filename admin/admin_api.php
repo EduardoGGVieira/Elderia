@@ -47,11 +47,70 @@ elseif ($action === 'delete_user') {
         json_out(['success' => false, 'message' => 'ID inválido.']);
     }
 
-    $stmt = $conexao->prepare("DELETE FROM usuario WHERE id_usuario = ? AND tipo_usuario != 'admin'");
+    // Busca o tipo do usuário e caminhos de arquivos antes de deletar
+    $stmtBusca = $conexao->prepare("SELECT tipo_usuario FROM usuario WHERE id_usuario = ?");
+    $stmtBusca->bind_param("i", $id);
+    $stmtBusca->execute();
+    $resBusca = $stmtBusca->get_result();
+    $user = $resBusca->fetch_assoc();
+
+    if (!$user) {
+        json_out(['success' => false, 'message' => 'Usuário não encontrado.']);
+    }
+
+    $tipo = $user['tipo_usuario'];
+
+    // Iniciamos uma transação para garantir que ou deleta tudo ou não deleta nada
+    $conexao->begin_transaction();
+
+    try {
+        if ($tipo === 'profissional') {
+            // 1. Remove arquivos de certificados e registros
+            $stmtC = $conexao->prepare("SELECT url_documento FROM certificado WHERE id_profissional = ?");
+            $stmtC->bind_param("i", $id);
+            $stmtC->execute();
+            $resC = $stmtC->get_result();
+            while ($cert = $resC->fetch_assoc()) {
+                apagar_arquivo_se_existir($cert['url_documento']);
+            }
+            $conexao->query("DELETE FROM certificado WHERE id_profissional = $id");
+
+            // 2. Remove arquivo de documentação profissional
+            $stmtP = $conexao->prepare("SELECT documentacao_url FROM profissional WHERE id_profissional = ?");
+            $stmtP->bind_param("i", $id);
+            $stmtP->execute();
+            $prof = $stmtP->get_result()->fetch_assoc();
+            if ($prof) {
+                apagar_arquivo_se_existir($prof['documentacao_url']);
+            }
+
+            // 3. Limpa agenda, consultas e avaliações vinculadas ao profissional
+            $conexao->query("DELETE FROM agenda_disponivel WHERE id_profissional = $id");
+            $conexao->query("DELETE FROM consulta WHERE id_profissional = $id");
+            $conexao->query("DELETE FROM avaliacao WHERE id_profissional = $id");
+            $conexao->query("DELETE FROM profissional WHERE id_profissional = $id");
+
+        } elseif ($tipo === 'idoso') {
+            // Limpa consultas e registro de idoso
+            $conexao->query("DELETE FROM consulta WHERE id_idoso = $id");
+            $conexao->query("DELETE FROM idoso WHERE id_idoso = $id");
+        }
+
+        // Limpa avaliações que o usuário possa ter escrito (comum a ambos os tipos)
+        $conexao->query("DELETE FROM avaliacao WHERE id_usuario = $id");
+
+        // Por fim, deleta o registro principal na tabela usuario
+        $stmt = $conexao->prepare("DELETE FROM usuario WHERE id_usuario = ? AND tipo_usuario != 'admin'");
     $stmt->bind_param("i", $id);
     $stmt->execute();
+        
+        $conexao->commit();
+        json_out(['success' => true]);
 
-    json_out(['success' => true]);
+    } catch (Exception $e) {
+        $conexao->rollback();
+        json_out(['success' => false, 'message' => 'Erro ao deletar: ' . $e->getMessage()]);
+    }
 }
 
 elseif ($action === 'get_user') {
