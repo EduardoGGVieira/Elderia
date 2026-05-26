@@ -275,13 +275,68 @@
                 transform: scale(1);
             }
         }
+
+        .haroldo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-container a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .navegacao-botoes {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-nav,
+        .btn-sair {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .btn-nav:hover,
+        .btn-sair:hover {
+            text-decoration: underline;
+        }
+
+        .usuario-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <h1>Elderia Admin</h1>
+            <a href="../index.html">
+                <h1>ELDERIA</h1>
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
+                    class="haroldo">
+            </a>
+        </div>
+        <nav class="navegacao-botoes">
+            <a href="../index.html" class="btn-nav">Voltar</a>
+        </nav>
+
+        <div class="usuario-info" id="area-usuario">
+            <a href="../conta/login/logout.php" class="btn-sair">Sair</a>
         </div>
     </header>
 
