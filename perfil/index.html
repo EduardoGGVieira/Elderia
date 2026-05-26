@@ -21,7 +21,11 @@
             <a href="../index.html" class="btn-nav">Voltar</a>
         </nav>
 
-    <div class="usuario-info" id="area-usuario">
+        <div>
+            <a href="trocasenha.html">Mudar senha</a>
+        </div>
+
+        <div class="usuario-info" id="area-usuario">
             <a href="../conta/login/logout.php" class="btn-sair">Sair</a>
         </div>
         <!-- <script>
@@ -55,11 +59,12 @@
                 const infoDiv = document.getElementById('perfil-info');
 
                 if (!data.logged_in) {
-                    // se nao estiver logado manda pra fazer login
+   
                     window.location.href = '../conta/login/login.html';
-                } else {
-                    // se tiver logado so preenche os dados
+                } else if (data.tipo === 'profissional' || data.tipo === 'idoso') {
+
                     infoDiv.innerHTML = `
+                
     <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
         <p style="margin-bottom: 10px;"><strong>Nome:</strong> ${data.nome}</p>
         <p style="margin-bottom: 10px;"><strong>ID de Usuário:</strong> ${data.id}</p>
@@ -94,6 +99,16 @@ ${data.tipo === 'profissional' ? `
     box-sizing: border-box;
 ">Disponibilizar Horários</a>
 ` : ''}
+    </div>
+`;
+                } else if (data.tipo === 'admin') {
+                    infoDiv.innerHTML = `
+                
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
+        <p style="margin-bottom: 10px;"><strong>Nome:</strong> ${data.nome}</p>
+        <p style="margin-bottom: 10px;"><strong>ID de Usuário:</strong> ${data.id}</p>
+        <p style="margin-bottom: 10px;"><strong>E-mail:</strong> ${data.email}</p>
+        <p style="margin-bottom: 20px;"><strong>Tipo de Perfil:</strong> ${data.tipo.charAt(0).toUpperCase() + data.tipo.slice(1)}</p>
     </div>
 `;
                 }

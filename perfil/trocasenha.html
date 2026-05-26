@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderia - Alterar Senha</title>
+    <link rel="stylesheet" href="../index.css">
+    <style>
+        .conteiner-senha {
+            max-width: 550px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card-senha {
+            background-color: var(--cor-card);
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid var(--cor-borda);
+        }
+
+        .aviso-senha {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+
+
+        .form-grupo {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+
+        .form-grupo input {
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            border: 2px solid var(--cor-borda);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-grupo input:focus {
+            border-color: var(--cor-primaria);
+        }
+
+        .btn-salvar {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            background-color: var(--cor-secundaria);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <a href="../index.html">
+                <h1>ELDERIA</h1>
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
+                    class="haroldo">
+            </a>
+        </div>
+        <nav class="navegacao-botoes">
+            <a href="index.html" class="btn-nav">Voltar</a>
+        </nav>
+
+        <div class="usuario-info" id="area-usuario">
+            <a href="../conta/login/logout.php" class="btn-sair">Sair</a>
+        </div>
+    </header>
+
+    <main class="conteiner-senha">
+        <div class="card-senha">
+            <h2>Alterar Senha</h2>
+
+            <div class="aviso-senha">
+
+                <div>
+                    <strong>Aviso importante:</strong> Para a sua segurança, a sua senha antiga será permanentemente
+                    excluída do sistema e substituída pela nova senha criada abaixo.
+                </div>
+            </div>
+
+            <form id="form-trocar-senha">
+                <div class="form-grupo">
+                    <label for="oldPassword">Senha Atual</label>
+                    <input type="password" id="oldPassword" name="oldPassword" placeholder="Digite sua senha atual"
+                        required autocomplete="current-password">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="newPassword">Nova Senha</label>
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Digite a nova senha"
+                        required autocomplete="new-password">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="confirmPassword">Confirmar Nova Senha</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword"
+                        placeholder="Confirme a nova senha" required autocomplete="new-password">
+                    <span id="erro-confirmacao" class="mensagem-alerta">As senhas não coincidem!</span>
+                </div>
+
+                <button type="submit" class="btn-salvar">Salvar Nova Senha</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Verificar se está logado
+        fetch('../conta/login/get_session.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.logged_in) {
+                    window.location.href = '../conta/login/login.html';
+                }
+            })
+            .catch(error => {
+                console.error('Erro de sessão:', error);
+                window.location.href = '../conta/login/login.html';
+            });
+
+        const form = document.getElementById('form-trocar-senha');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const erroConfirmacao = document.getElementById('erro-confirmacao');
+
+        // Validar confirmação em tempo real
+        function validarSenhas() {
+            if (newPassword.value && confirmPassword.value && newPassword.value !== confirmPassword.value) {
+                erroConfirmacao.style.display = 'block';
+                return false;
+            } else {
+                erroConfirmacao.style.display = 'none';
+                return true;
+            }
+        }
+
+        newPassword.addEventListener('input', validarSenhas);
+        confirmPassword.addEventListener('input', validarSenhas);
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (!validarSenhas()) {
+                alert('A nova senha e a confirmação devem ser idênticas.');
+                return;
+            }
+
+            const formData = new FormData(this);
+
+            fetch('trocasenha.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Senha alterada com sucesso! ');
+                        window.location.href = 'http://localhost/Elderia/conta/login/login.html';
+                    } else {
+                        alert('Erro: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    alert('Ocorreu um erro técnico ao atualizar a senha.');
+                });
+        });
+    </script>
+</body>
+
+</html>
