@@ -325,18 +325,36 @@
             .addEventListener('submit', function (e) {
 
                 const senha =
-                    document.getElementById('senha').value;
+                    document.getElementById('senha');
 
                 const confirma =
-                    document.getElementById(
-                        'confirme_senha'
-                    ).value;
+                    document.getElementById('confirme_senha');
 
                 const regexSenha =
                     /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
-                // verifica força da senha
-                if (!regexSenha.test(senha)) {
+                const camposObrigatorios =
+                    document.querySelectorAll(
+                        'input[required], textarea[required], select[required]'
+                    );
+
+                for (const campo of camposObrigatorios) {
+
+                    if (!campo.value.trim()) {
+
+                        e.preventDefault();
+
+                        mostrarMensagem(
+                            'Preencha os campos obrigatórios.'
+                        );
+
+                        irParaCampo(campo);
+
+                        return;
+                    }
+                }
+
+                if (!regexSenha.test(senha.value)) {
 
                     e.preventDefault();
 
@@ -344,17 +362,20 @@
                         'A senha precisa ter no mínimo 8 caracteres, 1 letra maiúscula, 1 número e 1 caractere especial.'
                     );
 
+                    irParaCampo(senha);
+
                     return;
                 }
 
-                // verifica confirmação
-                if (senha !== confirma) {
+                if (senha.value !== confirma.value) {
 
                     e.preventDefault();
 
                     mostrarMensagem(
                         'As senhas não coincidem.'
                     );
+
+                    irParaCampo(confirma);
 
                     return;
                 }
@@ -399,7 +420,7 @@
                             document.getElementById('uf').value = data.uf;
                             document.getElementById('numero').focus();
                         } else {
-                            mostrarMensagem('CEP não encontrado.');
+                            mostrarMensagem('TU NÃO MORA, SE ESCONDE.');
                             ['logradouro', 'bairro', 'cidade', 'uf'].forEach(id => {
                                 document.getElementById(id).value = '';
                             });
@@ -530,7 +551,7 @@
             if (regexSenha.test(senha)) {
 
                 statusSenha.innerHTML =
-                    'Senha forte ✅';
+                    'Senha fortissima :p';
 
                 statusSenha.classList.add('ok');
 
@@ -575,6 +596,25 @@
 
             }, 4000);
         }
+
+        function irParaCampo(campo) {
+
+            campo.classList.add('campo-erro');
+
+            campo.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+
+            campo.focus();
+
+            setTimeout(() => {
+
+                campo.classList.remove('campo-erro');
+
+            }, 2000);
+        }
+
     </script>
 
 </body>
