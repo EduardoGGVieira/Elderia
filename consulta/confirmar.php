@@ -330,7 +330,6 @@ function fmt_hora(string $dt): string {
 
     <?php if (empty($pendentes)): ?>
       <div class="estado-vazio">
-        <div class="icone">✅</div>
         <p>Nenhuma consulta pendente no momento.</p>
       </div>
     <?php else: ?>
@@ -369,7 +368,6 @@ function fmt_hora(string $dt): string {
 
     <?php if (empty($confirmadas)): ?>
       <div class="estado-vazio">
-        <div class="icone">📅</div>
         <p>Você ainda não possui consultas confirmadas.</p>
       </div>
     <?php else: ?>
