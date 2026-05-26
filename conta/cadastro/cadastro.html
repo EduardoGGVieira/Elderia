@@ -114,6 +114,38 @@
 
                 </fieldset>
 
+                <fieldset>
+                    <legend>Endereço</legend>
+                    <div class="form-group">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label for="logradouro">Rua</label>
+                        <input type="text" id="logradouro" name="logradouro" placeholder="Aguardando CEP..." readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" name="bairro" placeholder="Aguardando CEP..." readonly>
+                    </div>
+                    <div class="form-group">
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 3;">
+                                <label for="cidade">Cidade</label>
+                                <input type="text" id="cidade" name="cidade" readonly>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="uf">UF</label>
+                                <input type="text" id="uf" name="uf" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numero">Número e Complemento</label>
+                        <input type="text" id="numero" name="numero" placeholder="Ex: 123, Apto 4">
+                    </div>
+                </fieldset>
+
                 <div id="area-idoso">
 
                     <fieldset style="border-color: #004085;">
@@ -201,14 +233,6 @@
                             </label>
 
                             <input type="text" id="especialidade" name="especialidade" placeholder="ex: Geriatria, Enfermagem...">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="localizacao">
-                                Localização (Onde atende)
-                            </label>
-
-                            <input type="text" id="localizacao" name="localizacao" placeholder="ex: Rua das Flores, 123 - São Paulo">
                         </div>
 
                         <div class="form-group">
@@ -313,6 +337,58 @@
                 }
 
             });
+
+        // Máscaras para CPF e Telefone
+        document.getElementById('cpf').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 9) v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+            else if (v.length > 6) v = v.replace(/^(\d{3})(\d{3})(\d{3})/, "$1.$2.$3");
+            else if (v.length > 3) v = v.replace(/^(\d{3})(\d{3})/, "$1.$2");
+            e.target.value = v;
+        });
+
+        document.getElementById('telefone').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+            else if (v.length > 6) v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, "($1) $2-$3");
+            else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,5})$/, "($1) $2");
+            e.target.value = v;
+        });
+
+        // Lógica de CEP e Auto-preenchimento
+        document.getElementById('cep').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 8) v = v.slice(0, 8);
+            if (v.length > 5) v = v.replace(/^(\d{5})(\d{3})$/, "$1-$2");
+            e.target.value = v;
+
+            if (v.length === 9) {
+                const cep = v.replace('-', '');
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('logradouro').value = data.logradouro;
+                            document.getElementById('bairro').value = data.bairro;
+                            document.getElementById('cidade').value = data.localidade;
+                            document.getElementById('uf').value = data.uf;
+                            document.getElementById('numero').focus();
+                        } else {
+                            alert('CEP não encontrado.');
+                            ['logradouro', 'bairro', 'cidade', 'uf'].forEach(id => {
+                                document.getElementById(id).value = '';
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Erro ao buscar CEP:', err);
+                        alert('Erro ao consultar serviço de CEP.');
+                    });
+            }
+        });
+
         function selecionarPerfil(perfil, botao) {
 
             document.getElementById(
