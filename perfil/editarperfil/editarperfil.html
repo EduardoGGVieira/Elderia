@@ -1,28 +1,135 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Cadastro Completo</title>
     <link rel="stylesheet" href="../../pesquisa/styles.css">
-    <link rel="stylesheet" href="editarperfil.css">
+    <link rel="stylesheet" href="editarperfil.css?v=2">
+    <style>
+        /* Estilos do Toast e Modal Customizados (Evita problemas de cache do CSS externo) */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-20px);
+            transition: 0.3s ease;
+            z-index: 9999;
+            font-weight: bold;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #27ae60;
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 400px;
+            animation: aparecer 0.2s ease;
+        }
+
+        .modal-box h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #e74c3c;
+        }
+
+        .modal-box p {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .cancel-btn {
+            background: #bdc3c7;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cancel-btn:hover,
+        .delete-btn:hover {
+            opacity: 0.85;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
-<body id="main-body">
+
+<body id="main-body" style="display: none;">
 
     <header class="cabecalho-principal">
         <div class="logo-container">
             <a href="../../index.html">
                 <h1>ELDERIA</h1>
-                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
+                    class="haroldo">
             </a>
         </div>
         <nav class="navegacao-botoes">
-            <a href="../index.html" class="btn-nav">Voltar</a> 
+            <a href="../index.html" class="btn-nav">Voltar</a>
         </nav>
     </header>
-    
+
     <form id="form-editar" enctype="multipart/form-data">
-    
+
         <fieldset>
             <legend>Dados Gerais</legend>
 
@@ -114,11 +221,12 @@
                     <label>Documento de Identificação Atual:</label>
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                         <span id="nome-arquivo-atual" style="font-size: 0.9em; color: #555;"></span>
-                        <button type="button" id="btn-remover-cert" class="btn-nav" style="background-color: #d9534f; padding: 5px 10px; color: white; border: none;">Remover</button>
+                        <button type="button" id="btn-remover-cert" class="btn-nav"
+                            style="background-color: #d9534f; padding: 5px 10px; color: white; border: none;">Remover</button>
                     </div>
                     <input type="hidden" name="manter_certificado" id="manter_certificado" value="1">
                 </div>
-                
+
                 <div class="form-group" style="margin-bottom: 30px;">
                     <label>Atualizar Documento Principal (Opcional)</label>
                     <input type="file" name="url_documento" accept=".pdf,.jpg,.png">
@@ -130,20 +238,26 @@
                     <h3 class="certificado-title">
                         Adicionar Novo Certificado
                     </h3>
-                    
+
                     <div class="form-group">
-                        <label id="label_arquivo_certificado" class="certificado-label" for="url_documento_cert">Arquivo do Certificado (PDF)</label>
-                        <input type="file" id="url_documento_cert" name="url_documento_cert" accept=".pdf" onchange="validarCamposCertificado()">
+                        <label id="label_arquivo_certificado" class="certificado-label" for="url_documento_cert">Arquivo
+                            do Certificado (PDF)</label>
+                        <input type="file" id="url_documento_cert" name="url_documento_cert" accept=".pdf"
+                            onchange="validarCamposCertificado()">
                     </div>
 
                     <div class="form-group">
-                        <label id="label_titulo_certificado" class="certificado-label" for="titulo_certificado">Título da Especialização</label>
-                        <input type="text" id="titulo_certificado" name="titulo_certificado" placeholder="Ex: Pós-Graduação em Geriatria" oninput="validarCamposCertificado()">
+                        <label id="label_titulo_certificado" class="certificado-label" for="titulo_certificado">Título
+                            da Especialização</label>
+                        <input type="text" id="titulo_certificado" name="titulo_certificado"
+                            placeholder="Ex: Pós-Graduação em Geriatria" oninput="validarCamposCertificado()">
                     </div>
 
                     <div class="form-group">
-                        <label id="label_data_emissao" class="certificado-label" for="data_emissao_cert">Data de Emissão</label>
-                        <input type="date" id="data_emissao_cert" name="data_emissao_cert" onchange="validarCamposCertificado()">
+                        <label id="label_data_emissao" class="certificado-label" for="data_emissao_cert">Data de
+                            Emissão</label>
+                        <input type="date" id="data_emissao_cert" name="data_emissao_cert"
+                            onchange="validarCamposCertificado()">
                     </div>
                 </div>
 
@@ -155,52 +269,72 @@
         </button>
     </form>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    fetch('get_dados_completo.php')
-    .then(res => res.json())
-    .then(res => {
-        if(res.success){
-            const d = res.dados;
-            document.getElementById('nome').value = d.nome || '';
-            document.getElementById('email').value = d.email || '';
-            document.getElementById('telefone').value = d.telefone || '';
-            document.getElementById('cpf').value = d.cpf || '';
-
-            if(res.tipo === 'idoso'){
-                document.getElementById('campos-idoso').style.display = 'block';
-                document.getElementById('data_nascimento').value = d.data_nascimento || '';
-                document.getElementById('alergias').value = d.alergias || '';
-                document.getElementById('informacoes_saude').value = d.informacoes_saude || '';
-                document.getElementById('possui_acessibilidade').value = d.possui_acessibilidade || 0;
-                document.getElementById('necessidades_acessibilidade').value = d.necessidades_acessibilidade || '';
-            }
-            else if(res.tipo === 'profissional'){
-                document.getElementById('campos-profissional').style.display = 'block';
-                document.getElementById('registro_profissional').value = d.registro_profissional || '';
-                document.getElementById('especialidade').value = d.especialidade || '';
-                document.getElementById('biografia').value = d.biografia || '';
-                document.getElementById('localizacao').value = d.localizacao || '';
-                document.getElementById('data_emissao').value = d.data_emissao || '';
-                if (d.url_documento) {
-                    document.getElementById('container-cert-atual').style.display = 'block';
-                    const nomeBase = d.url_documento.split('/').pop();
-                    document.getElementById('nome-arquivo-atual').textContent = nomeBase;
-                }
-
-                document.getElementById('btn-remover-cert').addEventListener('click', () => {
-                    if(confirm("Deseja remover o documento de registro atual?")) {
-                        document.getElementById('container-cert-atual').style.display = 'none';
-                        document.getElementById('manter_certificado').value = "0";
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Verificar sessão ativa imediatamente (com anti-cache)
+            fetch('../../conta/login/get_session.php?t=' + Date.now())
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.logged_in) {
+                        window.location.href = '../../conta/login/login.html';
+                    } else {
+                        // Só exibe o HTML na tela se estiver realmente logado!
+                        document.body.style.display = 'block';
                     }
+                })
+                .catch(err => {
+                    window.location.href = '../../conta/login/login.html';
                 });
 
-                // RENDERIZA A LISTA DE CERTIFICADOS ATUAIS (NOVO)
-                const listaContainer = document.getElementById('lista-certificados-atuais');
-                if (d.certificados && d.certificados.length > 0) {
-                    let htmlCerts = '<p style="font-weight: bold; margin-bottom: 10px; color: #333;">Certificados já publicados:</p>';
-                    d.certificados.forEach(c => {
-                        htmlCerts += `
+            // 2. Buscar dados do perfil
+            fetch('get_dados_completo.php')
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        const d = res.dados;
+                        document.getElementById('nome').value = d.nome || '';
+                        document.getElementById('email').value = d.email || '';
+                        document.getElementById('telefone').value = d.telefone || '';
+                        document.getElementById('cpf').value = d.cpf || '';
+
+                        if (res.tipo === 'idoso') {
+                            document.getElementById('campos-idoso').style.display = 'block';
+                            document.getElementById('data_nascimento').value = d.data_nascimento || '';
+                            document.getElementById('alergias').value = d.alergias || '';
+                            document.getElementById('informacoes_saude').value = d.informacoes_saude || '';
+                            document.getElementById('possui_acessibilidade').value = d.possui_acessibilidade || 0;
+                            document.getElementById('necessidades_acessibilidade').value = d.necessidades_acessibilidade || '';
+                        }
+                        else if (res.tipo === 'profissional') {
+                            document.getElementById('campos-profissional').style.display = 'block';
+                            document.getElementById('registro_profissional').value = d.registro_profissional || '';
+                            document.getElementById('especialidade').value = d.especialidade || '';
+                            document.getElementById('biografia').value = d.biografia || '';
+                            document.getElementById('localizacao').value = d.localizacao || '';
+                            document.getElementById('data_emissao').value = d.data_emissao || '';
+                            if (d.url_documento) {
+                                document.getElementById('container-cert-atual').style.display = 'block';
+                                const nomeBase = d.url_documento.split('/').pop();
+                                document.getElementById('nome-arquivo-atual').textContent = nomeBase;
+                            }
+
+                            document.getElementById('btn-remover-cert').addEventListener('click', () => {
+                                abrirConfirmacao(
+                                    "Remover Registro",
+                                    "Deseja remover o documento de registro atual?",
+                                    () => {
+                                        document.getElementById('container-cert-atual').style.display = 'none';
+                                        document.getElementById('manter_certificado').value = "0";
+                                    }
+                                );
+                            });
+
+                            // RENDERIZA A LISTA DE CERTIFICADOS ATUAIS (NOVO)
+                            const listaContainer = document.getElementById('lista-certificados-atuais');
+                            if (d.certificados && d.certificados.length > 0) {
+                                let htmlCerts = '<p style="font-weight: bold; margin-bottom: 10px; color: #333;">Certificados já publicados:</p>';
+                                d.certificados.forEach(c => {
+                                    htmlCerts += `
                             <div id="cert-box-${c.id_certificado}" style="display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; padding: 12px; margin-bottom: 10px; border: 1px solid #e2e8f0; border-radius: 6px;">
                                 <div>
                                     <span style="font-weight: bold; color: #004085;">✔ ${c.titulo}</span><br>
@@ -209,98 +343,153 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <button type="button" onclick="removerCertificado(${c.id_certificado})" style="background-color: #d9534f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">Excluir</button>
                             </div>
                         `;
+                                });
+                                listaContainer.innerHTML = htmlCerts;
+                            } else {
+                                listaContainer.innerHTML = '<p style="color: #666; font-style: italic; margin-bottom: 15px;">Nenhum certificado publicado ainda.</p>';
+                            }
+                        }
+                    }
+                });
+
+            const form = document.getElementById('form-editar');
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch('editarperfil.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            mostrarToast('Alterações salvas com sucesso!', 'success');
+                            setTimeout(() => {
+                                window.location.href = '../index.html';
+                            }, 1500);
+                        } else {
+                            mostrarToast('Erro: ' + data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        mostrarToast('Ocorreu um erro técnico ao salvar.', 'error');
                     });
-                    listaContainer.innerHTML = htmlCerts;
-                } else {
-                    listaContainer.innerHTML = '<p style="color: #666; font-style: italic; margin-bottom: 15px;">Nenhum certificado publicado ainda.</p>';
-                }
+            });
+        });
+
+        function validarCamposCertificado() {
+            const arquivo = document.getElementById('url_documento_cert');
+            const titulo = document.getElementById('titulo_certificado');
+            const dataEmissao = document.getElementById('data_emissao_cert');
+
+            const labelArquivo = document.getElementById('label_arquivo_certificado');
+            const labelTitulo = document.getElementById('label_titulo_certificado');
+            const labelData = document.getElementById('label_data_emissao');
+
+            const temArquivo = arquivo.files.length > 0;
+            const temTitulo = titulo.value.trim() !== '';
+            const temData = dataEmissao.value !== '';
+
+            if (temArquivo || temTitulo || temData) {
+                arquivo.required = true;
+                titulo.required = true;
+                dataEmissao.required = true;
+
+                labelArquivo.innerHTML = 'Arquivo do Certificado (PDF) <span style="color: red;">*</span>';
+                labelTitulo.innerHTML = 'Título da Especialização <span style="color: red;">*</span>';
+                labelData.innerHTML = 'Data de Emissão <span style="color: red;">*</span>';
+            } else {
+                arquivo.required = false;
+                titulo.required = false;
+                dataEmissao.required = false;
+
+                labelArquivo.innerHTML = 'Arquivo do Certificado (PDF)';
+                labelTitulo.innerHTML = 'Título da Especialização';
+                labelData.innerHTML = 'Data de Emissão';
             }
         }
-    });
 
-    const form = document.getElementById('form-editar');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault(); 
-        const formData = new FormData(this);
+        // Sistema de Confirmação e Toast Idêntico ao do Admin (Padronizado)
+        let acaoConfirmacao = null;
 
-        fetch('editarperfil.php', { 
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Alterações salvas com sucesso!');
-                window.location.href = '../index.html'; 
-            } else {
-                alert('Erro: ' + data.message);
+        function abrirConfirmacao(titulo, texto, callback) {
+            document.getElementById('modal-titulo').textContent = titulo;
+            document.getElementById('modal-texto').textContent = texto;
+            document.getElementById('modalConfirmacao').style.display = 'flex';
+            acaoConfirmacao = callback;
+        }
+
+        function fecharModal() {
+            document.getElementById('modalConfirmacao').style.display = 'none';
+            acaoConfirmacao = null;
+        }
+
+        function confirmarAcao() {
+            if (acaoConfirmacao) {
+                acaoConfirmacao();
             }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Ocorreu um erro técnico ao salvar.');
-        });
-    });
-});
+            fecharModal();
+        }
 
-function validarCamposCertificado() {
-    const arquivo = document.getElementById('url_documento_cert');
-    const titulo = document.getElementById('titulo_certificado');
-    const dataEmissao = document.getElementById('data_emissao_cert');
-                
-    const labelArquivo = document.getElementById('label_arquivo_certificado');
-    const labelTitulo = document.getElementById('label_titulo_certificado');
-    const labelData = document.getElementById('label_data_emissao');
+        function mostrarToast(mensagem, tipo = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensagem;
+            toast.className = `toast show ${tipo}`;
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
 
-    const temArquivo = arquivo.files.length > 0;
-    const temTitulo = titulo.value.trim() !== '';
-    const temData = dataEmissao.value !== '';
+        function removerCertificado(idCertificado) {
+            abrirConfirmacao(
+                "Excluir Certificado",
+                "Tem certeza que deseja excluir este certificado permanentemente? Esta ação não pode ser desfeita.",
+                () => {
+                    const formData = new FormData();
+                    formData.append('id_certificado', idCertificado);
 
-    if (temArquivo || temTitulo || temData) {
-        arquivo.required = true;
-        titulo.required = true;
-        dataEmissao.required = true;
-                    
-        labelArquivo.innerHTML = 'Arquivo do Certificado (PDF) <span style="color: red;">*</span>';
-        labelTitulo.innerHTML = 'Título da Especialização <span style="color: red;">*</span>';
-        labelData.innerHTML = 'Data de Emissão <span style="color: red;">*</span>';
-    } else {
-        arquivo.required = false;
-        titulo.required = false;
-        dataEmissao.required = false;
-                    
-        labelArquivo.innerHTML = 'Arquivo do Certificado (PDF)';
-        labelTitulo.innerHTML = 'Título da Especialização';
-        labelData.innerHTML = 'Data de Emissão';
-    }
-}
+                    fetch('remover_certificado.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                mostrarToast(data.message, 'success');
+                                const box = document.getElementById(`cert-box-${idCertificado}`);
+                                if (box) box.remove();
+                            } else {
+                                mostrarToast('Erro: ' + data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            mostrarToast('Erro técnico ao tentar remover o certificado.', 'error');
+                        });
+                }
+            );
+        }
+    </script>
 
-function removerCertificado(idCertificado) {
-    if (confirm("Tem certeza que deseja excluir este certificado permanentemente? Esta ação não pode ser desfeita.")) {
-        const formData = new FormData();
-        formData.append('id_certificado', idCertificado);
+    <!-- Estrutura de Toast e Modal Idêntica ao Admin -->
+    <div id="toast" class="toast"></div>
 
-        fetch('remover_certificado.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                // Remove o bloquinho da tela imediatamente sem precisar recarregar a página
-                const box = document.getElementById(`cert-box-${idCertificado}`);
-                if (box) box.remove();
-            } else {
-                alert('Erro: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro técnico ao tentar remover o certificado.');
-        });
-    }
-}
-</script>
+    <div id="modalConfirmacao" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modal-titulo">Confirmar exclusão</h3>
+            <p id="modal-texto">Tem certeza?</p>
+            <div class="modal-buttons">
+                <button type="button" class="cancel-btn" onclick="fecharModal()">
+                    Cancelar
+                </button>
+                <button type="button" class="delete-btn" onclick="confirmarAcao()">
+                    Deletar
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
