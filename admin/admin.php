@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,7 +58,8 @@
             margin-bottom: 10px;
         }
 
-        button, .btn-link {
+        button,
+        .btn-link {
             padding: 10px 15px;
             border: none;
             border-radius: 8px;
@@ -89,7 +91,8 @@
             color: white;
         }
 
-        button:hover, .btn-link:hover {
+        button:hover,
+        .btn-link:hover {
             opacity: 0.85;
         }
 
@@ -111,7 +114,7 @@
             border-radius: 10px;
         }
 
-        .column > h3 {
+        .column>h3 {
             text-align: center;
             color: var(--cor-primaria);
             margin-bottom: 15px;
@@ -136,7 +139,8 @@
             font-size: 15px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
@@ -174,57 +178,154 @@
                 font-size: 13px;
             }
         }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+
+            background: #333;
+            color: white;
+
+            padding: 14px 20px;
+            border-radius: 10px;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transform: translateY(-20px);
+
+            transition: 0.3s ease;
+
+            z-index: 9999;
+            font-weight: bold;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: #27ae60;
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            display: none;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 9998;
+        }
+
+        .modal-box {
+            background: white;
+
+            padding: 25px;
+            border-radius: 14px;
+
+            width: 90%;
+            max-width: 400px;
+
+            animation: aparecer 0.2s ease;
+        }
+
+        .modal-box h3 {
+            margin-bottom: 10px;
+            color: #e74c3c;
+        }
+
+        .modal-box p {
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .cancel-btn {
+            background: #bdc3c7;
+            color: black;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 
 <body>
-<header class="cabecalho-principal">
-    <div class="logo-container">
-        <h1>Elderia Admin</h1>
-    </div>
-</header>
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <h1>Elderia Admin</h1>
+        </div>
+    </header>
 
-<div class="container" id="user-list"></div>
+    <div class="container" id="user-list"></div>
 
-<script>
-    async function verificarAcessoAdmin() {
-        const res = await fetch('../conta/login/get_session.php');
-        const data = await res.json();
+    <script>
+        async function verificarAcessoAdmin() {
+            const res = await fetch('../conta/login/get_session.php');
+            const data = await res.json();
 
-        if (!data.logged_in || data.tipo !== 'admin') {
-            window.location.href = '../index.html';
-        }
-    }
-
-    verificarAcessoAdmin();
-
-    function caminhoParaLink(caminho) {
-        if (!caminho) return '#';
-
-        caminho = caminho.replaceAll('\\', '/');
-
-        const posUploads = caminho.indexOf('uploads/');
-
-        if (posUploads !== -1) {
-            return '../' + caminho.substring(posUploads);
+            if (!data.logged_in || data.tipo !== 'admin') {
+                window.location.href = '../index.html';
+            }
         }
 
-        return caminho;
-    }
+        verificarAcessoAdmin();
 
-    function textoStatus(status) {
-        status = status || 'pendente';
+        function caminhoParaLink(caminho) {
+            if (!caminho) return '#';
 
-        return `<span class="status status-${status}">${status}</span>`;
-    }
+            caminho = caminho.replaceAll('\\', '/');
 
-    async function carregarUsuarios() {
-        const res = await fetch('admin_api.php?action=list');
-        const usuarios = await res.json();
+            const posUploads = caminho.indexOf('uploads/');
 
-        const container = document.getElementById('user-list');
+            if (posUploads !== -1) {
+                return '../' + caminho.substring(posUploads);
+            }
 
-        container.innerHTML = `
+            return caminho;
+        }
+
+        function textoStatus(status) {
+            status = status || 'pendente';
+
+            return `<span class="status status-${status}">${status}</span>`;
+        }
+
+        async function carregarUsuarios() {
+            const res = await fetch('admin_api.php?action=list');
+            const usuarios = await res.json();
+
+            const container = document.getElementById('user-list');
+
+            container.innerHTML = `
             <h2>Usuários cadastrados</h2>
             <div class="list-container">
                 <div class="column" id="col-idosos">
@@ -236,16 +337,16 @@
             </div>
         `;
 
-        const colIdosos = document.getElementById('col-idosos');
-        const colProfissionais = document.getElementById('col-profissionais');
+            const colIdosos = document.getElementById('col-idosos');
+            const colProfissionais = document.getElementById('col-profissionais');
 
-        usuarios.forEach(user => {
-            const div = document.createElement('div');
-            div.classList.add('card');
+            usuarios.forEach(user => {
+                const div = document.createElement('div');
+                div.classList.add('card');
 
-            const ehProfissional = user.tipo && user.tipo.toLowerCase() === 'profissional';
+                const ehProfissional = user.tipo && user.tipo.toLowerCase() === 'profissional';
 
-            div.innerHTML = `
+                div.innerHTML = `
                 <h3>${user.nome} <small>(${user.tipo})</small></h3>
                 <p>Email: ${user.email}</p>
                 <br>
@@ -258,49 +359,85 @@
                 <div class="docs-area" id="docs-${user.id}"></div>
             `;
 
-            if (user.tipo && user.tipo.toLowerCase() === 'idoso') {
-                colIdosos.appendChild(div);
-            } else {
-                colProfissionais.appendChild(div);
+                if (user.tipo && user.tipo.toLowerCase() === 'idoso') {
+                    colIdosos.appendChild(div);
+                } else {
+                    colProfissionais.appendChild(div);
+                }
+            });
+        }
+
+        let usuarioParaDeletar = null;
+
+        function deletar(id) {
+            usuarioParaDeletar = id;
+
+            const modal = document.getElementById('modalConfirmacao');
+
+            modal.style.display = 'flex';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalConfirmacao').style.display = 'none';
+
+            usuarioParaDeletar = null;
+        }
+
+        async function confirmarDelete() {
+
+            if (!usuarioParaDeletar) return;
+
+            try {
+
+                const res = await fetch(`admin_api.php?action=delete_user&id=${usuarioParaDeletar}`);
+
+                if (res.ok) {
+
+                    mostrarToast('Usuário deletado com sucesso!', 'success');
+
+                    fecharModal();
+
+                    carregarUsuarios();
+
+                } else {
+
+                    mostrarToast('Erro ao deletar usuário.', 'error');
+                }
+
+            } catch (err) {
+
+                mostrarToast('Erro de conexão com o servidor.', 'error');
             }
-        });
-    }
-
-    async function deletar(id) {
-        if (!confirm('Tem certeza que deseja deletar este usuário?')) return;
-
-        await fetch(`admin_api.php?action=delete_user&id=${id}`);
-        carregarUsuarios();
-    }
-
-    function abrirPerfil(id, tipo) {
-    if (tipo && tipo.toLowerCase() === 'idoso') {
-        window.location.href = `../perfil/ver_ficha.php?id=${id}`;
-    } else {
-        window.location.href = `../perfil.php?id=${id}`;
-    }
-}
-
-    async function toggleDocumentos(id) {
-        const area = document.getElementById(`docs-${id}`);
-
-        if (area.style.display === 'block') {
-            area.style.display = 'none';
-            return;
         }
 
-        area.style.display = 'block';
-        area.innerHTML = '<p>Carregando documentos...</p>';
-
-        const res = await fetch(`admin_api.php?action=get_documents&id=${id}`);
-        const data = await res.json();
-
-        if (!data.success) {
-            area.innerHTML = '<p>Erro ao carregar documentos.</p>';
-            return;
+        function abrirPerfil(id, tipo) {
+            if (tipo && tipo.toLowerCase() === 'idoso') {
+                window.location.href = `../perfil/ver_ficha.php?id=${id}`;
+            } else {
+                window.location.href = `../perfil.php?id=${id}`;
+            }
         }
 
-        let html = `
+        async function toggleDocumentos(id) {
+            const area = document.getElementById(`docs-${id}`);
+
+            if (area.style.display === 'block') {
+                area.style.display = 'none';
+                return;
+            }
+
+            area.style.display = 'block';
+            area.innerHTML = '<p>Carregando documentos...</p>';
+
+            const res = await fetch(`admin_api.php?action=get_documents&id=${id}`);
+            const data = await res.json();
+
+            if (!data.success) {
+                area.innerHTML = '<p>Erro ao carregar documentos.</p>';
+                return;
+            }
+
+            let html = `
             <h3>Certificados</h3>
             ${montarTabelaCertificados(data.certificados, id)}
 
@@ -308,15 +445,15 @@
             ${montarTabelaDocumento(data.documento, id)}
         `;
 
-        area.innerHTML = html;
-    }
-
-    function montarTabelaCertificados(certificados, idProfissional) {
-        if (!certificados || certificados.length === 0) {
-            return '<p>Nenhum certificado enviado.</p>';
+            area.innerHTML = html;
         }
 
-        let html = `
+        function montarTabelaCertificados(certificados, idProfissional) {
+            if (!certificados || certificados.length === 0) {
+                return '<p>Nenhum certificado enviado.</p>';
+            }
+
+            let html = `
             <table>
                 <thead>
                     <tr>
@@ -330,10 +467,10 @@
                 <tbody>
         `;
 
-        certificados.forEach(c => {
-            const link = caminhoParaLink(c.url_documento);
+            certificados.forEach(c => {
+                const link = caminhoParaLink(c.url_documento);
 
-            html += `
+                html += `
                 <tr>
                     <td>${c.titulo || 'Sem título'}</td>
                     <td>${c.data_emissao || '-'}</td>
@@ -348,24 +485,24 @@
                     </td>
                 </tr>
             `;
-        });
+            });
 
-        html += `
+            html += `
                 </tbody>
             </table>
         `;
 
-        return html;
-    }
-
-    function montarTabelaDocumento(documento, idProfissional) {
-        if (!documento || !documento.documentacao_url) {
-            return '<p>Nenhuma documentação profissional enviada.</p>';
+            return html;
         }
 
-        const link = caminhoParaLink(documento.documentacao_url);
+        function montarTabelaDocumento(documento, idProfissional) {
+            if (!documento || !documento.documentacao_url) {
+                return '<p>Nenhuma documentação profissional enviada.</p>';
+            }
 
-        return `
+            const link = caminhoParaLink(documento.documentacao_url);
+
+            return `
             <table>
                 <thead>
                     <tr>
@@ -389,25 +526,62 @@
                 </tbody>
             </table>
         `;
-    }
+        }
 
-    async function acaoCertificado(action, idCertificado, idProfissional) {
-        if (action.includes('excluir') && !confirm('Tem certeza que deseja excluir este certificado?')) return;
+        async function acaoCertificado(action, idCertificado, idProfissional) {
+            if (action.includes('excluir') && !confirm('Tem certeza que deseja excluir este certificado?')) return;
 
-        await fetch(`admin_api.php?action=${action}&id=${idCertificado}`);
-        await toggleDocumentos(idProfissional);
-        await toggleDocumentos(idProfissional);
-    }
+            await fetch(`admin_api.php?action=${action}&id=${idCertificado}`);
+            await toggleDocumentos(idProfissional);
+            await toggleDocumentos(idProfissional);
+        }
 
-    async function acaoDocumento(action, idProfissional) {
-        if (action.includes('excluir') && !confirm('Tem certeza que deseja excluir este documento?')) return;
+        async function acaoDocumento(action, idProfissional) {
+            if (action.includes('excluir') && !confirm('Tem certeza que deseja excluir este documento?')) return;
 
-        await fetch(`admin_api.php?action=${action}&id=${idProfissional}`);
-        await toggleDocumentos(idProfissional);
-        await toggleDocumentos(idProfissional);
-    }
+            await fetch(`admin_api.php?action=${action}&id=${idProfissional}`);
+            await toggleDocumentos(idProfissional);
+            await toggleDocumentos(idProfissional);
+        }
 
-    carregarUsuarios();
-</script>
+        carregarUsuarios();
+
+        function mostrarToast(mensagem, tipo = 'success') {
+
+            const toast = document.getElementById('toast');
+
+            toast.textContent = mensagem;
+
+            toast.className = `toast show ${tipo}`;
+
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+    </script>
+
+    <div id="toast" class="toast"></div>
+
+    <div id="modalConfirmacao" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Confirmar exclusão</h3>
+
+            <p id="textoModal">
+                Tem certeza que deseja deletar este usuário?
+            </p>
+
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="fecharModal()">
+                    Cancelar
+                </button>
+
+                <button class="delete-btn" onclick="confirmarDelete()">
+                    Deletar
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
