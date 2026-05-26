@@ -199,6 +199,22 @@ textarea {
     display: none;
 }
 
+.senha-status {
+    display: block;
+    margin-top: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #e74c3c;
+
+    transition: 0.2s;
+}
+
+.senha-status.ok {
+    color: #27ae60;
+}
+
 @media (max-width: 768px) {
 
     .cabecalho-principal {
