@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Meu Perfil</title>
     <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
@@ -21,10 +22,11 @@
             <a href="../index.html" class="btn-nav">Voltar</a>
         </nav>
 
-        <div>
-            <a href="trocasenha.html">Mudar senha</a>
+        <div class="container-mudar-senha">
+            <a href="trocasenha.html" class="btn-mudar-senha">
+                Mudar Senha
+            </a>
         </div>
-
         <div class="usuario-info" id="area-usuario">
             <a href="../conta/login/logout.php" class="btn-sair">Sair</a>
         </div>
@@ -59,7 +61,7 @@
                 const infoDiv = document.getElementById('perfil-info');
 
                 if (!data.logged_in) {
-   
+
                     window.location.href = '../conta/login/login.html';
                 } else if (data.tipo === 'profissional' || data.tipo === 'idoso') {
 
