@@ -13,12 +13,10 @@ fetch("conta/login/get_session.php")
         <a href="conta/login/logout.php" class="btn-sair">Sair</a>
       `;
 
-      // Pierre > Altera a navegação dinamicamente conforme o tipo de usuário (Incluindo Admin)
       if (navBotoes) {
         let linkConsultas = 'consulta/index.html';
         let textoLink = 'Consultas';
 
-        // Validação dos tipos de perfis do banco
         if (data.tipo === 'profissional') {
           linkConsultas = 'consulta/confirmar.php';
           textoLink = 'Confirmar Consultas';
@@ -28,7 +26,6 @@ fetch("conta/login/get_session.php")
         
         }
         
-        // Renderiza os botões correspondentes ao nível de acesso
         if (data.tipo === 'admin') {
           navBotoes.innerHTML = `
             <a href="${linkConsultas}" class="btn-nav">${textoLink}</a>
@@ -41,7 +38,7 @@ fetch("conta/login/get_session.php")
         }
       }
 
-      // Lógica específica para Admin: Adiciona área de suporte entre a busca e os profissionais
+  
       if (data.tipo === 'admin' && secaoBoasVindas) {
         secaoBoasVindas.insertAdjacentHTML('afterend', `
           <div class="suporte-admin-container" style="background-color: #f9f9f9; padding: 40px 20px; border-bottom: 2px solid #eee;">
@@ -57,12 +54,10 @@ fetch("conta/login/get_session.php")
           </div>
         `);
 
-        // Oculta a seção inteira de profissionais (título e cards) para o administrador
         if (secaoProfissionais) secaoProfissionais.style.display = 'none';
       }
     }
 
-    // Carrega a lista de profissionais apenas se o usuário NÃO for administrador
     if (data.tipo !== 'admin') {
       carregarProfissionais();
     }
@@ -71,7 +66,6 @@ fetch("conta/login/get_session.php")
 
 
   
-// função de apagar comentário como admin
 
 function apagarAvaliacao(idAvaliacao) {
     const mensagemConfirmacao = "Tem certeza que deseja apagar permanentemente esta avaliação? Esta ação não poderá ser desfeita.";
@@ -93,7 +87,7 @@ function apagarAvaliacao(idAvaliacao) {
         .then(resultado => {
             if (resultado.success) {
                 alert("Avaliação apagada com sucesso!");
-                window.location.reload(); // Recarrega a página atual para atualizar a lista
+                window.location.reload();
             } else {
                 alert("Erro ao apagar: " + resultado.error);
             }

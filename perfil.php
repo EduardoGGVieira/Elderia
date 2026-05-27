@@ -9,10 +9,7 @@ $id_prof = $_GET['id'] ?? null;
 if (!$id_prof) {
     die("Profissional não encontrado.");
 }
- 
-// ======================================
-// BUSCA DADOS DO PROFISSIONAL
-// ======================================
+
 
 $sql = "
 SELECT 
@@ -33,12 +30,11 @@ mysqli_stmt_execute($stmt);
 $resultado = mysqli_stmt_get_result($stmt);
 $prof = mysqli_fetch_assoc($resultado);
 
-// Se não achou o profissional, avisa
 if (!$prof) {
     die("Profissional não encontrado no banco!");
 }
 
-// BUSCA OS CERTIFICADOS DO PROFISSIONAL (ATUALIZADO)
+
 $sql_certs = "SELECT titulo, data_emissao, url_documento FROM certificado WHERE id_profissional = ? ORDER BY data_emissao DESC";
 $stmt_certs = mysqli_prepare($conexao, $sql_certs);
 mysqli_stmt_bind_param($stmt_certs, "i", $id_prof);
@@ -46,9 +42,6 @@ mysqli_stmt_execute($stmt_certs);
 $resultado_certs = mysqli_stmt_get_result($stmt_certs);
 $certificados = mysqli_fetch_all($resultado_certs, MYSQLI_ASSOC);
 
-// ======================================
-// BUSCA HORÁRIOS DISPONÍVEIS
-// ======================================
 
 $sql_horarios = "
 SELECT *
@@ -64,9 +57,6 @@ mysqli_stmt_bind_param($stmt_horarios, "i", $id_prof);
 mysqli_stmt_execute($stmt_horarios);
 $resultado_horarios = mysqli_stmt_get_result($stmt_horarios);
 
-// ======================================
-// BUSCA AVALIAÇÕES DO PROFISSIONAL
-// ======================================
 $sql_avaliacoes = "
 SELECT a.id_avaliacao, a.nota, a.comentario, u.nome 
 FROM avaliacao a
@@ -202,7 +192,7 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
         <div id="mensagem-status" class="mensagem-status"></div>
 
         <a href="index.html" style="text-decoration: none; color: #00a6ce;">
-            ← Voltar para a Home
+          
         </a>
 
         <h1 style="margin-top: 20px;">
@@ -230,10 +220,10 @@ $resultado_avaliacoes = mysqli_stmt_get_result($stmt_avaliacoes);
             <?php if (count($certificados) > 0): ?>
                 <ul style="list-style-type: none; padding: 0; margin: 0;">
                 <?php foreach ($certificados as $cert): 
-                    // Remove os ../../ do caminho relativo para que o link funcione a partir da raiz do projeto
+    
                     $caminho_correto = str_replace('../../', '', $cert['url_documento']);
                     
-                    // Tratamento seguro para formatação de data vinda do MySQL
+                 
                     $data_br = "Data não informada";
                     if (!empty($cert['data_emissao']) && $cert['data_emissao'] !== '0000-00-00') {
                         $timestamp = strtotime($cert['data_emissao']);

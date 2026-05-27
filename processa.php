@@ -2,7 +2,7 @@
 session_start();
 
 require_once 'conexao.php';
-// isso aq define o fuso horario
+
 date_default_timezone_set('America/Sao_Paulo');
 
 

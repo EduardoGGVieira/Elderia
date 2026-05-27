@@ -15,7 +15,6 @@ $id_agenda =
     $_POST['id_agenda'];
 
 
-// BUSCA HORÁRIO
 $sql = "
 
 SELECT *
@@ -51,7 +50,6 @@ if (!$agenda) {
 }
 
 
-// DADOS
 $id_profissional =
     $agenda['id_profissional'];
 
@@ -59,7 +57,6 @@ $data_hora =
     $agenda['data_hora'];
 
 
-// INSERE CONSULTA
 $sql_insert = "
 
 INSERT INTO consulta
@@ -85,7 +82,6 @@ mysqli_stmt_bind_param(
 
 if (mysqli_stmt_execute($stmt_insert)) {
 
-    // MARCA HORÁRIO COMO AGENDADO
     $sql_update = "
 
     UPDATE agenda_disponivel
