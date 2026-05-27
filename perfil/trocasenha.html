@@ -65,6 +65,41 @@
             transition: background-color 0.3s;
             margin-top: 10px;
         }
+
+        .message-box {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+            animation: aparecer 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .message-box.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #28a745;
+        }
+
+        .message-box.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #dc3545;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -89,6 +124,8 @@
     <main class="conteiner-senha">
         <div class="card-senha">
             <h2>Alterar Senha</h2>
+
+            <div id="messageBox" class="message-box"></div>
 
             <div class="aviso-senha">
 
@@ -142,7 +179,19 @@
         const confirmPassword = document.getElementById('confirmPassword');
         const erroConfirmacao = document.getElementById('erro-confirmacao');
 
-        // Validar confirmação em tempo real
+
+        const messageBox = document.getElementById('messageBox');
+
+        function mostrarMensagem(tipo, mensagem) {
+            messageBox.style.display = 'block';
+            messageBox.className = 'message-box ' + tipo;
+            messageBox.textContent = mensagem;
+
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000);
+        }
+
         function validarSenhas() {
             if (newPassword.value && confirmPassword.value && newPassword.value !== confirmPassword.value) {
                 erroConfirmacao.style.display = 'block';
@@ -160,7 +209,7 @@
             e.preventDefault();
 
             if (!validarSenhas()) {
-                alert('A nova senha e a confirmação devem ser idênticas.');
+                mostrarMensagem('error', 'A nova senha e a confirmação devem ser idênticas.');
                 return;
             }
 
@@ -173,15 +222,15 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Senha alterada com sucesso! ');
-                        window.location.href = 'http://localhost/Elderia/conta/login/login.html';
+                        mostrarMensagem('success', 'Senha alterada com sucesso!');
+                        window.location.href = 'http://localhost/Elderia/conta/login/logout.php';
                     } else {
-                        alert('Erro: ' + data.message);
+                        mostrarMensagem('error', data.message);
                     }
                 })
                 .catch(error => {
                     console.error('Erro na requisição:', error);
-                    alert('Ocorreu um erro técnico ao atualizar a senha.');
+                    mostrarMensagem('error', 'Ocorreu um erro técnico ao atualizar a senha.');
                 });
         });
     </script>

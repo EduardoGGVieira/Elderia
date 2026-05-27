@@ -75,7 +75,7 @@
                     <legend>Dados de Acesso (Usuario)</legend>
 
                     <div class="form-group">
-                        <label for="nome" >Nome Completo</label>
+                        <label for="nome">Nome Completo</label>
 
                         <input type="text" id="nome" name="nome" placeholder="ex: João da Silva" required>
                     </div>
@@ -102,14 +102,19 @@
                         <label for="senha">Crie uma Senha</label>
 
                         <input type="password" id="senha" name="senha" placeholder="evite usar senhas fáceis" required>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="confirme_senha">
-                            Confirme sua Senha
-                        </label>
+                        <small id="senha-status" class="senha-status">
+                            A senha deve ter:
+                            8 caracteres, 1 maiúscula, 1 número e 1 caractere especial.
+                        </small>
+                        <div class="form-group">
+                            <label for="confirme_senha">
+                                Confirmar Senha
+                            </label>
 
-                        <input type="password" id="confirme_senha" name="confirme_senha" placeholder="Utilize a senha criada anteriormente"  required>
+                            <input type="password" id="confirme_senha" name="confirme_senha"
+                                placeholder="Digite a senha novamente" required>
+                        </div>
                     </div>
 
                 </fieldset>
@@ -224,7 +229,8 @@
                                 Registro Profissional (CRM/COREN)
                             </label>
 
-                            <input type="text" id="registro_profissional" name="registro_profissional" placeholder="ex: CRM 123456" >
+                            <input type="text" id="registro_profissional" name="registro_profissional"
+                                placeholder="ex: CRM/PR 123456">
                         </div>
 
                         <div class="form-group">
@@ -232,7 +238,8 @@
                                 Especialidade
                             </label>
 
-                            <input type="text" id="especialidade" name="especialidade" placeholder="ex: Geriatria, Enfermagem...">
+                            <input type="text" id="especialidade" name="especialidade"
+                                placeholder="ex: Geriatria, Enfermagem...">
                         </div>
 
                         <div class="form-group">
@@ -240,7 +247,8 @@
                                 Biografia
                             </label>
 
-                            <textarea id="biografia" name="biografia" rows="3" placeholder="Conte um pouco sobre sua trajetória profissional, para que os usuários possam conhecer melhor seus conhecimentos e experiências."></textarea>
+                            <textarea id="biografia" name="biografia" rows="3"
+                                placeholder="Conte um pouco sobre sua trajetória profissional, para que os usuários possam conhecer melhor seus conhecimentos e experiências."></textarea>
                         </div>
 
                         <div class="form-group">
@@ -252,8 +260,9 @@
                         </div>
 
                         <div class="form-group">
-                             <label for="titulo_certificado">Tipo do Certificado</label>
-                            <input type="text" id="titulo_certificado" name="titulo_certificado" placeholder="Ex: Especialização em Geriatria">
+                            <label for="titulo_certificado">Tipo do Certificado</label>
+                            <input type="text" id="titulo_certificado" name="titulo_certificado"
+                                placeholder="Ex: Especialização em Geriatria">
                         </div>
 
                         <div class="form-group">
@@ -316,24 +325,59 @@
             .addEventListener('submit', function (e) {
 
                 const senha =
-                    document.getElementById('senha').value;
+                    document.getElementById('senha');
 
                 const confirma =
-                    document.getElementById(
-                        'confirme_senha'
-                    ).value;
+                    document.getElementById('confirme_senha');
 
-                if (senha !== confirma) {
+                const regexSenha =
+                    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+                const camposObrigatorios =
+                    document.querySelectorAll(
+                        'input[required], textarea[required], select[required]'
+                    );
+
+                for (const campo of camposObrigatorios) {
+
+                    if (!campo.value.trim()) {
+
+                        e.preventDefault();
+
+                        mostrarMensagem(
+                            'Preencha os campos obrigatórios.'
+                        );
+
+                        irParaCampo(campo);
+
+                        return;
+                    }
+                }
+
+                if (!regexSenha.test(senha.value)) {
 
                     e.preventDefault();
 
+                    mostrarMensagem(
+                        'A senha precisa ter no mínimo 8 caracteres, 1 letra maiúscula, 1 número e 1 caractere especial.'
+                    );
 
-                    // NAO PODE SER UM ALERT, TEM QUE SER UMA MENSAGEM DENTRO DA PAGINA, MAS VOU DEIXAR ASSIM POR ENQUANTO PARA TESTES
+                    irParaCampo(senha);
 
-                    alert(
+                    return;
+                }
+
+                if (senha.value !== confirma.value) {
+
+                    e.preventDefault();
+
+                    mostrarMensagem(
                         'As senhas não coincidem.'
                     );
 
+                    irParaCampo(confirma);
+
+                    return;
                 }
 
             });
@@ -347,6 +391,27 @@
             else if (v.length > 3) v = v.replace(/^(\d{3})(\d{3})/, "$1.$2");
             e.target.value = v;
         });
+// LOGICA PARA O CRM não funcionou soy burro
+//         document.getElementById('registro_profissional').addEventListener('input', function (e) {
+//     let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
+//     let letras = v.replace(/[0-9]/g, '');
+//     let numeros = v.replace(/[^0-9]/g, '');
+//     if (numeros.length > 6) {
+//         numeros = numeros.slice(0, 6);
+//     }
+//     v = letras + numeros;
+//     if (numeros.length > 0) {
+//         let conselho = letras.slice(0, -2);
+//         let uf = letras.slice(-2);
+//         v = conselho + '/' + uf + ' ' + numeros;
+//     } 
+//     else if (letras.length > 3) {
+//         let conselho = letras.slice(0, 3);
+//         let uf = letras.slice(3);
+//         v = conselho + '/' + uf;
+//     }
+//     e.target.value = v;
+// });
 
         document.getElementById('telefone').addEventListener('input', function (e) {
             let v = e.target.value.replace(/\D/g, '');
@@ -376,7 +441,7 @@
                             document.getElementById('uf').value = data.uf;
                             document.getElementById('numero').focus();
                         } else {
-                            alert('CEP não encontrado.');
+                            mostrarMensagem('TU NÃO MORA, SE ESCONDE.');
                             ['logradouro', 'bairro', 'cidade', 'uf'].forEach(id => {
                                 document.getElementById(id).value = '';
                             });
@@ -490,6 +555,88 @@
                     : 'none';
 
         }
+
+        const inputSenha =
+            document.getElementById('senha');
+
+        const statusSenha =
+            document.getElementById('senha-status');
+
+        inputSenha.addEventListener('input', () => {
+
+            const senha = inputSenha.value;
+
+            const regexSenha =
+                /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+            if (regexSenha.test(senha)) {
+
+                statusSenha.innerHTML =
+                    'Senha fortissima :p';
+
+                statusSenha.classList.add('ok');
+
+            } else {
+
+                statusSenha.innerHTML =
+                    'A senha deve ter: 8 caracteres, 1 maiúscula, 1 número e 1 caractere especial.';
+
+                statusSenha.classList.remove('ok');
+            }
+        });
+
+        function mostrarMensagem(texto) {
+
+            let msg =
+                document.getElementById('mensagem-form');
+
+            if (!msg) {
+
+                msg = document.createElement('div');
+
+                msg.id = 'mensagem-form';
+
+                msg.style.background = '#e74c3c';
+                msg.style.color = 'white';
+                msg.style.padding = '12px';
+                msg.style.borderRadius = '8px';
+                msg.style.marginBottom = '20px';
+                msg.style.fontWeight = 'bold';
+
+                const form =
+                    document.querySelector('form');
+
+                form.prepend(msg);
+            }
+
+            msg.innerText = texto;
+
+            setTimeout(() => {
+
+                msg.remove();
+
+            }, 4000);
+        }
+
+        function irParaCampo(campo) {
+
+            campo.classList.add('campo-erro');
+
+            campo.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+
+            campo.focus();
+
+            setTimeout(() => {
+
+                campo.classList.remove('campo-erro');
+
+            }, 2000);
+        }
+
+        
 
     </script>
 

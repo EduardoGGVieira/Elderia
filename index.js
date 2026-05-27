@@ -23,7 +23,6 @@ fetch("conta/login/get_session.php")
         } else if (data.tipo === 'admin') {
           linkConsultas = 'admin/admin.php'; 
           textoLink = 'Painel Admin';
-        
         }
         
         if (data.tipo === 'admin') {
@@ -38,7 +37,7 @@ fetch("conta/login/get_session.php")
         }
       }
 
-  
+      // Lógica específica para Admin: Adiciona área de suporte entre a busca e os profissionais
       if (data.tipo === 'admin' && secaoBoasVindas) {
         secaoBoasVindas.insertAdjacentHTML('afterend', `
           <div class="suporte-admin-container" style="background-color: #f9f9f9; padding: 40px 20px; border-bottom: 2px solid #eee;">
@@ -66,6 +65,7 @@ fetch("conta/login/get_session.php")
 
 
   
+// função de apagar comentário como admin
 
 function apagarAvaliacao(idAvaliacao) {
     const mensagemConfirmacao = "Tem certeza que deseja apagar permanentemente esta avaliação? Esta ação não poderá ser desfeita.";
@@ -118,7 +118,7 @@ function criarCardProfissional(prof) {
   const card = document.createElement("div");
   card.classList.add("card-profissional"); 
 
-  const fotoPlaceholder = "https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png";
+  const fotoPlaceholder = "https://img.freepik.com/fotos-premium/medicos-enfermeiros-e-retrato-de-equipe-em-clinica-hospitalar-ou-consultorio-medico-diversidade-de-profissionais-de-saude-e-de-saude-juntos-bracos-cruzados-em-colaboracao-ou-suporte-de-trabalho-em-equipe-de-confianca_590464-89340.jpg?w=1380";
 
   card.innerHTML = `
     <div class="info-profissional">
@@ -127,14 +127,63 @@ function criarCardProfissional(prof) {
         <div class="dados-texto">
             <h3>${prof.nome || "Especialista"}</h3>
             <p class="especialidade">${prof.especialidade || "Saúde"}</p>
-            <p class="avaliacao" style="margin-top: 10px; color: #555;">${prof.biografia || "Sem descrição disponível."}</p>
+            <p class="biografia-preview">${prof.biografia || "Sem descrição disponível."}</p>
         </div>
     </div>
 
-    <div class="agenda-profissional" style="justify-content: center;">
-        <a href="perfil.php?id=${prof.id_profissional}" class="btn-ver-mais" style="text-decoration: none; text-align: center;">Ver Perfil Completo</a>
+    <div class="agenda-profissional">
+        <a href="perfil.php?id=${prof.id_profissional}" class="btn-ver-mais">Ver Perfil Completo</a>
     </div>
   `;
+
+  const containerDepoimentos = document.getElementById("container-depoimentos");
+
+if (containerDepoimentos) {
+    fetch("get_depoimentos.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                containerDepoimentos.innerHTML = `<p style="text-align: center; width: 100%; color: #777;">Nenhum depoimento disponível no momento.</p>`;
+                return;
+            }
+
+            containerDepoimentos.innerHTML = ""; // Limpa a mensagem de carregando
+
+            data.forEach(depoimento => {
+                // Monta as estrelas dinamicamente com base na nota gravada no banco
+                let estrelas = "⭐".repeat(depoimento.nota);
+
+                const cardDepoimento = document.createElement("div");
+                cardDepoimento.style.cssText = `
+                    background: white; 
+                    padding: 25px; 
+                    border-radius: 12px; 
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+                    flex: 1; 
+                    min-width: 280px;
+                    border-left: 5px solid var(--cor-secundaria);
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                `;
+
+                cardDepoimento.innerHTML = `
+                    <div>
+                        <p style="color: #f1c40f; margin-bottom: 10px; font-size: 1.1rem;">${estrelas}</p>
+                        <p style="font-style: italic; color: #555; line-height: 1.5;">"${depoimento.comentario || 'Sem comentários.'}"</p>
+                    </div>
+                    <br>
+                    <strong style="color: var(--cor-primaria);">- ${depoimento.nome_idoso}</strong>
+                `;
+
+                containerDepoimentos.appendChild(cardDepoimento);
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao buscar depoimentos:", error);
+            containerDepoimentos.innerHTML = `<p style="text-align: center; width: 100%; color: #e74c3c;">Erro ao carregar depoimentos.</p>`;
+        });
+}
 
   return card;
 }

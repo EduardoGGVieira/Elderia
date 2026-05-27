@@ -1,100 +1,131 @@
 :root {
-    --primary-color: #0056b3;
-    --bg-color: #f8f9fa;
-    --text-size: 16px;
-    --input-padding: 12px;
+    --primary-color: var(--cor-primaria);
+    --secondary-color: var(--cor-secundaria);
+    --bg-color: var(--cor-fundo);
+    --card-color: var(--cor-card);
+    --border-color: var(--cor-borda);
 }
 
-.acessibilidade-idoso {
-    --primary-color: #004085;
-    --text-size: 20px;
-    --input-padding: 16px;
-}
+/* BODY */
 
-body { 
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-    line-height: 1.6; 
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color); 
-    font-size: var(--text-size);
+    color: var(--cor-texto);
 }
 
-.navbar {
-    background-color: #ffffff;
-    padding: 15px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* CONTAINER PRINCIPAL */
+
+#form-editar {
+    max-width: 850px;
+    margin: 40px auto;
+    background: var(--card-color);
+    padding: 35px;
+    border-radius: 16px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-.navbar-brand {
+/* FIELDSET */
+
+fieldset {
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    background: white;
+}
+
+legend {
+    padding: 0 10px;
+    font-size: 1.2rem;
     font-weight: bold;
-    font-size: 1.5em;
     color: var(--primary-color);
 }
 
-.nav-buttons {
+/* FORM GROUP */
+
+.form-group {
     display: flex;
-    gap: 15px;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
-.nav-btn {
-    text-decoration: none;
-    padding: 8px 20px;
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+/* INPUTS */
+
+input,
+textarea,
+select {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px 15px;
+    font-size: 1rem;
+
+    border: 2px solid var(--border-color);
     border-radius: 8px;
-    border: 2px solid var(--primary-color);
+
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    background-color: white;
 }
 
-.btn-home { color: var(--primary-color); }
-.btn-login { background-color: var(--primary-color); color: white; }
-
-.container { max-width: 850px; margin: 40px auto; }
-form { background: #fff; padding: 40px; border-radius: 15px; }
-
-fieldset { margin-bottom: 30px; padding: 25px; }
-
-.form-group { margin-bottom: 20px; }
-
-input, textarea, select { 
-    width: 100%;
-    padding: var(--input-padding);
-    border-radius: 10px;
+textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
-.btn-submit { 
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.15);
+}
+
+.btn-submit {
     width: 100%;
-    background: var(--primary-color);
+    padding: 15px;
+
+    background-color: var(--secondary-color);
     color: white;
-    padding: 20px;
+
+    border: none;
     border-radius: 10px;
+
+    font-size: 1.1rem;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-#fluxo-cadastro,
-#area-profissional,
-#area-idoso,
-#campo-acessibilidade-detalhe {
-    display: none;
+.btn-submit:hover {
+    opacity: 0.92;
 }
+
 
 .form-section-certificado {
     margin-top: 30px;
     padding: 20px;
-    /* Usando a variável nativa do seu projeto para manter a mesma cor azul */
-    border: 2px dashed var(--primary-color); 
-    border-radius: 8px;
-    /* Um fundo levemente diferente para destacar que é uma seção à parte */
-    background-color: #f9fbfd; 
+    border: 2px dashed var(--primary-color);
+    border-radius: 12px;
+    background-color: #f9fbfd;
 }
 
 .certificado-title {
     color: var(--primary-color);
     margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 1.15rem;
 }
 
 .certificado-label {
@@ -103,19 +134,33 @@ input, textarea, select {
     margin-bottom: 5px;
 }
 
-/* Custom Modal & Toast Style */
+
+#lista-certificados-atuais div {
+    transition: 0.2s;
+}
+
+#lista-certificados-atuais div:hover {
+    transform: translateY(-1px);
+}
+
+
 .toast {
     position: fixed;
     top: 20px;
     right: 20px;
+
     background: #333;
     color: white;
+
     padding: 14px 20px;
     border-radius: 10px;
+
     opacity: 0;
     pointer-events: none;
+
     transform: translateY(-20px);
     transition: 0.3s ease;
+
     z-index: 9999;
     font-weight: bold;
 }
@@ -136,10 +181,13 @@ input, textarea, select {
 .modal-overlay {
     position: fixed;
     inset: 0;
+
     background: rgba(0, 0, 0, 0.5);
+
     display: none;
     justify-content: center;
     align-items: center;
+
     z-index: 9998;
 }
 
@@ -149,6 +197,7 @@ input, textarea, select {
     border-radius: 14px;
     width: 90%;
     max-width: 400px;
+
     animation: aparecer 0.2s ease;
 }
 
@@ -168,38 +217,54 @@ input, textarea, select {
     justify-content: flex-end;
     gap: 10px;
 }
+.cancel-btn,
+.delete-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+    font-weight: bold;
+
+    transition: 0.2s;
+}
 
 .cancel-btn {
     background: #bdc3c7;
     color: black;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
 }
 
 .delete-btn {
     background: #e74c3c;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
 }
 
-.cancel-btn:hover, .delete-btn:hover {
+.cancel-btn:hover,
+.delete-btn:hover {
     opacity: 0.85;
 }
+
 
 @keyframes aparecer {
     from {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0.92);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+
+@media (max-width: 768px) {
+    #form-editar {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    fieldset {
+        padding: 18px;
     }
 }
