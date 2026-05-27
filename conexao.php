@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 // Timeout de 10 segundos para teste
-$tempo_limite = 60;
+$tempo_limite = 300;
 if (isset($_SESSION['id'])) {
     if (isset($_SESSION['ultimo_acesso']) && (time() - $_SESSION['ultimo_acesso'] > $tempo_limite)) {
         // Passou do limite: desloga o usuário e limpa a sessão
@@ -30,7 +30,7 @@ if (isset($_SESSION['id'])) {
 
 //PUC TEM QUE USAR ESSE
 // $servidor = 'localhost:3307'; 
-$servidor = 'localhost:3306';
+$servidor = 'localhost:3307';
 $usuario = 'root';
 $senha = '';
 $nome_banco = 'elderia';

@@ -230,7 +230,7 @@
                             </label>
 
                             <input type="text" id="registro_profissional" name="registro_profissional"
-                                placeholder="ex: CRM 123456">
+                                placeholder="ex: CRM/PR 123456">
                         </div>
 
                         <div class="form-group">
@@ -391,6 +391,27 @@
             else if (v.length > 3) v = v.replace(/^(\d{3})(\d{3})/, "$1.$2");
             e.target.value = v;
         });
+// LOGICA PARA O CRM não funcionou soy burro
+//         document.getElementById('registro_profissional').addEventListener('input', function (e) {
+//     let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
+//     let letras = v.replace(/[0-9]/g, '');
+//     let numeros = v.replace(/[^0-9]/g, '');
+//     if (numeros.length > 6) {
+//         numeros = numeros.slice(0, 6);
+//     }
+//     v = letras + numeros;
+//     if (numeros.length > 0) {
+//         let conselho = letras.slice(0, -2);
+//         let uf = letras.slice(-2);
+//         v = conselho + '/' + uf + ' ' + numeros;
+//     } 
+//     else if (letras.length > 3) {
+//         let conselho = letras.slice(0, 3);
+//         let uf = letras.slice(3);
+//         v = conselho + '/' + uf;
+//     }
+//     e.target.value = v;
+// });
 
         document.getElementById('telefone').addEventListener('input', function (e) {
             let v = e.target.value.replace(/\D/g, '');
@@ -614,6 +635,8 @@
 
             }, 2000);
         }
+
+        
 
     </script>
 

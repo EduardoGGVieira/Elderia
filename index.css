@@ -301,3 +301,103 @@ h2 {
     flex-direction: column;
     gap: 20px;
 }
+
+/* Container que abriga os cards de profissionais */
+.grid-profissionais {
+    display: grid;
+    /* Divide o layout exatamente em 2 colunas com o mesmo tamanho (50% cada) */
+    grid-template-columns: 1fr 1fr; 
+    gap: 25px; /* Espaço de separação entre as duas colunas */
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Estilo individual de cada um dos dois cards */
+.card-profissional {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-profissional:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Alinhamento interno dos dados (Foto à esquerda e texto à direita) */
+.info-profissional {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.foto-perfil {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1A5F7A; /* Cor Identidade do Elderia */
+}
+
+.dados-texto h3 {
+    color: #1A5F7A;
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+}
+
+.especialidade {
+    color: #E36414; /* Cor secundária de destaque */
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.biografia-preview {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Área inferior com o botão centralizado de Ver Perfil */
+.agenda-profissional {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-ver-mais {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #1A5F7A;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn-ver-mais:hover {
+    background-color: #144D63;
+}
+
+/* REVISÃO DE ACESSIBILIDADE MOBILE: Se a tela for pequena (celular), vira 1 coluna automática */
+@media (max-width: 768px) {
+    .grid-profissionais {
+        grid-template-columns: 1fr;
+    }
+    .info-profissional {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
