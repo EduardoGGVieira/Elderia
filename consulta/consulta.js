@@ -3,6 +3,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const containerAtivas = document.getElementById("container-consultas");
     const containerHistorico = document.getElementById("container-historico");
 
+    const messageBox = document.getElementById("messageBox");
+
+    function mostrarMensagem(tipo, mensagem) {
+
+        messageBox.style.display = "block";
+        messageBox.className = "message-box " + tipo;
+        messageBox.textContent = mensagem;
+
+        setTimeout(() => {
+            messageBox.style.display = "none";
+        }, 5000);
+    }
+
     fetch("consultas.php")
         .then(response => response.json())
         .then(data => {
@@ -27,11 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const card = document.createElement("div");
                 const status = consulta.status.toLowerCase();
-
-                // status-agendada / status-confirmada / status-cancelada / status-realizada
                 card.className = `card-mini-consulta status-${status}`;
-
-                // formata a data
                 const dataFormatada =
                     new Date(consulta.data_hora).toLocaleString("pt-BR", {
                         day: "2-digit",
@@ -56,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
 
-                // botão aparece em consultas agendadas ou confirmadas
                 if (status === "agendada" || status === "confirmada") {
 
                     card.innerHTML += `
@@ -72,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     `;
                 }
 
-                // consultas futuras ou confirmadas
                 if (status === "agendada" || status === "confirmada") {
 
                     containerAtivas.appendChild(card);
@@ -95,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 containerHistorico.innerHTML =
                     "<p>Seu histórico está vazio.</p>";
             }
-            // EVENTO DOS BOTÕES CORRIGIDO E BLINDADO
             document.querySelectorAll(".btn-reagendar")
                 .forEach(botao => {
 
@@ -107,39 +113,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         if (confirm(mensagemConfirmacao)) {
 
-                            // Usamos FormData que é mais seguro e limpo para o PHP receber via POST
                             const dadosEnviar = new FormData();
                             dadosEnviar.append('id_consulta', idConsulta);
 
                             fetch("deletar_consulta.php", {
                                 method: "POST",
-                                body: dadosEnviar // Envia como FormData padrão
+                                body: dadosEnviar
                             })
                                 .then(response => {
-                                    // Se o PHP der erro 404 ou 500, capturamos aqui antes de quebrar
                                     if (!response.ok) {
                                         throw new Error(`Ficheiro não encontrado ou erro no servidor (Status: ${response.status})`);
                                     }
-                                    return response.text(); // Lemos como texto primeiro para inspecionar erros ocultos
+                                    return response.text();
                                 })
                                 .then(texto => {
                                     try {
                                         const resultado = JSON.parse(texto);
                                         if (resultado.success) {
-                                            // Redireciona para a página inicial (raiz do projeto)
-                                            window.location.href = "../index.html";
+                                            mostrarMensagem("success", "Consulta cancelada. Agora você pode reagendar.");
+
+                                            setTimeout(() => {
+                                                window.location.href = "../index.html";
+                                            }, 1500);
                                         } else {
-                                            alert("Erro no banco: " + resultado.error);
+                                            mostrarMensagem("error", "Erro no banco: " + resultado.error);
                                         }
                                     } catch (erroJson) {
-                                        // Se o PHP retornar um erro HTML do XAMPP, vai cair aqui e mostrar o erro real
                                         console.error("Resposta do servidor não era um JSON válido:", texto);
-                                        alert("Erro interno do PHP. Veja o Console (F12) para detalhes.");
+                                        mostrarMensagem("error", "Erro interno do servidor.");
                                     }
                                 })
                                 .catch(err => {
                                     console.error("Erro na requisição:", err);
-                                    alert("Erro de comunicação: " + err.message);
+                                    mostrarMensagem("error", "Erro de comunicação com o servidor.");
                                 });
                         }
                     });

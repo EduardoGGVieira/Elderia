@@ -13,7 +13,7 @@ if (!$id_idoso) {
     die("ID do idoso inválido ou não informado.");
 }
 
-//Busca os dados cruzados de usuário e a tabela específica de idoso
+
 $sql = "
     SELECT 
         u.nome, 

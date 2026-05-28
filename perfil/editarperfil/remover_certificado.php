@@ -4,7 +4,7 @@ require_once '../../conexao.php';
 
 header('Content-Type: application/json');
 
-// Validação de segurança de sessão
+
 if (!isset($_SESSION['id']) || $_SESSION['tipo'] !== 'profissional') {
     echo json_encode(['success' => false, 'message' => 'Acesso negado.']);
     exit;
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Busca o arquivo no banco para garantir a propriedade e encontrar o link do arquivo físico
+    
     $sqlBusca = "SELECT url_documento FROM certificado WHERE id_certificado = ? AND id_profissional = ?";
     $stmtB = mysqli_prepare($conexao, $sqlBusca);
     mysqli_stmt_bind_param($stmtB, "ii", $id_certificado, $id_profissional);
@@ -33,13 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Deleta o arquivo PDF físico da pasta uploads
+   
     $caminho_arquivo = $cert['url_documento'];
     if (!empty($caminho_arquivo) && file_exists($caminho_arquivo)) {
         unlink($caminho_arquivo);
     }
 
-    // Remove o registro da tabela certificado
+
     $sqlDelete = "DELETE FROM certificado WHERE id_certificado = ?";
     $stmtD = mysqli_prepare($conexao, $sqlDelete);
     mysqli_stmt_bind_param($stmtD, "i", $id_certificado);

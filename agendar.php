@@ -15,7 +15,7 @@ $id_agenda =
     $_POST['id_agenda'];
 
 
-// BUSCA HORÁRIO
+
 $sql = "
 
 SELECT *
@@ -51,7 +51,7 @@ if (!$agenda) {
 }
 
 
-// DADOS
+
 $id_profissional =
     $agenda['id_profissional'];
 
@@ -59,7 +59,7 @@ $data_hora =
     $agenda['data_hora'];
 
 
-// INSERE CONSULTA
+
 $sql_insert = "
 
 INSERT INTO consulta
@@ -85,7 +85,7 @@ mysqli_stmt_bind_param(
 
 if (mysqli_stmt_execute($stmt_insert)) {
 
-    // MARCA HORÁRIO COMO AGENDADO
+
     $sql_update = "
 
     UPDATE agenda_disponivel
@@ -110,34 +110,238 @@ if (mysqli_stmt_execute($stmt_insert)) {
 
     mysqli_stmt_execute($stmt_update);
 
-    echo "
+    ?>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
 
-    <script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Consulta Agendada - Elderia</title>
 
-        alert(
-            'Consulta agendada com sucesso!'
-        );
+        <link rel="stylesheet" href="index.css">
 
-        window.location.href =
-            'consulta/index.html';
+        <style>
+            body {
+                background: #f4f7f6;
+            }
 
-    </script>
+            .conteiner-sucesso {
+                max-width: 550px;
+                margin: 80px auto;
+                padding: 20px;
+            }
 
-    ";
+            .card-sucesso {
+                background: white;
+                border-radius: 12px;
+                padding: 35px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                border: 2px solid #CCCCCC;
+                text-align: center;
+            }
+
+            .message-box {
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 20px;
+                border-radius: 8px;
+                font-size: 16px;
+                animation: aparecer 0.3s ease;
+                box-sizing: border-box;
+            }
+
+            .message-box.success {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #28a745;
+            }
+
+            .btn-ok {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.05rem;
+                font-weight: bold;
+                background-color: #E36414;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: 0.3s;
+                text-decoration: none;
+                display: inline-block;
+                margin-top: 10px;
+                box-sizing: border-box;
+            }
+
+            .btn-ok:hover {
+                opacity: 0.95;
+                transform: scale(1.01);
+            }
+
+            @keyframes aparecer {
+
+                from {
+                    opacity: 0;
+                    transform: translateY(-5px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <main class="conteiner-sucesso">
+
+            <div class="card-sucesso">
+
+                <h2>Consulta Confirmada</h2>
+
+                <div class="message-box success">
+                    Sua consulta foi agendada com sucesso!
+                </div>
+
+                <p style="color: #555; margin-bottom: 25px;">
+                    O profissional já pode visualizar o seu agendamento.
+                </p>
+
+                <a href="index.html" class="btn-ok">
+                    OK
+                </a>
+
+            </div>
+
+        </main>
+
+    </body>
+
+    </html>
+
+    <?php
 
 } else {
+    ?>
 
-    echo "
+    <!DOCTYPE html>
+    <html lang="pt-BR">
 
-    <script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Erro no Agendamento - Elderia</title>
 
-        alert('Erro ao agendar.');
+        <link rel="stylesheet" href="index.css">
 
-        history.back();
+        <style>
+            body {
+                background: #f4f7f6;
+            }
 
-    </script>
+            .conteiner-erro {
+                max-width: 550px;
+                margin: 80px auto;
+                padding: 20px;
+            }
 
-    ";
+            .card-erro {
+                background: white;
+                border-radius: 12px;
+                padding: 35px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                border: 2px solid #CCCCCC;
+                text-align: center;
+            }
+
+            .message-box {
+                width: 100%;
+                padding: 15px;
+                margin-bottom: 20px;
+                border-radius: 8px;
+                font-size: 16px;
+                animation: aparecer 0.3s ease;
+                box-sizing: border-box;
+            }
+
+            .message-box.error {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #dc3545;
+            }
+
+            .btn-ok {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.05rem;
+                font-weight: bold;
+                background-color: #E36414;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: 0.3s;
+                text-decoration: none;
+                display: inline-block;
+                margin-top: 10px;
+                box-sizing: border-box;
+            }
+
+            .btn-ok:hover {
+                opacity: 0.95;
+                transform: scale(1.01);
+            }
+
+            @keyframes aparecer {
+
+                from {
+                    opacity: 0;
+                    transform: translateY(-5px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <main class="conteiner-erro">
+
+            <div class="card-erro">
+
+                <h2>Erro ao Agendar</h2>
+
+                <div class="message-box error">
+                    Não foi possível concluir o agendamento.
+                </div>
+
+                <p style="color: #555; margin-bottom: 25px;">
+                    Tente novamente em alguns instantes.
+                </p>
+
+                <a href="javascript:history.back()" class="btn-ok">
+                    Voltar
+                </a>
+
+            </div>
+
+        </main>
+
+    </body>
+
+    </html>
+
+    <?php
 }
+?>
 
 ?>

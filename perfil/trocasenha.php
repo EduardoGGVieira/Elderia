@@ -7,7 +7,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 require_once '../conexao.php';
 
-// Verificar se o usuário está logado
+
 if (!isset($_SESSION['id'])) {
     echo json_encode(['success' => false, 'message' => 'Você precisa estar logado para realizar esta ação.']);
     exit;
@@ -28,7 +28,7 @@ if ($senha_nova !== $confirmar_nova) {
     exit;
 }
 
-// 1. Buscar a senha atual hashada no banco de dados
+
 $stmt = mysqli_prepare(
     $conexao,
     "SELECT senha FROM usuario WHERE id_usuario = ? LIMIT 1"
@@ -51,13 +51,13 @@ if (!$usuario) {
     exit;
 }
 
-// 2. Verificar se a senha antiga confere
+
 if (!password_verify($senha_antiga, $usuario['senha'])) {
     echo json_encode(['success' => false, 'message' => 'A senha atual está incorreta.']);
     exit;
 }
 
-// 3. Atualizar a senha para a nova hashada
+
 $nova_senha_hash = password_hash($senha_nova, PASSWORD_DEFAULT);
 
 $stmt_update = mysqli_prepare(

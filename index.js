@@ -1,4 +1,4 @@
-const feed = document.querySelector(".grid-profissionais"); 
+const feed = document.querySelector(".grid-profissionais");
 const headerUser = document.querySelector(".usuario-info");
 const navBotoes = document.querySelector(".navegacao-botoes");
 const secaoBoasVindas = document.querySelector(".boas-vindas");
@@ -21,10 +21,10 @@ fetch("conta/login/get_session.php")
           linkConsultas = 'consulta/confirmar.php';
           textoLink = 'Confirmar Consultas';
         } else if (data.tipo === 'admin') {
-          linkConsultas = 'admin/admin.php'; 
+          linkConsultas = 'admin/admin.php';
           textoLink = 'Painel Admin';
         }
-        
+
         if (data.tipo === 'admin') {
           navBotoes.innerHTML = `
             <a href="${linkConsultas}" class="btn-nav">${textoLink}</a>
@@ -63,35 +63,45 @@ fetch("conta/login/get_session.php")
   .catch((error) => console.error("Erro ao verificar sessão:", error));
 
 function apagarAvaliacao(idAvaliacao) {
-    const mensagemConfirmacao = "Tem certeza que deseja apagar permanentemente esta avaliação? Esta ação não poderá ser desfeita.";
+  const mensagemConfirmacao = "Tem certeza que deseja apagar permanentemente esta avaliação? Esta ação não poderá ser desfeita.";
 
-    if (confirm(mensagemConfirmacao)) {
-        const dadosEnviar = new FormData();
-        dadosEnviar.append('id_avaliacao', idAvaliacao);
+  if (confirm(mensagemConfirmacao)) {
+    const dadosEnviar = new FormData();
+    dadosEnviar.append('id_avaliacao', idAvaliacao);
 
-        fetch("admin/deletar_avaliacao.php", {
-            method: "POST",
-            body: dadosEnviar
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro no servidor (Status: ${response.status})`);
-            }
-            return response.json();
-        })
-        .then(resultado => {
-            if (resultado.success) {
-                alert("Avaliação apagada com sucesso!");
-                window.location.reload();
-            } else {
-                alert("Erro ao apagar: " + resultado.error);
-            }
-        })
-        .catch(err => {
-            console.error("Erro na requisição:", err);
-            alert("Erro de comunicação: " + err.message);
-        });
-    }
+    fetch("admin/deletar_avaliacao.php", {
+      method: "POST",
+      body: dadosEnviar
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erro no servidor (Status: ${response.status})`);
+        }
+        return response.json();
+      })
+      .then(resultado => {
+        if (resultado.success) {
+
+          mostrarMensagem("success", "Avaliação apagada com sucesso!");
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1200);
+
+        } else {
+
+          mostrarMensagem("error", "Erro ao apagar: " + resultado.error);
+
+        }
+      })
+      .catch(err => {
+
+        console.error("Erro na requisição:", err);
+
+        mostrarMensagem("error", "Erro de comunicação com o servidor.");
+
+      });
+  }
 }
 
 function carregarProfissionais() {
@@ -99,7 +109,7 @@ function carregarProfissionais() {
     fetch("get_profissionais.php")
       .then((response) => response.json())
       .then((data) => {
-        feed.innerHTML = ""; 
+        feed.innerHTML = "";
         data.forEach((prof) => {
           const card = criarCardProfissional(prof);
           feed.appendChild(card);
@@ -111,7 +121,7 @@ function carregarProfissionais() {
 
 function criarCardProfissional(prof) {
   const card = document.createElement("div");
-  card.classList.add("card-profissional"); 
+  card.classList.add("card-profissional");
 
   const fotoPlaceholder = "https://img.freepik.com/fotos-premium/medicos-enfermeiros-e-retrato-de-equipe-em-clinica-hospitalar-ou-consultorio-medico-diversidade-de-profissionais-de-saude-e-de-saude-juntos-bracos-cruzados-em-colaboracao-ou-suporte-de-trabalho-em-equipe-de-confianca_590464-89340.jpg?w=1380";
 
@@ -133,23 +143,23 @@ function criarCardProfissional(prof) {
 
   const containerDepoimentos = document.getElementById("container-depoimentos");
 
-if (containerDepoimentos) {
+  if (containerDepoimentos) {
     fetch("get_depoimentos.php")
-        .then(response => response.json())
-        .then(data => {
-            if (data.length === 0) {
-                containerDepoimentos.innerHTML = `<p style="text-align: center; width: 100%; color: #777;">Nenhum depoimento disponível no momento.</p>`;
-                return;
-            }
+      .then(response => response.json())
+      .then(data => {
+        if (data.length === 0) {
+          containerDepoimentos.innerHTML = `<p style="text-align: center; width: 100%; color: #777;">Nenhum depoimento disponível no momento.</p>`;
+          return;
+        }
 
-            containerDepoimentos.innerHTML = ""; // Limpa a mensagem de carregando
+        containerDepoimentos.innerHTML = "";
 
-            data.forEach(depoimento => {
-                // Monta as estrelas dinamicamente com base na nota gravada no banco
-                let estrelas = "⭐".repeat(depoimento.nota);
+        data.forEach(depoimento => {
 
-                const cardDepoimento = document.createElement("div");
-                cardDepoimento.style.cssText = `
+          let estrelas = "⭐".repeat(depoimento.nota);
+
+          const cardDepoimento = document.createElement("div");
+          cardDepoimento.style.cssText = `
                     background: white; 
                     padding: 25px; 
                     border-radius: 12px; 
@@ -162,7 +172,7 @@ if (containerDepoimentos) {
                     justify-content: space-between;
                 `;
 
-                cardDepoimento.innerHTML = `
+          cardDepoimento.innerHTML = `
                     <div>
                         <p style="color: #f1c40f; margin-bottom: 10px; font-size: 1.1rem;">${estrelas}</p>
                         <p style="font-style: italic; color: #555; line-height: 1.5;">"${depoimento.comentario || 'Sem comentários.'}"</p>
@@ -171,14 +181,14 @@ if (containerDepoimentos) {
                     <strong style="color: var(--cor-primaria);">- ${depoimento.nome_idoso}</strong>
                 `;
 
-                containerDepoimentos.appendChild(cardDepoimento);
-            });
-        })
-        .catch(error => {
-            console.error("Erro ao buscar depoimentos:", error);
-            containerDepoimentos.innerHTML = `<p style="text-align: center; width: 100%; color: #e74c3c;">Erro ao carregar depoimentos.</p>`;
+          containerDepoimentos.appendChild(cardDepoimento);
         });
-}
+      })
+      .catch(error => {
+        console.error("Erro ao buscar depoimentos:", error);
+        containerDepoimentos.innerHTML = `<p style="text-align: center; width: 100%; color: #e74c3c;">Erro ao carregar depoimentos.</p>`;
+      });
+  }
 
   return card;
 }

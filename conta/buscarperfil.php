@@ -2,7 +2,6 @@
 session_start();
 
 if (!isset($_SESSION['tipo_usuario'])) {
-    // Se tentar acessar direto, redireciona para login
     echo json_encode([
         'tipo_usuario' => false
     ]);

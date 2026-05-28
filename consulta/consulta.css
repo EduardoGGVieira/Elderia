@@ -60,3 +60,39 @@
 .btn-reagendar:active {
     transform: scale(0.98);
 }
+
+.message-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    animation: aparecer 0.3s ease;
+    box-sizing: border-box;
+}
+
+.message-box.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #28a745;
+}
+
+.message-box.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #dc3545;
+}
+
+@keyframes aparecer {
+
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,8 +1,8 @@
-/* Variáveis de Cores para facilitar a manutenção */
+
 :root {
     --cor-fundo: #F4F7F6;
-    --cor-primaria: #1A5F7A; /* Azul petróleo / Verde escuro */
-    --cor-secundaria: #E36414; /* Laranja queimado para contraste e botões */
+    --cor-primaria: #1A5F7A; 
+    --cor-secundaria: #E36414;
     --cor-texto: #333333;
     --cor-borda: #CCCCCC;
     --cor-card: #FFFFFF;
@@ -12,16 +12,16 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fontes sem serifa são melhores para idosos */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
-    font-size: 18px; /* Fonte base maior */
+    font-size: 18px;
 }
 
-/* Cabeçalho */
+
 .cabecalho-principal {
     display: flex;
     justify-content: space-between;
@@ -88,7 +88,7 @@ body {
     border-radius: 8px;
 }
 
-/* Containers Centrais */
+
 .conteiner-busca, .conteiner-resultados {
     max-width: 1000px;
     margin: 50px auto;
@@ -121,7 +121,7 @@ h2 {
     margin-bottom: 30px;
 }
 
-/* Formulário de Busca */
+
 .formulario-busca {
     display: flex;
     gap: 20px;
@@ -187,7 +187,7 @@ h2 {
     margin: 0 auto;
 }
 
-/* Cards de Resultado */
+
 .card-profissional {
     display: flex;
     background-color: var(--cor-card);
@@ -302,18 +302,18 @@ h2 {
     gap: 20px;
 }
 
-/* Container que abriga os cards de profissionais */
+
 .grid-profissionais {
     display: grid;
-    /* Divide o layout exatamente em 2 colunas com o mesmo tamanho (50% cada) */
+    
     grid-template-columns: 1fr 1fr; 
-    gap: 25px; /* Espaço de separação entre as duas colunas */
+    gap: 25px; 
     max-width: 1200px;
     margin: 30px auto;
     padding: 0 20px;
 }
 
-/* Estilo individual de cada um dos dois cards */
+
 .card-profissional {
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
@@ -331,7 +331,7 @@ h2 {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Alinhamento interno dos dados (Foto à esquerda e texto à direita) */
+
 .info-profissional {
     display: flex;
     gap: 20px;
@@ -344,7 +344,7 @@ h2 {
     height: 110px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #1A5F7A; /* Cor Identidade do Elderia */
+    border: 3px solid #1A5F7A; 
 }
 
 .dados-texto h3 {
@@ -354,7 +354,7 @@ h2 {
 }
 
 .especialidade {
-    color: #E36414; /* Cor secundária de destaque */
+    color: #E36414; 
     font-weight: bold;
     font-size: 0.95rem;
     margin-bottom: 10px;
@@ -366,7 +366,7 @@ h2 {
     line-height: 1.4;
 }
 
-/* Área inferior com o botão centralizado de Ver Perfil */
+
 .agenda-profissional {
     width: 100%;
     display: flex;
@@ -390,7 +390,7 @@ h2 {
     background-color: #144D63;
 }
 
-/* REVISÃO DE ACESSIBILIDADE MOBILE: Se a tela for pequena (celular), vira 1 coluna automática */
+
 @media (max-width: 768px) {
     .grid-profissionais {
         grid-template-columns: 1fr;

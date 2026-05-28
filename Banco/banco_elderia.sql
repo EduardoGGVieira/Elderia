@@ -142,11 +142,11 @@ INSERT INTO avaliacao (`id_profissional`, `id_usuario`, `nota`, `comentario`, `s
 SET @id_eduardo_prof = (SELECT id_usuario FROM usuario WHERE email = 'dudu@gmail.com' LIMIT 1);
 
 INSERT INTO agenda_disponivel (id_profissional, data_hora, status) VALUES
-(@id_eduardo_prof, '2026-05-20 09:00:00', 'livre'),
-(@id_eduardo_prof, '2026-05-21 10:30:00', 'livre'),
-(@id_eduardo_prof, '2026-05-22 14:00:00', 'livre'),
-(@id_eduardo_prof, '2026-05-23 08:30:00', 'livre'),
-(@id_eduardo_prof, '2026-05-24 11:00:00', 'livre'),
-(@id_eduardo_prof, '2026-05-25 15:30:00', 'livre'),
-(@id_eduardo_prof, '2026-05-26 10:00:00', 'livre'),
-(@id_eduardo_prof, '2026-05-27 16:00:00', 'livre');
+(@id_eduardo_prof, '2026-06-27 09:00:00', 'livre'),
+(@id_eduardo_prof, '2026-06-28 10:30:00', 'livre'),
+(@id_eduardo_prof, '2026-06-29 14:00:00', 'livre'),
+(@id_eduardo_prof, '2026-06-30 08:30:00', 'livre'),
+(@id_eduardo_prof, '2026-06-31 11:00:00', 'livre'),
+(@id_eduardo_prof, '2026-06-22 15:30:00', 'livre'),
+(@id_eduardo_prof, '2026-06-26 10:00:00', 'livre'),
+(@id_eduardo_prof, '2026-06-24 16:00:00', 'livre');

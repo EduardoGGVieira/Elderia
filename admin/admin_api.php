@@ -11,12 +11,14 @@ if (!isset($_SESSION['id']) || $_SESSION['tipo'] !== 'admin') {
 
 $action = $_GET['action'] ?? '';
 
-function json_out($data) {
+function json_out($data)
+{
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-function apagar_arquivo_se_existir($caminho) {
+function apagar_arquivo_se_existir($caminho)
+{
     if (!empty($caminho) && file_exists($caminho)) {
         unlink($caminho);
     }
@@ -38,16 +40,12 @@ if ($action === 'list') {
     }
 
     json_out($usuarios);
-}
-
-elseif ($action === 'delete_user') {
+} elseif ($action === 'delete_user') {
     $id = intval($_GET['id'] ?? 0);
 
     if ($id <= 0) {
         json_out(['success' => false, 'message' => 'ID inválido.']);
     }
-
-    // Busca o tipo do usuário e caminhos de arquivos antes de deletar
     $stmtBusca = $conexao->prepare("SELECT tipo_usuario FROM usuario WHERE id_usuario = ?");
     $stmtBusca->bind_param("i", $id);
     $stmtBusca->execute();
@@ -59,13 +57,10 @@ elseif ($action === 'delete_user') {
     }
 
     $tipo = $user['tipo_usuario'];
-
-    // Iniciamos uma transação para garantir que ou deleta tudo ou não deleta nada
     $conexao->begin_transaction();
 
     try {
         if ($tipo === 'profissional') {
-            // 1. Remove arquivos de certificados e registros
             $stmtC = $conexao->prepare("SELECT url_documento FROM certificado WHERE id_profissional = ?");
             $stmtC->bind_param("i", $id);
             $stmtC->execute();
@@ -74,8 +69,6 @@ elseif ($action === 'delete_user') {
                 apagar_arquivo_se_existir($cert['url_documento']);
             }
             $conexao->query("DELETE FROM certificado WHERE id_profissional = $id");
-
-            // 2. Remove arquivo de documentação profissional
             $stmtP = $conexao->prepare("SELECT documentacao_url FROM profissional WHERE id_profissional = ?");
             $stmtP->bind_param("i", $id);
             $stmtP->execute();
@@ -84,26 +77,22 @@ elseif ($action === 'delete_user') {
                 apagar_arquivo_se_existir($prof['documentacao_url']);
             }
 
-            // 3. Limpa agenda, consultas e avaliações vinculadas ao profissional
             $conexao->query("DELETE FROM agenda_disponivel WHERE id_profissional = $id");
             $conexao->query("DELETE FROM consulta WHERE id_profissional = $id");
             $conexao->query("DELETE FROM avaliacao WHERE id_profissional = $id");
             $conexao->query("DELETE FROM profissional WHERE id_profissional = $id");
 
         } elseif ($tipo === 'idoso') {
-            // Limpa consultas e registro de idoso
             $conexao->query("DELETE FROM consulta WHERE id_idoso = $id");
             $conexao->query("DELETE FROM idoso WHERE id_idoso = $id");
         }
 
-        // Limpa avaliações que o usuário possa ter escrito (comum a ambos os tipos)
         $conexao->query("DELETE FROM avaliacao WHERE id_usuario = $id");
 
-        // Por fim, deleta o registro principal na tabela usuario
         $stmt = $conexao->prepare("DELETE FROM usuario WHERE id_usuario = ? AND tipo_usuario != 'admin'");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-        
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
         $conexao->commit();
         json_out(['success' => true]);
 
@@ -111,9 +100,7 @@ elseif ($action === 'delete_user') {
         $conexao->rollback();
         json_out(['success' => false, 'message' => 'Erro ao deletar: ' . $e->getMessage()]);
     }
-}
-
-elseif ($action === 'get_user') {
+} elseif ($action === 'get_user') {
     $id = intval($_GET['id'] ?? 0);
 
     $sql = "SELECT
@@ -139,9 +126,7 @@ elseif ($action === 'get_user') {
     $stmt->execute();
 
     json_out($stmt->get_result()->fetch_assoc());
-}
-
-elseif ($action === 'get_documents') {
+} elseif ($action === 'get_documents') {
     $id = intval($_GET['id'] ?? 0);
 
     $sqlDoc = "SELECT
@@ -183,9 +168,7 @@ elseif ($action === 'get_documents') {
         'documento' => $documento,
         'certificados' => $certificados
     ]);
-}
-
-elseif ($action === 'validar_certificado' || $action === 'reprovar_certificado') {
+} elseif ($action === 'validar_certificado' || $action === 'reprovar_certificado') {
     $id = intval($_GET['id'] ?? 0);
     $status = $action === 'validar_certificado' ? 'aprovado' : 'reprovado';
 
@@ -194,9 +177,7 @@ elseif ($action === 'validar_certificado' || $action === 'reprovar_certificado')
     $stmt->execute();
 
     json_out(['success' => true]);
-}
-
-elseif ($action === 'excluir_certificado') {
+} elseif ($action === 'excluir_certificado') {
     $id = intval($_GET['id'] ?? 0);
 
     $stmtBusca = $conexao->prepare("SELECT url_documento FROM certificado WHERE id_certificado = ?");
@@ -213,9 +194,7 @@ elseif ($action === 'excluir_certificado') {
     $stmt->execute();
 
     json_out(['success' => true]);
-}
-
-elseif ($action === 'validar_documento' || $action === 'reprovar_documento') {
+} elseif ($action === 'validar_documento' || $action === 'reprovar_documento') {
     $id = intval($_GET['id'] ?? 0);
     $status = $action === 'validar_documento' ? 'aprovado' : 'reprovado';
 
@@ -224,9 +203,7 @@ elseif ($action === 'validar_documento' || $action === 'reprovar_documento') {
     $stmt->execute();
 
     json_out(['success' => true]);
-}
-
-elseif ($action === 'excluir_documento') {
+} elseif ($action === 'excluir_documento') {
     $id = intval($_GET['id'] ?? 0);
 
     $stmtBusca = $conexao->prepare("SELECT documentacao_url FROM profissional WHERE id_profissional = ?");
@@ -249,9 +226,7 @@ elseif ($action === 'excluir_documento') {
     $stmt->execute();
 
     json_out(['success' => true]);
-}
-
-else {
+} else {
     json_out(['error' => 'Ação inválida.']);
 }
 ?>

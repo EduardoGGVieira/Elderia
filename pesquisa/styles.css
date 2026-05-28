@@ -1,8 +1,8 @@
-/* Variáveis de Cores para facilitar a manutenção */
+
 :root {
     --cor-fundo: #F4F7F6;
-    --cor-primaria: #1A5F7A; /* Azul petróleo / Verde escuro */
-    --cor-secundaria: #E36414; /* Laranja queimado para contraste e botões */
+    --cor-primaria: #1A5F7A; 
+    --cor-secundaria: #E36414; 
     --cor-texto: #333333;
     --cor-borda: #CCCCCC;
     --cor-card: #FFFFFF;
@@ -12,16 +12,16 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fontes sem serifa são melhores para idosos */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
-    font-size: 18px; /* Fonte base maior */
+    font-size: 18px;
 }
 
-/* Cabeçalho */
+
 .cabecalho-principal {
     display: flex;
     justify-content: space-between;
@@ -73,7 +73,7 @@ body {
     border-radius: 8px;
 }
 
-/* Containers Centrais */
+
 .conteiner-busca, .conteiner-resultados {
     max-width: 1000px;
     margin: 50px auto;
@@ -86,7 +86,7 @@ h2 {
     margin-bottom: 30px;
 }
 
-/* Formulário de Busca */
+
 .formulario-busca {
     display: flex;
     gap: 20px;
@@ -138,7 +138,7 @@ h2 {
     background-color: #C05510;
 }
 
-/* Cards de Resultado */
+
 .card-profissional {
     display: flex;
     background-color: var(--cor-card);

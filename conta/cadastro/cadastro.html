@@ -391,27 +391,27 @@
             else if (v.length > 3) v = v.replace(/^(\d{3})(\d{3})/, "$1.$2");
             e.target.value = v;
         });
-// LOGICA PARA O CRM não funcionou soy burro
-//         document.getElementById('registro_profissional').addEventListener('input', function (e) {
-//     let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
-//     let letras = v.replace(/[0-9]/g, '');
-//     let numeros = v.replace(/[^0-9]/g, '');
-//     if (numeros.length > 6) {
-//         numeros = numeros.slice(0, 6);
-//     }
-//     v = letras + numeros;
-//     if (numeros.length > 0) {
-//         let conselho = letras.slice(0, -2);
-//         let uf = letras.slice(-2);
-//         v = conselho + '/' + uf + ' ' + numeros;
-//     } 
-//     else if (letras.length > 3) {
-//         let conselho = letras.slice(0, 3);
-//         let uf = letras.slice(3);
-//         v = conselho + '/' + uf;
-//     }
-//     e.target.value = v;
-// });
+        // LOGICA PARA O CRM não funcionou soy burro
+        //         document.getElementById('registro_profissional').addEventListener('input', function (e) {
+        //     let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
+        //     let letras = v.replace(/[0-9]/g, '');
+        //     let numeros = v.replace(/[^0-9]/g, '');
+        //     if (numeros.length > 6) {
+        //         numeros = numeros.slice(0, 6);
+        //     }
+        //     v = letras + numeros;
+        //     if (numeros.length > 0) {
+        //         let conselho = letras.slice(0, -2);
+        //         let uf = letras.slice(-2);
+        //         v = conselho + '/' + uf + ' ' + numeros;
+        //     } 
+        //     else if (letras.length > 3) {
+        //         let conselho = letras.slice(0, 3);
+        //         let uf = letras.slice(3);
+        //         v = conselho + '/' + uf;
+        //     }
+        //     e.target.value = v;
+        // });
 
         document.getElementById('telefone').addEventListener('input', function (e) {
             let v = e.target.value.replace(/\D/g, '');
@@ -422,7 +422,6 @@
             e.target.value = v;
         });
 
-        // Lógica de CEP e Auto-preenchimento
         document.getElementById('cep').addEventListener('input', function (e) {
             let v = e.target.value.replace(/\D/g, '');
             if (v.length > 8) v = v.slice(0, 8);
@@ -449,7 +448,7 @@
                     })
                     .catch(err => {
                         console.error('Erro ao buscar CEP:', err);
-                        alert('Erro ao consultar serviço de CEP.');
+                        mostrarMensagem('Erro ao consultar serviço de CEP.');
                     });
             }
         });
@@ -636,10 +635,64 @@
             }, 2000);
         }
 
-        
+
+        function confirmarAcao(texto, callback) {
+
+            const modal =
+                document.getElementById('modal-confirmacao');
+
+            const textoModal =
+                document.getElementById('texto-confirmacao');
+
+            const btnConfirmar =
+                document.getElementById('btn-confirmar');
+
+            const btnCancelar =
+                document.getElementById('btn-cancelar');
+
+            textoModal.innerText = texto;
+
+            modal.style.display = 'flex';
+
+            btnConfirmar.onclick = () => {
+
+                modal.style.display = 'none';
+
+                callback();
+            };
+
+            btnCancelar.onclick = () => {
+
+                modal.style.display = 'none';
+            };
+        }
+
 
     </script>
 
+    <div id="modal-confirmacao" class="modal-confirmacao">
+
+        <div class="modal-box">
+
+            <h3>Confirmar ação</h3>
+
+            <p id="texto-confirmacao"></p>
+
+            <div class="modal-botoes">
+
+                <button id="btn-cancelar" class="btn-cancelar">
+                    Cancelar
+                </button>
+
+                <button id="btn-confirmar" class="btn-confirmar">
+                    Confirmar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 </body>
 
 </html>

@@ -1,11 +1,10 @@
 <?php
-// deletar_avaliacao.php
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 
 session_start();
 header('Content-Type: application/json; charset=utf-8');
-require_once '../conexao.php'; 
+require_once '../conexao.php';
 
 // SEGURANÇA: Verifica se o usuário está logado E se possui o tipo 'admin'
 if (!isset($_SESSION['id']) || $_SESSION['tipo'] !== 'admin') {
@@ -19,14 +18,12 @@ if (!$id_avaliacao) {
     echo json_encode(['success' => false, 'error' => 'ID da avaliação inválido ou não informado.']);
     exit;
 }
-
-// Executa a exclusão física na tabela 'avaliacao'
 $sql = "DELETE FROM avaliacao WHERE id_avaliacao = ?";
 $stmt = mysqli_prepare($conexao, $sql);
 
 if ($stmt) {
     mysqli_stmt_bind_param($stmt, 'i', $id_avaliacao);
-    
+
     if (mysqli_stmt_execute($stmt)) {
         if (mysqli_stmt_affected_rows($stmt) > 0) {
             echo json_encode(['success' => true]);

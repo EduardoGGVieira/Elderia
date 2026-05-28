@@ -8,13 +8,13 @@ if (!$conexao) {
     exit;
 }
 
-// SQL que junta a avaliação com o nome do usuário idoso que a fez
+
 $sql = "SELECT a.nota, a.comentario, u.nome AS nome_idoso 
         FROM avaliacao a
         INNER JOIN usuario u ON a.id_usuario = u.id_usuario
         WHERE a.status_moderacao = 'aprovada' 
         ORDER BY a.id_avaliacao DESC 
-        LIMIT 3"; // Limita em até 3 depoimentos para não quebrar o layout
+        LIMIT 3"; 
 
 $result = mysqli_query($conexao, $sql);
 $depoimentos = [];
