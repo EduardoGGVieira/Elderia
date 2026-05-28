@@ -18,32 +18,77 @@
         </div>
         <nav class="navegacao-botoes">
             <a href="perfil/" class="btn-nav">Meu Perfil</a>
-            <a href="../Elderia/consulta/index.html" class="btn-nav">Consultas</a>
+            <a href="consulta/index.html" class="btn-nav">Consultas</a>
         </nav>
         <div class="usuario-info" id="area-usuario">
-            <a href="conta/cadastro/cadastro.html" class="btn-nav" style="background-color: var(--cor-secundaria); padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar Conta</a>
+            <a href="conta/cadastro/cadastro.html" class="btn-nav btn-destaque">Criar Conta</a>
             <a href="conta/login/login.html" class="btn-sair">Login</a>
         </div>
     </header>
+    
 
-    <section class="boas-vindas conteiner-busca" style="text-align: center; background-color: var(--cor-card); border-radius: 12px; border: 2px solid var(--cor-primaria); padding: 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <section class="boas-vindas conteiner-busca">
         <div class="banner-informativo">
-            <h1 style="color: var(--cor-primaria); font-size: 2.5rem; margin-bottom: 15px;">Cuidado e Saúde</h1>
-            <p style="font-size: 1.2rem; margin-bottom: 30px;">Encontre especialistas qualificados com segurança e rapidez.</p>
+            <h1>Cuidado e Saúde</h1>
+            <p>Encontre especialistas qualificados com segurança e rapidez.</p>
             
-            <a href="pesquisa/pesquisa.html" class="btn-pesquisar" style="text-decoration: none; display: inline-block;">Buscar Profissionais</a>
+            <a href="pesquisa/pesquisa.html" class="btn-pesquisar">Buscar Profissionais</a>
+        </div>
+    </section>
+    
+    
+
+    <main class="aba-profissionais conteiner-resultados">
+        <div class="secao-titulo">
+            <h2>Especialistas Disponíveis</h2>
+            <div class="linha-decorativa"></div>
+        </div>
+
+        <div id="container-cards-profissionais" class="grid-profissionais">
+            </div>
+    </main>
+
+
+
+   <section class="depoimentos" style="max-width: 1000px; margin: 50px auto; padding: 0 20px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="color: var(--cor-primaria);">O que dizem nossos usuários</h2>
+        </div>
+        <div id="container-depoimentos" style="display: flex; gap: 20px; flex-wrap: wrap;" class="grid-diferenciais">
+            <p style="text-align: center; width: 100%; color: #777;">Carregando depoimentos...</p>
         </div>
     </section>
 
-    <main class="aba-profissionais conteiner-resultados">
-        <div class="secao-titulo" style="text-align: center; margin-bottom: 40px;">
-            <h2>Especialistas Disponíveis</h2>
-            <div class="linha-decorativa" style="height: 3px; width: 100px; background-color: var(--cor-secundaria); margin: 0 auto;"></div>
-        </div>
 
-        <div id="container-cards-profissionais" class="grid-profissionais" style="display: flex; flex-direction: column; gap: 20px;">
+
+
+
+    <section class="diferenciais" style="background-color: #ffffff; padding: 60px 20px; margin: 50px 0; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;">
+    <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+        <h2 style="color: var(--cor-primaria);">Sua Saúde em Boas Mãos</h2>
+        <div style="display: flex; gap: 30px; margin-top: 40px; justify-content: space-between;" class="grid-diferenciais">
+            <div style="flex: 1; padding: 10px;">
+                <span style="font-size: 2.5rem;">🤫</span>
+                <h4 style="color: var(--cor-primaria); margin: 15px 0 10px;">Profissionais Verificados</h4>
+                <p style="font-size: 0.95rem; color: #555;">Analisamos rigorosamente os registros profissionais (CRM/COREN) e certificados antes da liberação.</p>
             </div>
-    </main>
+            <div style="flex: 1; padding: 10px;">
+                <span style="font-size: 2.5rem;">🤨</span>
+                <h4 style="color: var(--cor-primaria); margin: 15px 0 10px;">Fácil de Usar</h4>
+                <p style="font-size: 0.8rem; color: #000000;">eu acho.</p>                
+                <p style="font-size: 0.95rem; color: #555;">Interface com fontes ampliadas e navegação simplificada projetada especialmente para o público sênior.</p>
+            </div>
+            <div style="flex: 1; padding: 10px;">
+                <span style="font-size: 2.5rem;">🤬</span>
+                <h4 style="color: var(--cor-primaria); margin: 15px 0 10px;">Agendamento Flexível</h4>
+                <p style="font-size: 0.95rem; color: #555;">Escolha os melhores dias e horários diretamente pelo site e gerencie suas consultas quando quiser.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
 
     <script src="index.js"></script>
 </body>

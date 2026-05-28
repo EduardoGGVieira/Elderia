@@ -12,7 +12,6 @@
             --input-padding: 12px;
         }
 
-        /* Tema de Acessibilidade para Idosos */
         .acessibilidade-idoso {
             --primary-color: #004085;
             --text-size: 20px;
@@ -30,7 +29,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Navbar */
         .navbar {
             background-color: #ffffff;
             padding: 15px 5%;
@@ -66,8 +64,6 @@
 
         .btn-home { color: var(--primary-color); background: transparent; }
         .btn-login { background-color: var(--primary-color); color: white; }
-
-        /* Container e Form */
         .container { max-width: 850px; margin: 40px auto; padding: 0 20px; }
         form { background: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         fieldset { border: 2px solid #dee2e6; border-radius: 12px; margin-bottom: 30px; padding: 25px; }
@@ -249,3 +245,49 @@
     </script>
 </body>
 </html>
+
+Passo 1: 
+-Rodar o banco de dados.
+-Comando desc (*nome da tabela solicitada*); --para saber a tabela que vai ser alterada.
+-ALTER TABLE usuario (*nome da tabela*) ADD COLUMN autoria (*coluna solicitada*) VARCHAR(100);
+ ALTER TABLE usuario ADD COLUMN autoria VARCHAR(100); --comando sem as anotações
+-Comando desc usuario (*nome da tabela*); --para saber se a tabela foi alterada.
+
+Passo 2:
+--Adicionar no formulário solicitado pelo professor (no exemplo: Cadastro.html):
+<div class="form-group">
+                        <label for="nome" >Abobrinha</label>
+
+                        <input type="text" id="abobrinha" name="abobrinha">
+                    </div>
+
+Passo 3:
+-Abrir o arquivo "cadastro.php".
+$sql_user = "INSERT INTO usuario (abobrinha,nome, cpf, email, telefone, senha, tipo_usuario) VALUES (?,?, ?, ?, ?, ?, ?)"; --como tem q ficar.
+
+    $sql_user = "INSERT INTO usuario (nome, cpf, email, telefone, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?)"; --como esta (quando foi feito esse documento aqui :P.
+
+Passo 4:
+-continuar no mesmo arquivo.
+mysqli_stmt_bind_param($stmt, 'sssssss', $_POST['abobrinha'], $nome, $cpf, $email, $telefone, $senha_hash, $tipo_usuario); --como tem q ficar.
+
+    mysqli_stmt_bind_param($stmt, 'ssssss', $nome, $cpf, $email, $telefone, $senha_hash, $tipo_usuario); --como esta (quando foi feito esse documento foi feito).
+
+Passo 5:
+-Abrir o arquivo conta/login/get_session.php.
+-Adicionar uma "variável" entre as já existentes:
+'u' => $_SESSION['u'],
+
+Passo 6:
+-Abrir o arquivo conta/login/login.php.
+-Adicionar entre as "variáveis" o usuário:
+$_SESSION['u'] = $usuario;
+
+Passo 7:
+-Abrir o arquivo perfil/index.html.
+<h1>Abobrinha: ${data.u['abobrinha']}</h1> --*Colocar essa parte no script final após o "infodiv.innerhtml"*.
+
+Passo 8: 
+-Continuar no mesmo arquivo.
+-Adicionar após o segundo ".then" e o primeiro "fetch":
+console.log(data);

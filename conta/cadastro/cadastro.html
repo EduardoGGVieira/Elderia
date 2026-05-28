@@ -1,203 +1,698 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Cadastro Completo</title>
+
     <link rel="stylesheet" href="cadastro.css">
     <link rel="stylesheet" href="../../pesquisa/styles.css">
-   
 </head>
+
 <body id="main-body">
 
     <header class="cabecalho-principal">
+
         <div class="logo-container">
             <a href="../../index.html">
                 <h1>ELDERIA</h1>
-                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
+
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
+                    class="haroldo">
             </a>
         </div>
-        <nav class="navegacao-botoes">
-            <a href="/perfil/index.html" class="btn-nav">Ver Meu Perfil</a> 
-            <a href="../../consulta/index.html" class="btn-nav">Ver Minhas Consultas</a>
-        </nav>
+
+
+
         <div class="usuario-info">
-            <a href="../../conta/login/login.html" class="btn-sair">Login</a>
-            
+            <a href="../../conta/login/login.html" class="btn-sair">
+                Login
+            </a>
         </div>
+
     </header>
 
     <div class="container">
+
         <header style="text-align: center; margin-bottom: 30px;">
-            <h2 id="instrucao-topo">Para começar, escolha seu tipo de perfil:</h2>
+            <h2 id="instrucao-topo">
+                Para começar, escolha seu tipo de perfil:
+            </h2>
         </header>
 
         <form action="cadastro.php" method="POST" enctype="multipart/form-data">
-            
             <fieldset class="secao-inicial">
+
                 <legend>Identificação</legend>
+
                 <div class="form-group">
-                    <label for="tipo_usuario">Quem é você?</label>
-                    <select id="tipo_usuario" name="tipo_usuario" required onchange="iniciarFluxo()">
-                        <option value="">Selecione uma opção...</option>
-                        <option value="idoso">Sou Idoso (Quero me cadastrar)</option>
-                        <option value="profissional">Sou Profissional (Quero trabalhar)</option>
-                    </select>
+
+                    <label>Quem é você?</label>
+
+                    <input type="hidden" id="tipo_usuario" name="tipo_usuario" required>
+
+                    <div class="btn-group">
+
+                        <button type="button" class="btn-choice" onclick="selecionarPerfil('idoso', this)">
+                            Sou Idoso
+                        </button>
+
+                        <button type="button" class="btn-choice" onclick="selecionarPerfil('profissional', this)">
+                            Sou Profissional
+                        </button>
+
+                    </div>
+
                 </div>
+
             </fieldset>
 
-            <div id="fluxo-cadastro" style="display: none;">
+            <div id="fluxo-cadastro">
+
                 <fieldset>
+
                     <legend>Dados de Acesso (Usuario)</legend>
+
                     <div class="form-group">
                         <label for="nome">Nome Completo</label>
-                        <input type="text" id="nome" name="nome" required>
+
+                        <input type="text" id="nome" name="nome" placeholder="ex: João da Silva" required>
                     </div>
+
                     <div class="form-group">
                         <label for="cpf">CPF</label>
-                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+
+                        <input type="text" id="cpf" name="cpf" placeholder="ex: 123.456.789-00" required>
                     </div>
+
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" required>
+
+                        <input type="email" id="email" name="email" placeholder="ex: joao@email.com" required>
                     </div>
+
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+
+                        <input type="tel" id="telefone" name="telefone" placeholder="ex: (00) 00000-0000">
                     </div>
+
                     <div class="form-group">
                         <label for="senha">Crie uma Senha</label>
-                        <input type="password" id="senha" name="senha" required>
+
+                        <input type="password" id="senha" name="senha" placeholder="evite usar senhas fáceis" required>
+
+                        <small id="senha-status" class="senha-status">
+                            A senha deve ter:
+                            8 caracteres, 1 maiúscula, 1 número e 1 caractere especial.
+                        </small>
+                        <div class="form-group">
+                            <label for="confirme_senha">
+                                Confirmar Senha
+                            </label>
+
+                            <input type="password" id="confirme_senha" name="confirme_senha"
+                                placeholder="Digite a senha novamente" required>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Endereço</legend>
+                    <div class="form-group">
+                        <label for="cep">CEP</label>
+                        <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9">
                     </div>
                     <div class="form-group">
-                        <label for="confirme_senha">Confirme sua Senha</label>
-                        <input type="password" id="confirme_senha" name="confirme_senha" required>
+                        <label for="logradouro">Rua</label>
+                        <input type="text" id="logradouro" name="logradouro" placeholder="Aguardando CEP..." readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" name="bairro" placeholder="Aguardando CEP..." readonly>
+                    </div>
+                    <div class="form-group">
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 3;">
+                                <label for="cidade">Cidade</label>
+                                <input type="text" id="cidade" name="cidade" readonly>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="uf">UF</label>
+                                <input type="text" id="uf" name="uf" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numero">Número e Complemento</label>
+                        <input type="text" id="numero" name="numero" placeholder="Ex: 123, Apto 4">
                     </div>
                 </fieldset>
 
-                <div id="area-idoso" style="display: none;">
+                <div id="area-idoso">
+
                     <fieldset style="border-color: #004085;">
+
                         <legend>Saúde e Cuidados Especiais</legend>
+
                         <div class="form-group">
-                            <label for="data_nascimento">Data de Nascimento</label>
+                            <label for="data_nascimento">
+                                Data de Nascimento
+                            </label>
+
                             <input type="date" id="data_nascimento" name="data_nascimento">
                         </div>
+
                         <div class="form-group">
-                            <label for="alergias">Você possui alguma alergia?</label>
-                            <textarea id="alergias" name="alergias" rows="2" placeholder="Ex: Remédios, alimentos..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="informacoes_saude">Informações de Saúde</label>
-                            <textarea id="informacoes_saude" name="informacoes_saude" rows="2" placeholder="Ex: Hipertensão, Diabetes..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                <input type="checkbox" id="possui_acessibilidade" name="possui_acessibilidade" style="width: 25px; height: 25px;" onchange="toggleAcessibilidade()">
-                                <span>Preciso de acessibilidade especial</span>
+                            <label for="alergias">
+                                Você possui alguma alergia? se sim, qual?
                             </label>
+
+                            <textarea id="alergias" name="alergias" rows="2"
+                                placeholder="Nos ajude a entender suas necessidades de saúde. Ex: Remédios, alimentos..."></textarea>
                         </div>
-                        <div id="campo-acessibilidade-detalhe" class="form-group" style="display: none;">
-                            <label for="necessidades_acessibilidade">Descreva sua necessidade:</label>
-                            <textarea id="necessidades_acessibilidade" name="necessidades_acessibilidade" rows="2"></textarea>
+
+                        <div class="form-group">
+                            <label for="informacoes_saude">
+                                Informações de Saúde
+                            </label>
+
+                            <textarea id="informacoes_saude" name="informacoes_saude" rows="2"
+                                placeholder="Ex: Hipertensão, Diabetes..."></textarea>
                         </div>
+
+                        <div class="form-group">
+
+                            <label style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                    cursor: pointer;
+                                ">
+
+                                <input type="checkbox" id="possui_acessibilidade" name="possui_acessibilidade"
+                                    style="width: 25px; height: 25px;" onchange="toggleAcessibilidade()">
+
+                                <span>
+                                    Preciso de acessibilidade especial
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                        <div id="campo-acessibilidade-detalhe" class="form-group">
+
+                            <label for="necessidades_acessibilidade">
+                                Descreva sua necessidade:
+                            </label>
+
+                            <textarea id="necessidades_acessibilidade" name="necessidades_acessibilidade"
+                                rows="2"></textarea>
+
+                        </div>
+
                     </fieldset>
+
                 </div>
 
-                <div id="area-profissional" style="display: none;">
+                <div id="area-profissional">
+
                     <fieldset>
+
                         <legend>Detalhes Profissionais</legend>
+
                         <div class="form-group">
-                            <label for="registro_profissional">Registro Profissional (CRM/COREN)</label>
-                            <input type="text" id="registro_profissional" name="registro_profissional">
+                            <label for="registro_profissional">
+                                Registro Profissional (CRM/COREN)
+                            </label>
+
+                            <input type="text" id="registro_profissional" name="registro_profissional"
+                                placeholder="ex: CRM/PR 123456">
                         </div>
+
                         <div class="form-group">
-                            <label for="especialidade">Especialidade</label>
-                            <input type="text" id="especialidade" name="especialidade">
+                            <label for="especialidade">
+                                Especialidade
+                            </label>
+
+                            <input type="text" id="especialidade" name="especialidade"
+                                placeholder="ex: Geriatria, Enfermagem...">
                         </div>
+
                         <div class="form-group">
-                            <label for="localizacao">Localização (Onde atende)</label>
-                            <input type="text" id="localizacao" name="localizacao">
+                            <label for="biografia">
+                                Biografia
+                            </label>
+
+                            <textarea id="biografia" name="biografia" rows="3"
+                                placeholder="Conte um pouco sobre sua trajetória profissional, para que os usuários possam conhecer melhor seus conhecimentos e experiências."></textarea>
                         </div>
+
                         <div class="form-group">
-                            <label for="biografia">Biografia</label>
-                            <textarea id="biografia" name="biografia" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="url_documento">Certificado (PDF)</label>
+                            <label for="url_documento">
+                                Certificado (PDF)
+                            </label>
+
                             <input type="file" id="url_documento" name="url_documento" accept=".pdf">
                         </div>
+
                         <div class="form-group">
-                            <label for="data_emissao">Data de Emissão do Certificado</label>
+                            <label for="titulo_certificado">Tipo do Certificado</label>
+                            <input type="text" id="titulo_certificado" name="titulo_certificado"
+                                placeholder="Ex: Especialização em Geriatria">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data_emissao">
+                                Data de Emissão do Certificado
+                            </label>
+
                             <input type="date" id="data_emissao" name="data_emissao">
                         </div>
+
                         <div class="form-group">
-                            <label for="documento_foto">Documento com Foto (RG/CNH)</label>
+                            <label for="documento_foto">
+                                Documento com Foto (RG/CNH)
+                            </label>
+
                             <input type="file" id="documento_foto" name="documento_foto" accept=".pdf, image/*">
                         </div>
 
-                       
-                        <!-- <div class="form-group">
-                            <label for="visibilidade">Visibilidade em nosso site</label>
-                            <input type="text" id="visibilidade" name="visibilidade" accept="boolean" placeholder="Digite 'sim' para aparecer na lista de profissionais ou 'não' para ocultar seu perfil">
-                        </div> -->
-                         
                     </fieldset>
+
                 </div>
 
-                <button type="submit" class="btn-submit"><a href="../../perfil/index.html"></a>Finalizar Cadastro</button>
+                <button type="submit" class="btn-submit">
+                    Finalizar Cadastro
+                </button>
+
             </div>
+
         </form>
+
     </div>
 
     <script>
-        // 1. Verificação de Sessão: Redireciona se já estiver logado
         fetch('../login/get_session.php')
+
             .then(response => response.json())
+
             .then(data => {
+
                 if (data.logged_in) {
-                    window.location.href = '../../perfil/index.html';
+
+                    window.location.href =
+                        '../../perfil/index.html';
+
                 }
+
             })
-            .catch(error => console.error('Erro ao verificar sessão:', error));
 
-        // Validação básica de formulário
-        // function(e) é um CALL BACK, serve para interceptar o evento de submit do formulário e executar a função antes de enviar os dados para o servidor
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const senha = document.getElementById('senha').value;
-            const confirma = document.getElementById('confirme_senha').value;
+            .catch(error =>
 
-            if (senha !== confirma) {
-                e.preventDefault();
-                alert('As senhas não coincidem. Por favor, verifique.');
+                console.error(
+                    'Erro ao verificar sessão:',
+                    error
+                )
+
+            );
+        document
+            .querySelector('form')
+
+            .addEventListener('submit', function (e) {
+
+                const senha =
+                    document.getElementById('senha');
+
+                const confirma =
+                    document.getElementById('confirme_senha');
+
+                const regexSenha =
+                    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+                const camposObrigatorios =
+                    document.querySelectorAll(
+                        'input[required], textarea[required], select[required]'
+                    );
+
+                for (const campo of camposObrigatorios) {
+
+                    if (!campo.value.trim()) {
+
+                        e.preventDefault();
+
+                        mostrarMensagem(
+                            'Preencha os campos obrigatórios.'
+                        );
+
+                        irParaCampo(campo);
+
+                        return;
+                    }
+                }
+
+                if (!regexSenha.test(senha.value)) {
+
+                    e.preventDefault();
+
+                    mostrarMensagem(
+                        'A senha precisa ter no mínimo 8 caracteres, 1 letra maiúscula, 1 número e 1 caractere especial.'
+                    );
+
+                    irParaCampo(senha);
+
+                    return;
+                }
+
+                if (senha.value !== confirma.value) {
+
+                    e.preventDefault();
+
+                    mostrarMensagem(
+                        'As senhas não coincidem.'
+                    );
+
+                    irParaCampo(confirma);
+
+                    return;
+                }
+
+            });
+
+        // Máscaras para CPF e Telefone
+        document.getElementById('cpf').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 9) v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+            else if (v.length > 6) v = v.replace(/^(\d{3})(\d{3})(\d{3})/, "$1.$2.$3");
+            else if (v.length > 3) v = v.replace(/^(\d{3})(\d{3})/, "$1.$2");
+            e.target.value = v;
+        });
+        // LOGICA PARA O CRM não funcionou soy burro
+        //         document.getElementById('registro_profissional').addEventListener('input', function (e) {
+        //     let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); 
+        //     let letras = v.replace(/[0-9]/g, '');
+        //     let numeros = v.replace(/[^0-9]/g, '');
+        //     if (numeros.length > 6) {
+        //         numeros = numeros.slice(0, 6);
+        //     }
+        //     v = letras + numeros;
+        //     if (numeros.length > 0) {
+        //         let conselho = letras.slice(0, -2);
+        //         let uf = letras.slice(-2);
+        //         v = conselho + '/' + uf + ' ' + numeros;
+        //     } 
+        //     else if (letras.length > 3) {
+        //         let conselho = letras.slice(0, 3);
+        //         let uf = letras.slice(3);
+        //         v = conselho + '/' + uf;
+        //     }
+        //     e.target.value = v;
+        // });
+
+        document.getElementById('telefone').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+            else if (v.length > 6) v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, "($1) $2-$3");
+            else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,5})$/, "($1) $2");
+            e.target.value = v;
+        });
+
+        document.getElementById('cep').addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 8) v = v.slice(0, 8);
+            if (v.length > 5) v = v.replace(/^(\d{5})(\d{3})$/, "$1-$2");
+            e.target.value = v;
+
+            if (v.length === 9) {
+                const cep = v.replace('-', '');
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('logradouro').value = data.logradouro;
+                            document.getElementById('bairro').value = data.bairro;
+                            document.getElementById('cidade').value = data.localidade;
+                            document.getElementById('uf').value = data.uf;
+                            document.getElementById('numero').focus();
+                        } else {
+                            mostrarMensagem('TU NÃO MORA, SE ESCONDE.');
+                            ['logradouro', 'bairro', 'cidade', 'uf'].forEach(id => {
+                                document.getElementById(id).value = '';
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Erro ao buscar CEP:', err);
+                        mostrarMensagem('Erro ao consultar serviço de CEP.');
+                    });
             }
         });
 
-        function iniciarFluxo() {
-            const perfil = document.getElementById('tipo_usuario').value;
-            const fluxo = document.getElementById('fluxo-cadastro');
-            const areaIdoso = document.getElementById('area-idoso');
-            const areaProfissional = document.getElementById('area-profissional');
-            const body = document.getElementById('main-body');
-            const instrucao = document.getElementById('instrucao-topo');
+        function selecionarPerfil(perfil, botao) {
 
-            fluxo.style.display = perfil ? 'block' : 'none';
-            areaIdoso.style.display = perfil === 'idoso' ? 'block' : 'none';
-            areaProfissional.style.display = perfil === 'profissional' ? 'block' : 'none';
+            document.getElementById(
+                'tipo_usuario'
+            ).value = perfil;
+
+            document
+                .querySelectorAll('.btn-choice')
+
+                .forEach(btn => {
+
+                    btn.classList.remove('selected');
+
+                });
+
+            botao.classList.add('selected');
+
+            iniciarFluxo(perfil);
+
+        }
+        function iniciarFluxo(perfil) {
+
+            const fluxo =
+                document.getElementById(
+                    'fluxo-cadastro'
+                );
+
+            const areaIdoso =
+                document.getElementById(
+                    'area-idoso'
+                );
+
+            const areaProfissional =
+                document.getElementById(
+                    'area-profissional'
+                );
+
+            const body =
+                document.getElementById(
+                    'main-body'
+                );
+
+            const instrucao =
+                document.getElementById(
+                    'instrucao-topo'
+                );
+
+            fluxo.style.display =
+                perfil ? 'block' : 'none';
+
+            areaIdoso.style.display =
+                perfil === 'idoso'
+                    ? 'block'
+                    : 'none';
+
+            areaProfissional.style.display =
+                perfil === 'profissional'
+                    ? 'block'
+                    : 'none';
 
             if (perfil === 'idoso') {
-                body.classList.add('acessibilidade-idoso');
-                instrucao.innerText = "Quase lá! Preencha seus dados de saúde.";
-            } else if (perfil === 'profissional') {
-                body.classList.remove('acessibilidade-idoso');
-                instrucao.innerText = "Complete seu perfil profissional abaixo.";
+
+                body.classList.add(
+                    'acessibilidade-idoso'
+                );
+
+                instrucao.innerText =
+                    "Quase lá! Preencha seus dados de saúde.";
+
             }
+
+            else if (perfil === 'profissional') {
+
+                body.classList.remove(
+                    'acessibilidade-idoso'
+                );
+
+                instrucao.innerText =
+                    "Complete seu perfil profissional abaixo.";
+
+            }
+
+        }
+        function toggleAcessibilidade() {
+
+            const checkbox =
+                document.getElementById(
+                    'possui_acessibilidade'
+                );
+
+            const detalhe =
+                document.getElementById(
+                    'campo-acessibilidade-detalhe'
+                );
+
+            detalhe.style.display =
+                checkbox.checked
+                    ? 'block'
+                    : 'none';
+
         }
 
-        function toggleAcessibilidade() {
-            const checkbox = document.getElementById('possui_acessibilidade');
-            const detalhe = document.getElementById('campo-acessibilidade-detalhe');
-            detalhe.style.display = checkbox.checked ? 'block' : 'none';
+        const inputSenha =
+            document.getElementById('senha');
+
+        const statusSenha =
+            document.getElementById('senha-status');
+
+        inputSenha.addEventListener('input', () => {
+
+            const senha = inputSenha.value;
+
+            const regexSenha =
+                /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+            if (regexSenha.test(senha)) {
+
+                statusSenha.innerHTML =
+                    'Senha fortissima :p';
+
+                statusSenha.classList.add('ok');
+
+            } else {
+
+                statusSenha.innerHTML =
+                    'A senha deve ter: 8 caracteres, 1 maiúscula, 1 número e 1 caractere especial.';
+
+                statusSenha.classList.remove('ok');
+            }
+        });
+
+        function mostrarMensagem(texto) {
+
+            let msg =
+                document.getElementById('mensagem-form');
+
+            if (!msg) {
+
+                msg = document.createElement('div');
+
+                msg.id = 'mensagem-form';
+
+                msg.style.background = '#e74c3c';
+                msg.style.color = 'white';
+                msg.style.padding = '12px';
+                msg.style.borderRadius = '8px';
+                msg.style.marginBottom = '20px';
+                msg.style.fontWeight = 'bold';
+
+                const form =
+                    document.querySelector('form');
+
+                form.prepend(msg);
+            }
+
+            msg.innerText = texto;
+
+            setTimeout(() => {
+
+                msg.remove();
+
+            }, 4000);
         }
+
+        function irParaCampo(campo) {
+
+            campo.classList.add('campo-erro');
+
+            campo.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+
+            campo.focus();
+
+            setTimeout(() => {
+
+                campo.classList.remove('campo-erro');
+
+            }, 2000);
+        }
+
+
+        function confirmarAcao(texto, callback) {
+
+            const modal =
+                document.getElementById('modal-confirmacao');
+
+            const textoModal =
+                document.getElementById('texto-confirmacao');
+
+            const btnConfirmar =
+                document.getElementById('btn-confirmar');
+
+            const btnCancelar =
+                document.getElementById('btn-cancelar');
+
+            textoModal.innerText = texto;
+
+            modal.style.display = 'flex';
+
+            btnConfirmar.onclick = () => {
+
+                modal.style.display = 'none';
+
+                callback();
+            };
+
+            btnCancelar.onclick = () => {
+
+                modal.style.display = 'none';
+            };
+        }
+
+
     </script>
+
+    <div id="modal-confirmacao" class="modal-confirmacao">
+
+        <div class="modal-box">
+
+            <h3>Confirmar ação</h3>
+
+            <p id="texto-confirmacao"></p>
+
+            <div class="modal-botoes">
+
+                <button id="btn-cancelar" class="btn-cancelar">
+                    Cancelar
+                </button>
+
+                <button id="btn-confirmar" class="btn-confirmar">
+                    Confirmar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 </body>
+
 </html>

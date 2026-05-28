@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elderia - Meu Perfil</title>
     <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
             <a href="../index.html">
                 <h1>ELDERIA</h1>
-                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo"> 
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
+                    class="haroldo">
             </a>
         </div>
         <nav class="navegacao-botoes">
             <a href="../index.html" class="btn-nav">Voltar</a>
         </nav>
-        <div class="usuario-info">
-            <a href="../conta/login/logout.php" class="btn-login">Sair</a>
+
+        <div class="container-mudar-senha">
+            <a href="trocasenha.html" class="btn-mudar-senha">
+                Mudar Senha
+            </a>
         </div>
+        <div class="usuario-info" id="area-usuario">
+            <a href="../conta/login/logout.php" class="btn-sair">Sair</a>
+        </div>
+        <!-- <script>
+            const headerUser = document.querySelector(".usuario-info");
+            fetch('../conta/login/get_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    const headerUser = document.getElementById('area-usuario');
+                    if (data.logged_in && headerUser) {
+                    headerUser.innerHTML = `<span class="user-name" style="margin-right: 15px;">Olá, <strong>${data.nome}</strong></span>
+                    <a href="conta/login/logout.php" class="btn-sair">Sair</a>`;
+                }
+            })
+
+        </script> -->
     </header>
 
     <section class="meuperfil">
@@ -32,25 +55,64 @@
     </section>
 
     <script>
-        // 1. Verificação de Sessão e Proteção de Rota
         fetch('../conta/login/get_session.php')
             .then(response => response.json())
             .then(data => {
                 const infoDiv = document.getElementById('perfil-info');
-                
+
                 if (!data.logged_in) {
-                    // Se NÃO estiver logado, manda para o login
+
                     window.location.href = '../conta/login/login.html';
-                } else {
-                    // Se estiver logado, preenche os dados
+                } else if (data.tipo === 'profissional' || data.tipo === 'idoso') {
+
                     infoDiv.innerHTML = `
-                        <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
-                            <p style="margin-bottom: 10px;"><strong>Nome:</strong> ${data.nome}</p>
-                            <p style="margin-bottom: 10px;"><strong>ID de Usuário:</strong> ${data.id}</p>
-                            <p style="margin-bottom: 10px;"><strong>E-mail:</strong> ${data.email}</p>
-                            <p><strong>Tipo de Perfil:</strong> ${data.tipo.charAt(0).toUpperCase() + data.tipo.slice(1)}</p>
-                        </div>
-                    `;
+                
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
+        <p style="margin-bottom: 10px;"><strong>Nome:</strong> ${data.nome}</p>
+        <p style="margin-bottom: 10px;"><strong>ID de Usuário:</strong> ${data.id}</p>
+        <p style="margin-bottom: 10px;"><strong>E-mail:</strong> ${data.email}</p>
+        <p style="margin-bottom: 20px;"><strong>Tipo de Perfil:</strong> ${data.tipo.charAt(0).toUpperCase() + data.tipo.slice(1)}</p>
+        
+        <a href="editarperfil/editarperfil.html" style="
+    display: inline-block;
+    background-color: #00a6ce;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+">Editar Perfil</a>
+
+${data.tipo === 'profissional' ? `
+<a href="horarios/disponibilizar_horarios.html" style="
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+">Disponibilizar Horários</a>
+` : ''}
+    </div>
+`;
+                } else if (data.tipo === 'admin') {
+                    infoDiv.innerHTML = `
+                
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-top: 20px;">
+        <p style="margin-bottom: 10px;"><strong>Nome:</strong> ${data.nome}</p>
+        <p style="margin-bottom: 10px;"><strong>ID de Usuário:</strong> ${data.id}</p>
+        <p style="margin-bottom: 10px;"><strong>E-mail:</strong> ${data.email}</p>
+        <p style="margin-bottom: 20px;"><strong>Tipo de Perfil:</strong> ${data.tipo.charAt(0).toUpperCase() + data.tipo.slice(1)}</p>
+    </div>
+`;
                 }
             })
             .catch(error => {
@@ -59,4 +121,5 @@
             });
     </script>
 </body>
+
 </html>

@@ -7,42 +7,71 @@
     <title>Elderia - Busca de Profissionais</title>
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="consulta.css">
-   
 </head>
 
 <body>
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <a href="index.html">
+            <a href="../index.html">
                 <h1>ELDERIA</h1>
-                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início" class="haroldo">
+                <img src="https://media.tenor.com/wGufiBV_pI0AAAAe/hide-the-pain-harold-pain.png" alt="Início"
+                    class="haroldo">
             </a>
         </div>
-        <nav class="navegacao-botoes">
+        <nav class="navegacao-botoes" id="nav-principal">
             <a href="../perfil/index.html" class="btn-nav">Meu Perfil</a>
-            <a href="../index.html" class="btn-nav">voltar</a>
+            <a href="../index.html" class="btn-nav">Voltar</a> <!--o "V" tava minusculo aqui TBM??? | sim mano -->
         </nav>
         <div class="usuario-info" id="area-usuario">
-            <a href="../conta/cadastro/cadastro.html" class="btn-nav" style="background-color: var(--cor-secundaria); padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar Conta</a>
+            <script>
+                fetch('../conta/login/get_session.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        const headerUser = document.getElementById('area-usuario');
+                        const navPrincipal = document.getElementById('nav-principal');
+                        if (data.logged_in && headerUser) {
+                            headerUser.innerHTML = `<span class="user-name" style="margin-right: 15px;">Olá, <strong>${data.nome}</strong></span>
+                    <a href="../conta/login/logout.php" class="btn-sair">Sair</a>`;
+                            
+                            // Pierre > Se for profissional na tela de idoso, ajusta a navegação
+                            if (data.tipo === 'profissional' && navPrincipal) {
+                                navPrincipal.innerHTML = `
+                                    <a href="../perfil/index.html" class="btn-nav">Meu Perfil</a>
+                                    <a href="confirmar.php" class="btn-nav">Confirmar Consultas</a>
+                                    <a href="../index.html" class="btn-nav">Voltar</a>
+                                `;
+                            }
+                        }
+                    })
+            </script>
+            <a href="../conta/cadastro/cadastro.html" class="btn-nav"
+                style="background-color: var(--cor-secundaria); padding: 5px 15px; border-radius: 20px; text-decoration: none;">Criar
+                Conta</a>
             <a href="../conta/login/login.html" class="btn-sair">Login</a>
         </div>
     </header>
 
+    <div id="messageBox" class="message-box"></div>
 
-   <main class="aba-consultas">
-        <h2 style="text-align:center; margin-top:20px;">Minhas Consultas Agendadas</h2>
+    <main class="aba-consultas">
 
-        <h4>No futuro terá opção de desmarcar consultas</h4>
-        
-        <div id="container-consultas" class="grid-consultas">
-            </div>
+        <h2 style="text-align:center; margin-top:20px;">
+            Minhas Consultas Agendadas
+        </h2>
+
+    
+
+        <div id="container-consultas" class="grid-consultas"></div>
+
+        <h2 style="text-align:center; margin-top:40px;">
+            Histórico
+        </h2>
+
+        <div id="container-historico" class="grid-consultas"></div>
+
     </main>
 
     <script src="consulta.js"></script>
     <script src="../index.js"></script>
 </body>
-
-
-</body>
-
 </html>

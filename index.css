@@ -1,8 +1,8 @@
-/* Variáveis de Cores para facilitar a manutenção */
+
 :root {
     --cor-fundo: #F4F7F6;
-    --cor-primaria: #1A5F7A; /* Azul petróleo / Verde escuro */
-    --cor-secundaria: #E36414; /* Laranja queimado para contraste e botões */
+    --cor-primaria: #1A5F7A; 
+    --cor-secundaria: #E36414;
     --cor-texto: #333333;
     --cor-borda: #CCCCCC;
     --cor-card: #FFFFFF;
@@ -12,16 +12,16 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fontes sem serifa são melhores para idosos */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
-    font-size: 18px; /* Fonte base maior */
+    font-size: 18px;
 }
 
-/* Cabeçalho */
+
 .cabecalho-principal {
     display: flex;
     justify-content: space-between;
@@ -73,6 +73,12 @@ body {
     text-decoration: underline;
 }
 
+.btn-destaque {
+    background-color: var(--cor-secundaria);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
 .usuario-info {
     display: flex;
     align-items: center;
@@ -82,7 +88,7 @@ body {
     border-radius: 8px;
 }
 
-/* Containers Centrais */
+
 .conteiner-busca, .conteiner-resultados {
     max-width: 1000px;
     margin: 50px auto;
@@ -95,7 +101,27 @@ h2 {
     margin-bottom: 30px;
 }
 
-/* Formulário de Busca */
+.boas-vindas {
+    text-align: center;
+    background-color: var(--cor-card);
+    border-radius: 12px;
+    border: 2px solid var(--cor-primaria);
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.boas-vindas h1 {
+    color: var(--cor-primaria);
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.boas-vindas p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+
 .formulario-busca {
     display: flex;
     gap: 20px;
@@ -141,13 +167,27 @@ h2 {
     border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-pesquisar:hover {
     background-color: #C05510;
 }
 
-/* Cards de Resultado */
+.secao-titulo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.linha-decorativa {
+    height: 3px;
+    width: 100px;
+    background-color: var(--cor-secundaria);
+    margin: 0 auto;
+}
+
+
 .card-profissional {
     display: flex;
     background-color: var(--cor-card);
@@ -254,4 +294,110 @@ h2 {
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.grid-profissionais {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.grid-profissionais {
+    display: grid;
+    
+    grid-template-columns: 1fr 1fr; 
+    gap: 25px; 
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+
+.card-profissional {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-profissional:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+.info-profissional {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.foto-perfil {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1A5F7A; 
+}
+
+.dados-texto h3 {
+    color: #1A5F7A;
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+}
+
+.especialidade {
+    color: #E36414; 
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.biografia-preview {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+
+.agenda-profissional {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-ver-mais {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #1A5F7A;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn-ver-mais:hover {
+    background-color: #144D63;
+}
+
+
+@media (max-width: 768px) {
+    .grid-profissionais {
+        grid-template-columns: 1fr;
+    }
+    .info-profissional {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 }
